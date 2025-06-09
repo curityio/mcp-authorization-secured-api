@@ -7,4 +7,5 @@
 
 - Update to domains like demo.example instead of example.com.
 - Change to a stocks API with money details that a financial person might access.
-- Change to pre-deployed user accounts and email authentication, to demonstrate administrator approval.
+- Change to pre-deployed user accounts to represent administrator approval.
+- Change to email authentication, to represent employees needing to prove their identity.

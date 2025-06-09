@@ -6,7 +6,7 @@ A utility MCP server implements the server side of the [Model Content Protocol A
 ## Backend Components
 
 The backend includes a utility MCP server that provides an API entry point for AI agents that use MCP clients.\
-The Curity Identity Server uses OAuth standards to implement the main security and restrict API access.
+The Curity Identity Server uses OAuth standards to authenticate users and issue access tokens to AI agents.
 
 | Component | URL |
 | --------- | --- |
@@ -23,10 +23,9 @@ Add the following entries to the `/etc/hosts` file to enable the use of these do
 
 ## Deploy the Backend
 
-First, ensure that Docker, Node.js and the envsubst tool are installed on the local computer.\
+First, install Docker, Node.js and the envsubst tool on your local computer.\
 Also download a [Trial License](https://developer.curity.io/free-trial) for the Curity Identity Server from the Curity developer portal.\
 Save it to your desktop as a `license.json` file.
-
 
 ### Option 1: Deployed MCP Server
 
@@ -59,12 +58,12 @@ export RUN_LOCAL_MCP_SERVER='true'
 
 ## Run an AI Agent
 
-An AI agent can use any MCP client that implements the client side of the Model Content Protocol Authorization specification.\
-The repo includes an adapted version of the [TypeScript SDK Example MCP OAuth Client](https://github.com/modelcontextprotocol/typescript-sdk/blob/main/src/examples/client/simpleOAuthClient.ts).\
+An AI agent can use any MCP client that implements the client side of the MCP authorization specification.\
+The repo includes an adapted version of the [TypeScript SDK Example MCP OAuth Client](https://github.com/modelcontextprotocol/typescript-sdk/blob/main/src/examples/client/simpleOAuthClient.ts).
 
 ### Option 1
 
-If you used the option 1 server deployment, use the following commands to run the MCP client.
+If you used the option 1 backend deployment, use the following commands to run the MCP client.
 
 ```bash
 cd mcp-client
@@ -74,7 +73,7 @@ npm start
 
 ### Option 2
 
-If you used the option 2 server deployment, use the following commands to run the MCP client.
+If you used the option 2 backend deployment, use the following commands to run the MCP client.
 
 ```bash
 export MCP_SERVER_URL='http://localhost:3000'
@@ -92,7 +91,7 @@ The MCP client then runs the following OAuth flows.
 - A code flow where the user must authenticate and consent to granting the AI agent access to resources.
 
 The AI agent's MCP client can then call the MCP server with an access token and gain access to API data.\
-The example MCP client uses an interactive shell from which you invoke an MCP server tool in a similar way to an AI agent.
+The example MCP client opens an interactive shell from which you invoke MCP server tools like an AI agent does.
 
 ```bash
 call fetch-users
