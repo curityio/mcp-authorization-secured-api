@@ -1,2 +1,3 @@
-# ai-agent-secure-api-access
-Shows how organizations can expose secure API data to AI agents using model content protocol authorization
+# AI Agent Secure API Access
+
+A deployment to show how to expose APIs to AI agents using [Model Content Protocol Authorization](https://modelcontextprotocol.io/specification/2025-03-26/basic/authorization).
