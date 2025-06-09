@@ -10,7 +10,7 @@ The Curity Identity Server uses OAuth standards to authenticate users and issue 
 
 | Component | URL |
 | --------- | --- |
-| Users API | http://api.demo.example/users |
+| Stocks API | http://api.demo.example/stocks |
 | Utility MCP Server | http://mcp.demo.example |
 | Curity Identity Server Admin UI | http://admin.demo.example/admin |
 | Curity Identity Server OAuth Metadata | http://login.demo.example/.well-known/oauth-authorization-server |
@@ -94,22 +94,28 @@ The AI agent's MCP client can then call the MCP server with an access token and 
 The example MCP client opens an interactive shell from which you invoke MCP server tools like an AI agent does.
 
 ```bash
-call fetch-users
+call fetch-stocks
 ```
 
-The tool forwards the request to an upstream OAuth-secured API and receives a response payload.
+The tool forwards the request to an upstream OAuth-secured API and receives a response payload.\
+The demo API returns some hard coded stock prices.
 
 ```json
 [
   {
-    "given_name": "John",
-    "family_name": "Doe",
-    "email": "john.doe@demo.example"
+    "id": "MSFT",
+    "name": "Microsoft Corporation",
+    "price": 450.22
   },
   {
-    "given_name": "Jane",
-    "family_name": "Doe",
-    "email": "jane.doe@demo.example"
+    "id": "AAPL",
+    "name": "Apple Inc",
+    "price": 250.62
+  },
+  {
+    "id": "INTC",
+    "name": "Intel Corp",
+    "price": 21.07
   }
 ]
 ```

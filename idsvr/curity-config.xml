@@ -161,7 +161,7 @@
               <claims>zoneinfo</claims>
             </scope>
             <scope>
-              <id>retail</id>
+              <id>stocks/read</id>
             </scope>
           </scopes>
           <claims>

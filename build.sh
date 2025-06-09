@@ -2,8 +2,8 @@
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
-cd customer-api
-echo 'Building customer API ...'
+cd stocks-api
+echo 'Building stocks API ...'
 npm install
 if [ $? -ne 0 ]; then
   exit 1
@@ -14,7 +14,7 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-docker build --no-cache -t customer-api:1.0 .
+docker build --no-cache -t stocks-api:1.0 .
 if [ $? -ne 0 ]; then
   exit 1
 fi

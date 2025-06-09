@@ -224,9 +224,9 @@ class InteractiveOAuthClient {
       client_name: 'Simple OAuth MCP Client',
       redirect_uris: [CALLBACK_URL],
       grant_types: ['authorization_code'],
-      resposne_types: ['code'],
+      response_types: ['code'],
       token_endpoint_auth_method: 'client_secret_post',
-      scope: 'retail'
+      scope: 'stocks/read'
     };
 
     console.log('🔐 Creating OAuth provider...');

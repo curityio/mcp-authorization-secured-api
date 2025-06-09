@@ -80,12 +80,12 @@ const server = new McpServer({
     version: "1.0.0"
 });
 
-const apiUrl = process.env.CUSTOMER_API_URL || 'http://api.demo.example/users';
+const apiUrl = process.env.STOCKS_API_URL || 'http://mcp.demo.example/stocks';
 server.tool(
-    "fetch-users",
-    "The command fetches the list of users configured in the system",
+    "fetch-stocks",
+    "The command fetches information about stock prices",
     async (extra) => {
-        console.log('MCP server is fetching users ...');
+        console.log('MCP server is fetching prices from the stocks API ...');
 
         const options = {} as RequestInit;
 
@@ -205,7 +205,7 @@ app.get('/.well-known/oauth-protected-resource', (req, res) => {
         resource: "http://mcp.demo.example",
         resource_name: "An example MCP Customer server",
         authorization_servers: ["http://login.demo.example"],
-        scopes_supported: ['retail'],
+        scopes_supported: ['stocks/read'],
     }).send();
 });
 

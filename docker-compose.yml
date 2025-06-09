@@ -18,21 +18,21 @@ services:
       KONG_NGINX_HTTP_LUA_SHARED_DICT: 'phantom-token 10m'
 
   #
-  # The utility MCP server that runs in front of the users API
+  # The utility MCP server that runs in front of the stocks API
   #
   utility-mcp-server:
     image: utility-mcp-server:1.0
     hostname: utility-mcp-server
     environment:
-      CUSTOMER_API_URL: 'http://customer-api:3000/users'
+      STOCKS_API_URL: 'http://stocks-api:3000/stocks'
       JWKS_URI: 'http://idsvr:8443/oauth/v2/oauth-anonymous/jwks'
 
   #
-  # The users API that implements OAuth security
+  # The stocks API that implements OAuth security
   #
-  customer-api:
-    image: customer-api:1.0
-    hostname: customer-api
+  stocks-api:
+    image: stocks-api:1.0
+    hostname: stocks-api
     environment:
       JWKS_URI: 'http://idsvr:8443/oauth/v2/oauth-anonymous/jwks'
       REQUIRED_JWT_ALGORITHM: 'PS256'
