@@ -2,3 +2,4 @@
 license.json
 node_modules
 dist
+kong.yml

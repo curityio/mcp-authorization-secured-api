@@ -16,12 +16,13 @@ The example deploys a utility MCP server that provides access to an API endpoint
 
 ## Deploy the Backend
 
-First download a [Trial License](https://developer.curity.io/free-trial) from the developer portal.\
-Save it to your desktop as a `license.json` file.
+First, ensure that Docker, Node.js and the envsubst tool are installed on the local computer.\
+Also download a [Trial License](https://developer.curity.io/free-trial) for the Curity Identity Server from the Curity developer portal.\
+Save it to your desktop as a `license.json` file.\
 
 ### Option 1: Deployed MCP Server
 
-Deploy all backend components including the MCP server:
+Deploy all backend components including the MCP server.
 
 ```bash
 export LICENSE_FILE_PATH=~/Desktop/license.json
@@ -48,12 +49,14 @@ export RUN_LOCAL_MCP_SERVER='true'
 ./deploy.sh
 ```
 
-## Connect an AI Agent that uses an MCP Client
+## Run an AI Agent
 
-AI agent can execute MCP clients that support the client side of the specification.\
-The MCP client can then run a secure flow to connect to the API.\
+An AI agent can use any MCP client that implements the client side of the Model Content Protocol Authorization specification.\
 The repo includes an adapted version of the [TypeScript SDK Example MCP OAuth Client](https://github.com/modelcontextprotocol/typescript-sdk/blob/main/src/examples/client/simpleOAuthClient.ts).\
-Run it with the following commands:
+
+### Option 1
+
+If you used the option 1 server deployment, use the following commands to run the MCP client.
 
 ```bash
 cd mcp-client
@@ -61,24 +64,60 @@ npm install
 npm start
 ```
 
-The MCP server returns a 401 unauthorized response to initiate an OAuth flow, after which the MCP client runs these operations:
+### Option 2
 
-- Dynamic client registration to create a client at the authorization server.
-- A code flow where the user must authenticate and consent.
-- The AI agent's MCP client can then call APIs with an access token.
+If you used the option 2 server deployment, use the following commands to run the MCP client.
 
-## Secure Data Access
+```bash
+export MCP_SERVER_URL='http://localhost:3000'
+cd mcp-client
+npm install
+npm start
+```
 
-The example highlights 
+### Secure Data Access
+
+The MCP client calls the MCP server which returns a 401 unauthorized response.\
+The MCP client then runs the following OAuth flows.
+
+- Dynamic client registration to create an OAuth client at the authorization server.
+- A code flow where the user must authenticate and consent to granting the AI agent access to resources.
+
+The AI agent's MCP client can then call the MCP server with an access token and gain access to API data.\
+The example MCP client uses an interactive shell from which you invoke an MCP server tool in a similar way to an AI agent.
+
+```bash
+call fetch-users
+```
+
+The tool forwards the request to an upstream OAuth-secured API and receives a response payload.
+
+```json
+[
+  {
+    "given_name": "John",
+    "family_name": "Doe",
+    "email": "john.doe@customer.example"
+  },
+  {
+    "given_name": "Jane",
+    "family_name": "Doe",
+    "email": "jane.doe@customer.example"
+  }
+]
+```
+
+The backend enforces the following security behaviors to restrict the API access granted to AI agents.
 
 - Only administrator approved users are granted access, who must prove their identity by verifying their email.
-- The AI agent receives a least privilege access token with restricted read only scopes and the user's identity.
-- The AI agent uses opaque access tokens to prevent revealing API data to AI agents.
-- The AI agents receives short lived access tokens and does not receive refresh tokens.
+- The AI agent receives a least privilege access token with restricted read-only scopes and the user's identity.
+- The API restricts access to business resources using the access token.
+- The AI agent uses opaque access tokens to avoid revealing API claims to AI agents.
+- The AI agent receives short-lived access tokens and does not receive refresh tokens.
 
 ## Website Documentation
 
-See the following resources for further information on concepts and how the code example works:
+See the following resources to read further information on MCP security concepts and the example code.
 
 - [Securely Expose APIs to AI Agents](https://curity.io/resources/learn/securely-expose-apis-to-ai-agents/)
 - [AI Agent Secure API Access Tutorial](https://curity.io/resources/learn/ai-agent-secure-api-access/)

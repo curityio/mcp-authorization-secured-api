@@ -4,11 +4,11 @@ services:
   # The API gateway that exposes backend components at domain based URLs
   #
   api-gateway:
-    build: ../apigateway/
+    build: ./apigateway/
     ports:
       - 80:3001
     volumes:
-      - ../apigateway/kong.yml:/usr/local/kong/declarative/kong.yml
+      - ./apigateway/kong.yml:/usr/local/kong/declarative/kong.yml
     environment:
       KONG_DATABASE: 'off'
       KONG_DECLARATIVE_CONFIG: '/usr/local/kong/declarative/kong.yml'
@@ -24,7 +24,7 @@ services:
     image: utility-mcp-server:1.0
     hostname: utility-mcp-server
     environment:
-      CUSTOMER_API_URL: 'http://trades-api:3000/users'
+      CUSTOMER_API_URL: 'http://customer-api:3000/users'
       JWKS_URI: 'http://idsvr:8443/oauth/v2/oauth-anonymous/jwks'
 
   #
@@ -46,7 +46,7 @@ services:
     image: curity.azurecr.io/curity/idsvr:latest
     hostname: idsvr
     volumes:
-      - ../idsvr/curity-config.xml:/opt/idsvr/etc/init/curity-config.xml
+      - ./idsvr/curity-config.xml:/opt/idsvr/etc/init/curity-config.xml
     environment:
       ADMIN: 'true'
       LICENSE_KEY: "${LICENSE_KEY}"

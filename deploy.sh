@@ -14,7 +14,7 @@ if [ "$LICENSE_KEY" == '' ]; then
 fi
 
 #
-# Configure how the Docker LibreChat API routes to the MCP server
+# Configure how the MCP client routes to the MCP server
 #
 if [ "$RUN_LOCAL_MCP_SERVER" == 'true' ]; then
   export MCP_SERVER_URL='http://host.docker.internal:3000'
@@ -29,21 +29,7 @@ if [ $? -ne 0 ]; then
 fi
 
 #
-# Clone the LibreChat repo the first time
+# Run the deployment
 #
-if [ ! -d ./LibreChat ]; then
-  git clone https://github.com/danny-avila/LibreChat
-  cp LibreChat/.env.example LibreChat/.env
-fi
-
-#
-# Copy in PME components to add to the LibreChat deployment and the LibreChat configuration
-#
-cp docker-compose.override.yml librechat.yaml LibreChat/
-
-#
-# Run the combined LibreChat and PME deployment
-#
-cd LibreChat
 docker compose down
 docker compose up
