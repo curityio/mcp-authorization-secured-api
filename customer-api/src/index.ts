@@ -25,12 +25,12 @@ app.get('/users', (request: Request, response: Response) => {
         {
             given_name: 'John',
             family_name: 'Doe',
-            email: 'john.doe@customer.example',
+            email: 'john.doe@demo.example',
         },
         {
             given_name: 'Jane',
             family_name: 'Doe',
-            email: 'jane.doe@customer.example',
+            email: 'jane.doe@demo.example',
         },
     ];
 

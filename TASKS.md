@@ -37,7 +37,3 @@ The access token issued to dynamic clients should include the API's identity as 
 
 - Show a dynamic public client that does not request the correct scope being denied access.
 - Return API authorization errors like 401s or 403s to the agent when it calls a tool.
-
-## General
-
-- Update to domains like demo.example instead of example.com.

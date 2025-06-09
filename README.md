@@ -10,15 +10,15 @@ The Curity Identity Server uses OAuth standards to authenticate users and issue 
 
 | Component | URL |
 | --------- | --- |
-| Users API | http://api.example.com/users |
-| Utility MCP Server | http://mcp.example.com |
-| Curity Identity Server Admin UI | http://admin.example.com/admin |
-| Curity Identity Server OAuth Metadata | http://login.example.com/.well-known/oauth-authorization-server |
+| Users API | http://api.demo.example/users |
+| Utility MCP Server | http://mcp.demo.example |
+| Curity Identity Server Admin UI | http://admin.demo.example/admin |
+| Curity Identity Server OAuth Metadata | http://login.demo.example/.well-known/oauth-authorization-server |
 
 Add the following entries to the `/etc/hosts` file to enable the use of these domains on your local computer.
 
 ```text
-127.0.0.1 api.example.com mcp.example.com admin.example.com login.example.com agent.external.example
+127.0.0.1 api.demo.example mcp.demo.example admin.demo.example login.demo.example agent.external.example
 ```
 
 ## Deploy the Backend
@@ -104,12 +104,12 @@ The tool forwards the request to an upstream OAuth-secured API and receives a re
   {
     "given_name": "John",
     "family_name": "Doe",
-    "email": "john.doe@customer.example"
+    "email": "john.doe@demo.example"
   },
   {
     "given_name": "Jane",
     "family_name": "Doe",
-    "email": "jane.doe@customer.example"
+    "email": "jane.doe@demo.example"
   }
 ]
 ```

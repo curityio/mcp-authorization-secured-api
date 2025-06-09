@@ -36,8 +36,8 @@ services:
     environment:
       JWKS_URI: 'http://idsvr:8443/oauth/v2/oauth-anonymous/jwks'
       REQUIRED_JWT_ALGORITHM: 'PS256'
-      REQUIRED_ISSUER: 'http://login.example.com/oauth/v2/oauth-anonymous'
-      REQUIRED_AUDIENCE: 'http://api.example.com'
+      REQUIRED_ISSUER: 'http://login.demo.example/oauth/v2/oauth-anonymous'
+      REQUIRED_AUDIENCE: 'http://api.demo.example'
   
   #
   # The authorization server that authenticates users and issues access tokens to AI agents 

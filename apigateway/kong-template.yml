@@ -17,7 +17,7 @@ services:
   routes:
   - name: utility-mcp-server-well-known-resource-route
     hosts:
-    - mcp.example.com
+    - mcp.demo.example
     paths:
     - /.well-known
 
@@ -26,7 +26,7 @@ services:
   routes:
   - name: utility-mcp-server-route
     hosts:
-    - mcp.example.com
+    - mcp.demo.example
     paths:
     - /
   plugins:
@@ -42,7 +42,7 @@ services:
   routes:
   - name: customer-api-route
     hosts:
-    - api.example.com
+    - api.demo.example
     paths:
     - /users
 
@@ -51,7 +51,7 @@ services:
   routes:
   - name: admin-ui-route
     hosts:
-    - admin.example.com
+    - admin.demo.example
     paths:
     - /
 
@@ -60,7 +60,7 @@ services:
   routes:
   - name: oauth-metadata-route
     hosts:
-    - login.example.com
+    - login.demo.example
     paths:
     - /.well-known/oauth-authorization-server
 
@@ -69,6 +69,6 @@ services:
   routes:
   - name: oauth-route
     hosts:
-    - login.example.com
+    - login.demo.example
     paths:
     - /
