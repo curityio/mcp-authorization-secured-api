@@ -98,7 +98,7 @@ call fetch-stocks
 ```
 
 The tool forwards the request to an upstream OAuth-secured API and receives a response payload.\
-The demo API returns some hard coded stock prices.
+The demo API returns some hard coded stock prices to represent potentially sensitive money-based data.
 
 ```json
 [
