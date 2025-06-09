@@ -1,0 +1,53 @@
+services:
+
+  #
+  # The API gateway that exposes backend components at domain based URLs
+  #
+  api-gateway:
+    build: ./apigateway/
+    ports:
+      - 80:3001
+    volumes:
+      - ./apigateway/kong.yml:/usr/local/kong/declarative/kong.yml
+    environment:
+      KONG_DATABASE: 'off'
+      KONG_DECLARATIVE_CONFIG: '/usr/local/kong/declarative/kong.yml'
+      KONG_PROXY_LISTEN: '0.0.0.0:3001'
+      KONG_LOG_LEVEL: 'info'
+      KONG_PLUGINS: 'bundled,phantom-token'
+      KONG_NGINX_HTTP_LUA_SHARED_DICT: 'phantom-token 10m'
+
+  #
+  # The utility MCP server that runs in front of the users API
+  #
+  utility-mcp-server:
+    image: utility-mcp-server:1.0
+    hostname: utility-mcp-server
+    environment:
+      CUSTOMER_API_URL: 'http://customer-api:3000/users'
+      JWKS_URI: 'http://idsvr:8443/oauth/v2/oauth-anonymous/jwks'
+
+  #
+  # The users API that implements OAuth security
+  #
+  customer-api:
+    image: customer-api:1.0
+    hostname: customer-api
+    environment:
+      JWKS_URI: 'http://idsvr:8443/oauth/v2/oauth-anonymous/jwks'
+      REQUIRED_JWT_ALGORITHM: 'PS256'
+      REQUIRED_ISSUER: 'http://login.example.com/oauth/v2/oauth-anonymous'
+      REQUIRED_AUDIENCE: 'http://api.example.com'
+  
+  #
+  # The authorization server that authenticates users and issues access tokens to AI agents 
+  #
+  authorization-server:
+    image: curity.azurecr.io/curity/idsvr:latest
+    hostname: idsvr
+    volumes:
+      - ./idsvr/curity-config.xml:/opt/idsvr/etc/init/curity-config.xml
+    environment:
+      ADMIN: 'true'
+      LICENSE_KEY: "${LICENSE_KEY}"
+      # LOGGING_LEVEL: 'DEBUG'

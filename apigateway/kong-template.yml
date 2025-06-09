@@ -1,0 +1,74 @@
+_format_version: '2.1'
+_transform: true
+
+services:
+
+- name: librechat-api
+  url: http://librechat-api:3080
+  routes:
+  - name: librechat-api-route
+    hosts:
+    - agent.external.example
+    paths:
+    - /
+
+- name: utility-mcp-server-well-known
+  url: $MCP_SERVER_URL/.well-known
+  routes:
+  - name: utility-mcp-server-well-known-resource-route
+    hosts:
+    - mcp.example.com
+    paths:
+    - /.well-known
+
+- name: utility-mcp-server
+  url: $MCP_SERVER_URL
+  routes:
+  - name: utility-mcp-server-route
+    hosts:
+    - mcp.example.com
+    paths:
+    - /
+  plugins:
+    - name: phantom-token
+      config:
+        introspection_endpoint: http://idsvr:8443/oauth/v2/oauth-introspect
+        client_id: api-gateway-client
+        client_secret: Password1
+        token_cache_seconds: 900
+
+- name: customer-api
+  url: http://customer-api:3000/users
+  routes:
+  - name: customer-api-route
+    hosts:
+    - api.example.com
+    paths:
+    - /users
+
+- name: admin-ui
+  url: http://idsvr:6749
+  routes:
+  - name: admin-ui-route
+    hosts:
+    - admin.example.com
+    paths:
+    - /
+
+- name: authorization-server-metadata
+  url: http://idsvr:8443/.well-known/oauth-authorization-server/oauth/v2/oauth-anonymous
+  routes:
+  - name: oauth-metadata-route
+    hosts:
+    - login.example.com
+    paths:
+    - /.well-known/oauth-authorization-server
+
+- name: authorization-server
+  url: http://idsvr:8443
+  routes:
+  - name: oauth-route
+    hosts:
+    - login.example.com
+    paths:
+    - /
