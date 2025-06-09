@@ -1,11 +1,12 @@
 # AI Agent Secure API Access
 
-A deployment that demonstrates how to securely expose APIs to third-party AI agents.\
+A deployment fgor a local computer to demonstrate how to securely expose APIs to third-party AI agents.\
 A utility MCP server implements the server side of the [Model Content Protocol Authorization](https://modelcontextprotocol.io/specification/2025-03-26/basic/authorization) specification.
 
 ## Backend Components
 
-The example deploys a utility MCP server that provides access to an API endpoint for MCP clients:
+The backend includes a utility MCP server that provides an API entry point for AI agents that use MCP clients.\
+The Curity Identity Server uses OAuth standards to implement the main security and restrict API access.
 
 | Component | URL |
 | --------- | --- |
@@ -14,11 +15,18 @@ The example deploys a utility MCP server that provides access to an API endpoint
 | Curity Identity Server Admin UI | http://admin.example.com/admin |
 | Curity Identity Server OAuth Metadata | http://login.example.com/.well-known/oauth-authorization-server |
 
+Add the following entries to the `/etc/hosts` file to enable the use of these domains on your local computer.
+
+```text
+127.0.0.1 api.example.com mcp.example.com admin.example.com login.example.com agent.external.example
+```
+
 ## Deploy the Backend
 
 First, ensure that Docker, Node.js and the envsubst tool are installed on the local computer.\
 Also download a [Trial License](https://developer.curity.io/free-trial) for the Curity Identity Server from the Curity developer portal.\
-Save it to your desktop as a `license.json` file.\
+Save it to your desktop as a `license.json` file.
+
 
 ### Option 1: Deployed MCP Server
 
