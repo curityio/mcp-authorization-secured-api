@@ -1,12 +1,12 @@
 # AI Agent Secure API Access
 
-A deployment fgor a local computer to demonstrate how to securely expose APIs to third-party AI agents.\
-A utility MCP server implements the server side of the [Model Content Protocol Authorization](https://modelcontextprotocol.io/specification/2025-03-26/basic/authorization) specification.
+A local computer deployment to demonstrate how to securely expose APIs to third-party AI agents.\
+Backend components implement the server side of the [Model Content Protocol Authorization](https://modelcontextprotocol.io/specification/2025-03-26/basic/authorization) specification.
 
-## Backend Components
+## Backend Endpoints
 
-The backend includes a utility MCP server that provides an API entry point for AI agents that use MCP clients.\
-The Curity Identity Server uses OAuth standards to authenticate users and issue access tokens to AI agents.
+The backend includes a utility MCP server that provides a secure API entry point for AI agents that use MCP clients.\
+The Curity Identity Server implements OAuth standards to enable the authorization from the specification.
 
 | Endpoint | URL |
 | -------- | --- |
@@ -24,6 +24,8 @@ Add the following entries to the `/etc/hosts` file to enable the use of these do
 
 ## Run the End-to-End Flow
 
+The example shows how an AI agent could access secure information about financial trades.
+
 ### Install Prerequisites
 
 First, install Docker, Node.js and the envsubst tool on your local computer.\
@@ -32,7 +34,7 @@ Save it to your desktop as a `license.json` file.
 
 ### Deploy the Backend
 
-Deploy all backend components including the MCP server.
+Deploy all backend components:
 
 ```bash
 export LICENSE_FILE_PATH=~/Desktop/license.json
@@ -43,8 +45,7 @@ export LICENSE_FILE_PATH=~/Desktop/license.json
 ### Run an AI Agent
 
 An AI agent can use any MCP client that implements the client side of the MCP authorization specification.\
-The repo includes an adapted version of the [TypeScript SDK Example MCP OAuth Client](https://github.com/modelcontextprotocol/typescript-sdk/blob/main/src/examples/client/simpleOAuthClient.ts).
-
+The repo includes an adapted version of the [TypeScript SDK Example MCP OAuth Client](https://github.com/modelcontextprotocol/typescript-sdk/blob/main/src/examples/client/simpleOAuthClient.ts).\
 Use the following commands to run the MCP client.
 
 ```bash
@@ -53,11 +54,11 @@ npm install
 npm start
 ```
 
-The MCP client calls the MCP server which returns a 401 unauthorized response.
+Initially, the MCP client calls the MCP server which returns a 401 unauthorized response.
 
 ### Getting an Access Token
 
-The MCP client first uses dynamic client registration to create an OAuth client at the authorization server.\
+The MCP client uses dynamic client registration to create an OAuth client at the authorization server.\
 The MCP client then runs a code flow and only the following administrator approved (precreated) users can sign in.
 
 | User Corporate Email | User Region |
@@ -65,8 +66,8 @@ The MCP client then runs a code flow and only the following administrator approv
 | john.doe@demo.example | Europe |
 | jane.test@demo.example | USA |
 
-To authenticate, type in one of the above emails and then get a one-time code from the test email inbox.\
-Users authenticate with their corporate email and must consent to granting the AI agent access to trades data.
+To authenticate, type in one of the above corporate emails and then get a one-time code from the test email inbox.\
+Users must then consent to granting the AI agent access to trades data.
 
 ### Secure Access Tokens
 
@@ -79,15 +80,22 @@ TODO
 
 ### Secure Data Access
 
-The AI agent's MCP client can then call the MCP server with an access token and gain access to API data.\
-The example MCP client opens an interactive shell from which you invoke MCP server tools like an AI agent does.
+The example MCP client opens an interactive shell from which you can invoke an MCP server tool to get trades.
 
 ```bash
 call fetch-trades
 ```
 
-The tool forwards the request to an upstream OAuth-secured API and receives a response payload.\
+The AI agent's MCP client then calls the MCP server with an access token and gain access to API data.\
+The [Phantom Token Pattern](https://curity.io/resources/learn/phantom-token-pattern/) runs in the API gateway and delivers a JWT access token to the MCP server.\
+The MCP server forwards the JWT access token to the trades API, which receives the following claims.
+
+```json
+TODO
+```
+
 The demo API returns some hard coded data to represent sensitive data about financial trades.\
+Claims-based authorization ensures that each user only gets trades from for their own region.
 
 ```json
 [
@@ -110,13 +118,9 @@ The demo API returns some hard coded data to represent sensitive data about fina
 ]
 ```
 
-The backend enforces the following security behaviors to restrict the API access granted to AI agents.
+### Access Token Expiry
 
-- Only administrator approved users are granted access, who must prove their identity by verifying their email.
-- The AI agent receives a least privilege access token with restricted read-only scopes and the user's identity.
-- The API restricts access to business resources using the access token.
-- The AI agent uses opaque access tokens to avoid revealing API claims to AI agents.
-- The AI agent receives short-lived access tokens and does not receive refresh tokens.
+TODO
 
 ## Website Documentation
 
