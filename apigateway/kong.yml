@@ -37,14 +37,14 @@ services:
         client_secret: Password1
         token_cache_seconds: 900
 
-- name: stocks-api
-  url: http://stocks-api:3000/stocks
+- name: trades-api
+  url: http://trades-api:3000/trades
   routes:
-  - name: stocks-api-route
+  - name: trades-api-route
     hosts:
     - api.demo.example
     paths:
-    - /stocks
+    - /trades
 
 - name: admin-ui
   url: http://idsvr:6749
@@ -70,5 +70,14 @@ services:
   - name: oauth-route
     hosts:
     - login.demo.example
+    paths:
+    - /
+
+- name: email-inbox
+  url: http://smtpserver:1080
+  routes:
+  - name: email-inbox-route
+    hosts:
+    - mail.demo.example
     paths:
     - /

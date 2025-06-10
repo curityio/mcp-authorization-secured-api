@@ -226,7 +226,7 @@ class InteractiveOAuthClient {
       grant_types: ['authorization_code'],
       response_types: ['code'],
       token_endpoint_auth_method: 'client_secret_post',
-      scope: 'stocks/read'
+      scope: 'trades/read'
     };
 
     console.log('🔐 Creating OAuth provider...');

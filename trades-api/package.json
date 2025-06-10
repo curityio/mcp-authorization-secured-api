@@ -1,7 +1,7 @@
 {
-    "name": "stocks-api",
+    "name": "trades-api",
     "version": "1.0.0",
-    "description": "A stocks API that exposes read only information to AI agents",
+    "description": "A trades API that exposes read only information to AI agents",
     "author": "Curity",
     "license": "Apache-2.0",
     "main": "index.ts",

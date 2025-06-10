@@ -11,35 +11,36 @@ const oauthFilter = new OAuthFilter(configuration);
 
 app.use(oauthFilter.validateAccessToken);
 
-app.get('/stocks', (request: Request, response: Response) => {
+app.get('/trades', (request: Request, response: Response) => {
 
-    console.log('Stocks API is returning stock prices ...');
+    console.log('Trades API is returning financial data ...');
 
     const user = response.locals.claimsPrincipal as ClaimsPrincipal;
 
-    // Require scope 'stocks/read' to get price information
-    user.enforceRequiredScope('stocks/read')
+    // Require scope 'trades/read' to get price information
+    user.enforceRequiredScope('trades/read')
 
-    const stocks = [
+    const trades = [
         {
-            "id": "MSFT",
-            "name": "Microsoft Corporation",
-            "price": 450.22,
+            "trade_id": 78122,
+            "time": "2025-03-07T09:45:39",
+            "stock_id": 9981,
+            "quantity": 450,
+            "amountUSD": 90000,
+            "region": "USA",
         },
         {
-            "id": "AAPL",
-            "name": "Apple Inc",
-            "price": 250.62,
-        },
-        {
-            "id": "INTC",
-            "name": "Intel Corp",
-            "price": 21.07,
-        },
+            "trade_id": 78124,
+            "time": "2025-03-07T09:47:56",
+            "stock_id": 7865,
+            "quantity": 2000,
+            "amountUSD": 160000,
+            "region": "USA",
+        }
     ];
 
     response.setHeader('content-type', 'application/json');
-    response.status(200).send(JSON.stringify(stocks));
+    response.status(200).send(JSON.stringify(trades));
 });
 
 app.use(ErrorHandler.onUnhandledException)
