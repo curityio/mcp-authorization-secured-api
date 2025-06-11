@@ -116,7 +116,7 @@ Simulate that by entering the email and then a one-time password delivered to th
 - john.doe@demo.example
 - jane.test@demo.example
 
-![user-authentication](images/mcp-flow.png)
+![user-authentication](images/user-authentication.png)
 
 Users must then consent to granting the MCP client access to API data.\
 The user is clearly informed about the level of data access being granted to the AI agent.
