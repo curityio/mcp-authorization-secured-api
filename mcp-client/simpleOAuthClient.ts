@@ -252,7 +252,7 @@ class InteractiveOAuthClient {
 
     await this.attemptConnection(oauthProvider);
 
-    console.log("I'm working with these tokens: " + JSON.stringify(oauthProvider.tokens()))
+    console.debug("MCP client received token response: " + JSON.stringify(oauthProvider.tokens(), null, 2))
 
     // Start interactive loop
     await this.interactiveLoop();

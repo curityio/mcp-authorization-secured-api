@@ -1,7 +1,7 @@
-# AI Agent Secure API Access using Model Context Protocol
+# Model Context Protocol OAuth Flow Example
 
-A local computer deployment to demonstrate how to use MCP to securely expose APIs to third-party AI agents.\
-The deployment shows how to implement the [Model Content Protocol Authorization](https://modelcontextprotocol.io/specification/2025-03-26/basic/authorization) specification.
+A local computer deployment that uses OAuth security from the draft [Model Content Protocol Authorization](https://modelcontextprotocol.io/specification/2025-03-26/basic/authorization) specification.\
+The code example shows how to use an MCP server to expose existing OAuth-secured APIs to AI agents that use MCP clients.
 
 ## Backend Endpoints
 
@@ -24,18 +24,19 @@ Add the following entries to the `/etc/hosts` file to enable the use of these do
 
 ## Run the End-to-End Flow
 
-The example shows how an AI agent could access secure information.\
-The API data in this example contains only fictional hard-coded stock prices.
+The end-to-end flow emnables any external MCP client to connect to APIs with access tokens.
+
+![MCP Flow](images/mcp-flow.png)
 
 ### Install Prerequisites
 
-First, install Docker, Node.js and the envsubst tool on your local computer.\
+First, install Docke and Node.js on your local computer.\
 Also download a [Trial License](https://developer.curity.io/free-trial) for the Curity Identity Server from the Curity developer portal.\
-Save it to your desktop as a `license.json` file.
+Save the license to your desktop as a `license.json` file.
 
 ### Deploy the Backend
 
-Deploy all backend components:
+Run the following commands to deploy all backend components and enable access to standards-based clients that use MCP and OAuth.
 
 ```bash
 export LICENSE_FILE_PATH=~/Desktop/license.json
@@ -43,10 +44,10 @@ export LICENSE_FILE_PATH=~/Desktop/license.json
 ./deploy.sh
 ```
 
-### Run an AI Agent
+### Run the MCP Client
 
-An AI agent can use any MCP client that implements the client side of the MCP authorization specification.\
-The repo includes an adapted version of the [TypeScript SDK Example MCP OAuth Client](https://github.com/modelcontextprotocol/typescript-sdk/blob/main/src/examples/client/simpleOAuthClient.ts).\
+Run any MCP client that implements the MCP authorization specification and implements the required OAuth standards.\
+You can run this repo's adapted version of the [TypeScript SDK Example MCP OAuth Client](https://github.com/modelcontextprotocol/typescript-sdk/blob/main/src/examples/client/simpleOAuthClient.ts).\
 Use the following commands to run the MCP client.
 
 ```bash
@@ -55,71 +56,114 @@ npm install
 npm start
 ```
 
-Initially, the MCP client calls the MCP server which returns a 401 unauthorized response.
+The MCP client runs standards-based flows to integrate with the MCP server and then calls an API to get secure resources:
 
-### Getting an Access Token
+```text
+🚀 Simple MCP OAuth Client
+Connecting to: http://mcp.demo.example
 
-The MCP client uses dynamic client registration to create an OAuth client at the authorization server.\
-The MCP client then runs a code flow and only the following administrator approved (precreated) users can sign in.
+🔗 Attempting to connect to http://mcp.demo.example...
+🔐 Creating OAuth provider...
+🔐 OAuth provider created
+👤 Creating MCP client...
+👤 Client created
+🔐 Starting OAuth flow...
+🚢 Creating transport with OAuth provider...
+🚢 Transport created
+🔌 Attempting connection (this will trigger OAuth redirect)...
+Invalid WWW-Authenticate header format, expected 'Bearer'
+📌 OAuth redirect handler called - opening browser
+Opening browser to: http://login.demo.example/oauth/v2/oauth-authorize?response_type=code&client_id=07d66f9e-0d58-406e-80a9-5da570ae42a6&code_challenge=3gvRN6SPz8ML-cRnUtdyR1ec4f3Zf3dDUDKfUBTqQ58&code_challenge_method=S256&redirect_uri=http%3A%2F%2Flocalhost%3A8090%2Fcallback&scope=stocks%2Fread
+🌐 Opening browser for authorization: http://login.demo.example/oauth/v2/oauth-authorize?response_type=code&client_id=07d66f9e-0d58-406e-80a9-5da570ae42a6&code_challenge=3gvRN6SPz8ML-cRnUtdyR1ec4f3Zf3dDUDKfUBTqQ58&code_challenge_method=S256&redirect_uri=http%3A%2F%2Flocalhost%3A8090%2Fcallback&scope=stocks%2Fread
+Registered client data: {"redirect_uris":["http://localhost:8090/callback"],"token_endpoint_auth_method":"client_secret_post","grant_types":["authorization_code","refresh_token"],"response_types":["code"],"client_name":"Simple OAuth MCP Client","scope":"stocks/read","client_id":"07d66f9e-0d58-406e-80a9-5da570ae42a6","client_secret":"dzJmWfC7ZAXqQ1t9cusFEasEKf8RvK3XU5v1e_zHr-8","client_id_issued_at":1749642035,"client_secret_expires_at":0}
+🔐 OAuth required - waiting for authorization...
+OAuth callback server started on http://localhost:8090
+📥 Received callback: /callback?iss=http%3A%2F%2Flogin.demo.example%2Foauth%2Fv2%2Foauth-anonymous&code=VTrM7o0KzCRIdE2bMm9MByosKocMa9w3
+✅ Authorization code received: VTrM7o0KzC...
+🔐 Authorization code received: VTrM7o0KzCRIdE2bMm9MByosKocMa9w3
+🔌 Reconnecting with authenticated transport...
+🚢 Creating transport with OAuth provider...
+🚢 Transport created
+🔌 Attempting connection (this will trigger OAuth redirect)...
+✅ Connected successfully
 
-| User Corporate Email | User Region |
-| -------------------- | ----------- |
-| john.doe@demo.example | Europe |
-| jane.test@demo.example | USA |
+🎯 Interactive MCP Client with OAuth
+Commands:
+  list - List available tools
+  call <tool_name> [args] - Call a tool
+  quit - Exit the client
 
-To authenticate, type in one of the above corporate emails and then get a one-time code from the test email inbox.\
-Users must then consent to granting the AI agent access to stocks data.
+mcp> call fetch-stock-prices
+
+🔧 Tool 'fetch-stock-prices' result:
+[{"id":"MSFT","name":"Microsoft Corporation","price":450.22},{"id":"AAPL","name":"Apple Inc","price":250.62},{"id":"INTC","name":"Intel Corp","price":21.07}]
+```
+
+### MCP Client Flow
+
+The MCP client uses the following steps to get an access token and call the API:
+
+- Resource server metadata download
+- Authorization server metadata download
+- Dynamic client registration
+- User authentication
+- User consent
+
+Only MCP clients operated by the following administrator approved users (included in the deployment) can gain access to secured API data.\
+To do so they must prove ownership of their corporate email.\
+Simulate that by entering the email and then entering a one-time password delivered to the test email inbox.
+
+- john.doe@demo.example
+- jane.test@demo.example
+
+![user-authentication](images/mcp-flow.png)
+
+Users must then consent to granting the MCP client access to API data.\
+The user is clearly informed about the level of data access being granted to the AI agent.
+
+![user-consent](images/user-consent.png)
 
 ### Secure Access Tokens
 
-The MCP client then receives a token response with an opaque access token and limited scopes.\
-The AI agent is unable to read the token and gain access to sensitive data intended for APIs.
+The MCP client then receives a token response with an opaque access token and a limited scope:
 
 ```json
-TODO
+{
+  "access_token": "_0XBPWQQ_d8ed4b47-7d85-455f-8d7e-03b08e84428b",
+  "token_type": "bearer",
+  "expires_in": 300,
+  "scope": "stocks/read",
+}
 ```
 
-### Secure Data Access
+Notice the following access token characteristics returned to MCP clients (and therefore AI agents).\
+These measures help to mitigate risks of releasing access tokens to AI agents:
 
-The example MCP client opens an interactive shell from which you can invoke an MCP server tool to get stock prices.
+- The MCP client is unable to read token claims and gain access to sensitive data intended for APIs.
+- The token has a limited scope and read-only access.
+- The token is short-lived, with a lifetime of 5 minutes.
 
-```bash
-call fetch-stock-prices
-```
-
-The AI agent's MCP client then calls the MCP server with an access token and gain access to API data.\
 The [Phantom Token Pattern](https://curity.io/resources/learn/phantom-token-pattern/) runs in the API gateway and delivers a JWT access token to the MCP server.\
-The MCP server forwards the JWT access token to the stocks API, which receives the following claims.
+The MCP server then runs a tool to call the API, which receives the following token payload:
 
 ```json
-TODO
+{
+  "jti": "2dc6cc38-d77f-4378-ba80-ba9d945141ff",
+  "delegationId": "cd0c96fd-5fc3-4a92-a9fc-caf40e4e9b0c",
+  "exp": 1749650409,
+  "nbf": 1749650109,
+  "scope": "stocks/read",
+  "iss": "http://login.demo.example/oauth/v2/oauth-anonymous",
+  "sub": "john.doe@demo.example",
+  "aud": "8e636b87-6b22-4ca0-a602-a8ecacec1b84",
+  "iat": 1749650109,
+  "purpose": "access_token"
+}
 ```
 
-The demo API returns some hard coded data to represent potentially sensitive data about stock prices.
-
-```json
-[
-    {
-        "id": "MSFT",
-        "name": "Microsoft Corporation",
-        "price": 450.22,
-    },
-    {
-        "id": "AAPL",
-        "name": "Apple Inc",
-        "price": 250.62,
-    },
-    {
-        "id": "INTC",
-        "name": "Intel Corp",
-        "price": 21.07,
-    },
-]
-```
-
-### Access Token Expiry
-
-TODO
+When granting access to AI agents the API must take special care to authorize access to resources.\
+The authorization server can issue any required runtime values to the access token.\
+The API must then authorize using [scopes](https://curity.io/resources/learn/scope-best-practices/) and [claims](https://curity.io/resources/learn/claims-best-practices/).
 
 ## Website Documentation
 

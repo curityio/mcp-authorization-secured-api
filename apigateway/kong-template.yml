@@ -3,15 +3,6 @@ _transform: true
 
 services:
 
-- name: librechat-api
-  url: http://librechat-api:3080
-  routes:
-  - name: librechat-api-route
-    hosts:
-    - agent.external.example
-    paths:
-    - /
-
 - name: utility-mcp-server-well-known
   url: $MCP_SERVER_URL/.well-known
   routes:

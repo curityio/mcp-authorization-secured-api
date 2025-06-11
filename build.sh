@@ -2,6 +2,9 @@
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
+#
+# Build the Stocks API to a Docker container
+#
 cd stocks-api
 echo 'Building stocks API ...'
 npm install
@@ -20,6 +23,9 @@ if [ $? -ne 0 ]; then
 fi
 cd ..
 
+#
+# Build the MCP server to a docker container
+#
 echo 'Building utility MCP server ...'
 
 if [ "$RUN_LOCAL_MCP_SERVER" != 'true' ]; then
@@ -39,6 +45,17 @@ if [ "$RUN_LOCAL_MCP_SERVER" != 'true' ]; then
   if [ $? -ne 0 ]; then
     exit 1
   fi
+  cd ..
+
 else
   echo 'Using local MCP server, skipping MCP server build.'
 fi
+
+#
+# Build the API gateway custom image to a Docker container
+#
+cd apigateway
+docker build --no-cache -t custom-api-gateway:1.0 .
+if [ $? -ne 0 ]; then
+    exit 1
+  fi

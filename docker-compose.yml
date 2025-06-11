@@ -4,7 +4,7 @@ services:
   # The API gateway that exposes backend components at domain based URLs
   #
   api-gateway:
-    build: ./apigateway/
+    image: custom-api-gateway:1.0
     ports:
       - 80:3001
     volumes:
@@ -50,7 +50,7 @@ services:
     environment:
       ADMIN: 'true'
       LICENSE_KEY: "${LICENSE_KEY}"
-      # LOGGING_LEVEL: 'DEBUG'
+      LOGGING_LEVEL: 'INFO'
 
   #
   # The SQL database used by the Curity Identity Server which contains dynamically registered clients
