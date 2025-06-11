@@ -6,7 +6,8 @@ Along the way, highlight some essential features that the Curity Identity Server
 
 ## Business Theme (DONE)
 
-Use trades as a money-based resource to make the reader think about security implications.
+Use stock prices as a money-based resource to make the reader think about security implications.\
+The theme should make the reader think about whether they would expose such data to AI agents.
 
 ## Dynamic Client Registration (TODO)
 
@@ -26,13 +27,13 @@ The deployment restricts access at the user level:
 ## User Authentication and Consent (DONE)
 
 - Users authenticate with their corporate email using a one-time code.
-- These corporate users must also consent to the AI agent gaining read only access to trades data.
+- These corporate users must also consent to the AI agent gaining read only access to stocks data.
 
 ## Access Tokens and API Authorization (IN PROGRESS)
 
 The access token issued to MCP clients should include the API's identity in the audience.\
-The access token issued to MCP clients should include the API's required scopes.
-The access token should also have a custom claim called region to demonstrate claims-based authorization.
+The access token issued to MCP clients should include the API's required scopes.\
+We can then mention the relationship between scopes and claims.
 
 ## Reliability Control
 

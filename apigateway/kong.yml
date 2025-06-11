@@ -37,14 +37,14 @@ services:
         client_secret: Password1
         token_cache_seconds: 900
 
-- name: trades-api
-  url: http://trades-api:3000/trades
+- name: stocks-api
+  url: http://stocks-api:3000/stocks
   routes:
-  - name: trades-api-route
+  - name: stocks-api-route
     hosts:
     - api.demo.example
     paths:
-    - /trades
+    - /stocks
 
 - name: admin-ui
   url: http://idsvr:6749

@@ -1,7 +1,7 @@
-# AI Agent Secure API Access
+# AI Agent Secure API Access using Model Context Protocol
 
-A local computer deployment to demonstrate how to securely expose APIs to third-party AI agents.\
-Backend components implement the server side of the [Model Content Protocol Authorization](https://modelcontextprotocol.io/specification/2025-03-26/basic/authorization) specification.
+A local computer deployment to demonstrate how to use MCP to securely expose APIs to third-party AI agents.\
+The deployment shows how to implement the [Model Content Protocol Authorization](https://modelcontextprotocol.io/specification/2025-03-26/basic/authorization) specification.
 
 ## Backend Endpoints
 
@@ -10,7 +10,7 @@ The Curity Identity Server implements OAuth standards to enable the authorizatio
 
 | Endpoint | URL |
 | -------- | --- |
-| Trades API | http://api.demo.example/trades |
+| Stocks API | http://api.demo.example/stocks |
 | Utility MCP Server | http://mcp.demo.example |
 | Curity Identity Server Admin UI | http://admin.demo.example/admin |
 | Curity Identity Server OAuth Metadata | http://login.demo.example/.well-known/oauth-authorization-server |
@@ -24,7 +24,8 @@ Add the following entries to the `/etc/hosts` file to enable the use of these do
 
 ## Run the End-to-End Flow
 
-The example shows how an AI agent could access secure information about financial trades.
+The example shows how an AI agent could access secure information.\
+The API data in this example contains only fictional hard-coded stock prices.
 
 ### Install Prerequisites
 
@@ -67,7 +68,7 @@ The MCP client then runs a code flow and only the following administrator approv
 | jane.test@demo.example | USA |
 
 To authenticate, type in one of the above corporate emails and then get a one-time code from the test email inbox.\
-Users must then consent to granting the AI agent access to trades data.
+Users must then consent to granting the AI agent access to stocks data.
 
 ### Secure Access Tokens
 
@@ -80,41 +81,39 @@ TODO
 
 ### Secure Data Access
 
-The example MCP client opens an interactive shell from which you can invoke an MCP server tool to get trades.
+The example MCP client opens an interactive shell from which you can invoke an MCP server tool to get stock prices.
 
 ```bash
-call fetch-trades
+call fetch-stock-prices
 ```
 
 The AI agent's MCP client then calls the MCP server with an access token and gain access to API data.\
 The [Phantom Token Pattern](https://curity.io/resources/learn/phantom-token-pattern/) runs in the API gateway and delivers a JWT access token to the MCP server.\
-The MCP server forwards the JWT access token to the trades API, which receives the following claims.
+The MCP server forwards the JWT access token to the stocks API, which receives the following claims.
 
 ```json
 TODO
 ```
 
-The demo API returns some hard coded data to represent sensitive data about financial trades.\
-Claims-based authorization ensures that each user only gets trades from for their own region.
+The demo API returns some hard coded data to represent potentially sensitive data about stock prices.
 
 ```json
 [
-  {
-    "trade_id": 78122,
-    "time": "2025-03-07T09:45:39",
-    "stock_id": 9981,
-    "quantity": 450,
-    "amountUSD": 90000,
-    "region": "USA",
-  },
-  {
-    "trade_id": 78124,
-    "time": "2025-03-07T09:47:56",
-    "stock_id": 7865,
-    "quantity": 2000,
-    "amountUSD": 160000,
-    "region": "USA",
-  }
+    {
+        "id": "MSFT",
+        "name": "Microsoft Corporation",
+        "price": 450.22,
+    },
+    {
+        "id": "AAPL",
+        "name": "Apple Inc",
+        "price": 250.62,
+    },
+    {
+        "id": "INTC",
+        "name": "Intel Corp",
+        "price": 21.07,
+    },
 ]
 ```
 

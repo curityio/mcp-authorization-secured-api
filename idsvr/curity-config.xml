@@ -168,7 +168,8 @@
               <claims>zoneinfo</claims>
             </scope>
             <scope>
-              <id>trades/read</id>
+              <id>stocks/read</id>
+              <description>Read only information about financial stocks and their current prices</description>
             </scope>
           </scopes>
           <claims>
@@ -352,7 +353,7 @@
                 <client-credentials/>
               </capabilities>
               <scopes>
-                <scope>trades/read</scope>
+                <scope>stocks/read</scope>
               </scopes>
               <authenticators>
                 <all/>
