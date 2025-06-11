@@ -17,7 +17,7 @@ import { OAuthClientProvider, UnauthorizedError } from '@modelcontextprotocol/sd
 import {z} from "zod";
 
 // Configuration
-const DEFAULT_SERVER_URL = 'http://mcp.example.com';
+const DEFAULT_SERVER_URL = 'http://mcp.demo.example';
 const CALLBACK_PORT = 8090; // Use different port than auth server (3001)
 const CALLBACK_URL = `http://localhost:${CALLBACK_PORT}/callback`;
 
@@ -224,9 +224,9 @@ class InteractiveOAuthClient {
       client_name: 'Simple OAuth MCP Client',
       redirect_uris: [CALLBACK_URL],
       grant_types: ['authorization_code'],
-      resposne_types: ['code'],
+      response_types: ['code'],
       token_endpoint_auth_method: 'client_secret_post',
-      scope: 'retail'
+      scope: 'stocks/read'
     };
 
     console.log('🔐 Creating OAuth provider...');

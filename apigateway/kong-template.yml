@@ -17,7 +17,7 @@ services:
   routes:
   - name: utility-mcp-server-well-known-resource-route
     hosts:
-    - mcp.example.com
+    - mcp.demo.example
     paths:
     - /.well-known
 
@@ -26,7 +26,7 @@ services:
   routes:
   - name: utility-mcp-server-route
     hosts:
-    - mcp.example.com
+    - mcp.demo.example
     paths:
     - /
   plugins:
@@ -37,21 +37,21 @@ services:
         client_secret: Password1
         token_cache_seconds: 900
 
-- name: customer-api
-  url: http://customer-api:3000/users
+- name: stocks-api
+  url: http://stocks-api:3000/stocks
   routes:
-  - name: customer-api-route
+  - name: stocks-api-route
     hosts:
-    - api.example.com
+    - api.demo.example
     paths:
-    - /users
+    - /stocks
 
 - name: admin-ui
   url: http://idsvr:6749
   routes:
   - name: admin-ui-route
     hosts:
-    - admin.example.com
+    - admin.demo.example
     paths:
     - /
 
@@ -60,7 +60,7 @@ services:
   routes:
   - name: oauth-metadata-route
     hosts:
-    - login.example.com
+    - login.demo.example
     paths:
     - /.well-known/oauth-authorization-server
 
@@ -69,6 +69,15 @@ services:
   routes:
   - name: oauth-route
     hosts:
-    - login.example.com
+    - login.demo.example
+    paths:
+    - /
+
+- name: email-inbox
+  url: http://smtpserver:1080
+  routes:
+  - name: email-inbox-route
+    hosts:
+    - mail.demo.example
     paths:
     - /

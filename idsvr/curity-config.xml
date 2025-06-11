@@ -1,10 +1,10 @@
 <config xmlns="http://tail-f.com/ns/config/1.0">
   <environments xmlns="https://curity.se/ns/conf/base">
     <environment>
-      <base-url>http://login.example.com</base-url>
+      <base-url>http://login.demo.example</base-url>
       <admin-service>
         <http>
-          <base-url>http://admin.example.com</base-url>
+          <base-url>http://admin.demo.example</base-url>
           <web-ui>
           </web-ui>
           <restconf>
@@ -14,7 +14,8 @@
       <services>
         <zones>
           <default-zone>
-            <symmetric-key>data:text/plain;aes,v:S.bGliTTlKR1NBd0pTVzBybg==.j-0GWm8mcXjuQwaPBN5SJw==.xuhZUwIE1Y37vdNQgUGUMa5UAVd6YMnKZ7PjDKYUHbBZjjWn3lzdsuDQqJjW5cB609d5zLCxdRjmBGLb9UlFnEdJQGruplrbAz1Ckojh6gw=.jWFbzhrLu8BVLaAEtCkcm9TTsXtdLvI4shzG8TlKvMs=</symmetric-key>
+            <email-provider>smtp</email-provider>
+            <symmetric-key>data:text/plain;aes,v:S.ektrcEFuRldnNmJNbEMzeg==.fG7q-P7bEGnNW3BcbjYQEA==.MyQBIZVuK3b-KVgFTYH0i0iT06kwWtcWzMxHD-ws4C5Z-aGbt4B2QoCIeDJEhPDqgGz7nnHFjCbnAdg2mfrushuq1ZV3gRwUr9mKvkazyh0=.dUuEWQ7VYmxxrmt0vobsg8Yk9c_mgGcLpp06-eZfyh8=</symmetric-key>
           </default-zone>
         </zones>
         <service-role>
@@ -62,9 +63,15 @@
         <authentication-service xmlns="https://curity.se/ns/conf/profile/authentication">
           <authenticators>
             <authenticator>
-              <id>username</id>
-              <username xmlns="https://curity.se/ns/ext-conf/username">
-              </username>
+              <id>email</id>
+              <email>
+                <account-manager>default-account-manager</account-manager>
+                <email-provider>
+                  <id>smtp</id>
+                </email-provider>
+                <send-otp-as-code>
+                </send-otp-as-code>
+              </email>
             </authenticator>
           </authenticators>
           <protocols>
@@ -161,7 +168,8 @@
               <claims>zoneinfo</claims>
             </scope>
             <scope>
-              <id>retail</id>
+              <id>stocks/read</id>
+              <description>Read only information about financial stocks and their current prices</description>
             </scope>
           </scopes>
           <claims>
@@ -345,7 +353,7 @@
                 <client-credentials/>
               </capabilities>
               <scopes>
-                <all/>
+                <scope>stocks/read</scope>
               </scopes>
               <authenticators>
                 <all/>
@@ -355,6 +363,8 @@
                 </secret>
               </client-authentication-method>
               <no-authentication/>
+              <user-consent>
+              </user-consent>
             </non-templatized>
             <client-management>
             </client-management>
@@ -424,15 +434,27 @@
       <data-source>
         <id>default-datasource</id>
         <jdbc xmlns="https://curity.se/ns/ext-conf/jdbc">
-          <connection-string>data:text/plain;aes,v:S.TjNHZEEyWEgwT3ZrS0ZDVg==.FDm8ql8ijaW5y8nIBoaXNQ==.w9J7gWu7LtzBWmctfEvZjMKuyINw5GjN_8T7J06VlD06jG1i4shzKzVWXjZQIbIxPrTedzxgDEuJdDQ1L2B9N6rDjlzU7ZMBy33CSDMAUjwG75bfbCibzm2Mj5Ha4C7x.gVYVKBO2qA8XDSrd9vQ-UNu9zmblQdZsSZ4TVTrH2K0=</connection-string>
+          <connection-string>data:text/plain;aes,v:S.UjRqTmhsb2hZbTRRQ1NlRA==.H4Rln9C1FginrCHom4dOXA==.PseFMHxwTq9lQ_NpuFnWkBN3MiF_O_-9KrfA0d1bZ9rtIW8HzsxHzF2dPmHTDKkv.qQsbQhyCya3th-wySQbyLyIclqsYhsrQ2eo6vwwi-Aw=</connection-string>
           <standard-credentials-mode>
           </standard-credentials-mode>
-          <driver>org.hsqldb.jdbc.JDBCDriver</driver>
-          <password>data:text/plain;aes,v:S.VWlSRXZhMnZmVkU4Qlpxdg==.y5VTUbS9vpa3UbctFU9EkA==.csvqHFpsyO0NMfvPxT3D5g==.cY38Dy3f1W2YkZi2OWyCEF9QYjAUYPbzL4_Ei0pRCkY=</password>
-          <username>SA</username>
+          <driver>org.postgresql.Driver</driver>
+          <password>data:text/plain;aes,v:S.a2NUY0FFQ3VXNTFFVTBTTg==.qu_WFRlYCfI4YEvxJpZFjQ==.W7mhOaOaUxUmBvPB2RwAIQ==.ln5FjTNIHv1nrziS-wouLIK2h-ykCTmd_XByIS6xLbU=</password>
+          <username>postgres</username>
         </jdbc>
       </data-source>
     </data-sources>
+    <email-providers>
+      <email-provider>
+        <id>smtp</id>
+        <smtp>
+          <smtp-host>smtpserver</smtp-host>
+          <smtp-port>1025</smtp-port>
+          <default-sender>noreply@maildev</default-sender>
+          <username>noreply@maildev</username>
+          <password>Password1</password>
+        </smtp>
+      </email-provider>
+    </email-providers>
     <crypto>
       <ssl>
         <server-keystore>
@@ -467,6 +489,7 @@
         <enable-registration>
           <account-verification-method>no-verification</account-verification-method>
         </enable-registration>
+        <username-is-email>true</username-is-email>
         <account-data-source>default-datasource</account-data-source>
       </account-manager>
     </account-managers>

@@ -18,29 +18,29 @@ services:
       KONG_NGINX_HTTP_LUA_SHARED_DICT: 'phantom-token 10m'
 
   #
-  # The utility MCP server that runs in front of the users API
+  # The utility MCP server that runs in front of the stocks API
   #
   utility-mcp-server:
     image: utility-mcp-server:1.0
     hostname: utility-mcp-server
     environment:
-      CUSTOMER_API_URL: 'http://customer-api:3000/users'
+      STOCKS_API_URL: 'http://stocks-api:3000/stocks'
       JWKS_URI: 'http://idsvr:8443/oauth/v2/oauth-anonymous/jwks'
 
   #
-  # The users API that implements OAuth security
+  # The stocks API that uses OAuth to secure access to financial data
   #
-  customer-api:
-    image: customer-api:1.0
-    hostname: customer-api
+  stocks-api:
+    image: stocks-api:1.0
+    hostname: stocks-api
     environment:
       JWKS_URI: 'http://idsvr:8443/oauth/v2/oauth-anonymous/jwks'
       REQUIRED_JWT_ALGORITHM: 'PS256'
-      REQUIRED_ISSUER: 'http://login.example.com/oauth/v2/oauth-anonymous'
-      REQUIRED_AUDIENCE: 'http://api.example.com'
+      REQUIRED_ISSUER: 'http://login.demo.example/oauth/v2/oauth-anonymous'
+      REQUIRED_AUDIENCE: 'http://api.demo.example'
   
   #
-  # The authorization server that authenticates users and issues access tokens to AI agents 
+  # The Curity Identity Server authenticates users and issues access tokens to MCP clients used by AI agents
   #
   authorization-server:
     image: curity.azurecr.io/curity/idsvr:latest
@@ -51,3 +51,26 @@ services:
       ADMIN: 'true'
       LICENSE_KEY: "${LICENSE_KEY}"
       # LOGGING_LEVEL: 'DEBUG'
+
+  #
+  # The SQL database used by the Curity Identity Server which contains dynamically registered clients
+  #
+  authorization-server-data:
+    image: postgres:17.4
+    hostname: dbserver
+    volumes:
+      - ./idsvr/data-backup.sql:/docker-entrypoint-initdb.d/data-backup.sql
+    environment:
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'Password1'
+      POSTGRES_DB: 'idsvr'
+
+  #
+  # An email server with a test inbox to allow email authentication for test users
+  #
+  mail-server:
+    image: maildev/maildev:latest
+    hostname: smtpserver
+    environment:
+      MAILDEV_INCOMING_USER: 'noreply@maildev'
+      MAILDEV_INCOMING_PASSWORD: 'Password1'

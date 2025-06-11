@@ -1,43 +1,44 @@
 # Tasks
 
-The tasks should appeal to organizations who want to expose particular data to AI agents.
+The behavior should appeal to organizations who want to expose particular data to AI agents.\
+Aim to show an end-to-end storyline that sounds secure enough without blocking issues.\
+Along the way, highlight some essential features that the Curity Identity Server provides.
 
-## Exposed Resources
+## Business Theme (DONE)
 
-Use stocks as a money-based resource to make the reader think about security implications.\
-However, stock prices are often fairly public so may be suitable for fairly open access.
+Use stock prices as a money-based resource to make the reader think about security implications.\
+The theme should make the reader think about whether they would expose such data to AI agents.
 
-## Dynamic Client Registration Restrictions
+## Dynamic Client Registration (TODO)
 
-Assume that AI agents can only implement DCR as a public client.\
-You have limited control over the OAuth client DCR behavior so use these mitigations:
+The MCP client should register with the scopes and audience from resource server metadata.
+The example will allow any AI agent public client to register but use a DCR procedure to limit what is allowed:
 
-- Only allow DCR without client credentials for MCP clients with a `stocks/read` scope.
-- For any other scope you must supply a client credential.
-- Dynamic clients get short-lived access tokens and no refresh token.
+- DCR public clients can only use whitelisted scopes / audiences and do not get a refresh token.
+- Use a SQL database so that we can more easily view DCR data.
 
-## Administrator Approved User Access
+## Administrator Approved User Access (DONE)
 
-Although the dynamic client is untrusted, show that you can restrict access at the user level.\
-Organizations could require administrator approval of users:
+The deployment restricts access at the user level:
 
-- Ensure that the example deployment does not allow user self-signup.
-- Only allow users precreated by an administrator to sign in.
+- Only administrator approved (pre-created) users can run AI agents that get API data.
+- Include such users in the deployment: `john.doe@demo.example` and `jane.test@demo.example`.
 
-## User Approval
+## User Authentication and Consent (DONE)
 
-- Simulate users authenticating with their corporate email using a one-time code.
-- These corporate users must consent to the AI agent gaining access to stocks.
+- Users authenticate with their corporate email using a one-time code.
+- These corporate users must also consent to the AI agent gaining read only access to stocks data.
 
-## API Authorization
+## Access Tokens and API Authorization (IN PROGRESS)
 
-The access token issued to dynamic clients should include the API's identity as an audience.
+The access token issued to MCP clients should include the API's identity in the audience.\
+The access token issued to MCP clients should include the API's required scopes.\
+We can then mention the relationship between scopes and claims.
 
-## Clearly Demonstrate Denied Access
+## Reliability Control
 
-- Show a dynamic public client that does not request the correct scope being denied access.
-- Return API authorization errors like 401s or 403s to the agent when it calls a tool.
+When the MCP client calls a tool it should get useful errors if the API returns a 401 or 403.
 
-## General
+## Code Tidy Up
 
-- Update to domains like demo.example instead of example.com.
+Ensure that all code is simple and clean, to appeal to developers.

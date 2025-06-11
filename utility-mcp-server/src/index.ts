@@ -22,7 +22,7 @@ const checkAuth = async (req: express.Request & { auth?: AuthInfo }, res: expres
 
     if (!accessToken) {
         res.status(401)
-            .header('WWW-Authenticate', 'Bearer resource_metadata="http://mcp.example.com/.well-known/oauth-protected-resource"') //TODO - this should come from a config
+            .header('WWW-Authenticate', 'Bearer resource_metadata="http://mcp.demo.example/.well-known/oauth-protected-resource"') //TODO - this should come from a config
             .json({
                 jsonrpc: '2.0',
                 error: {
@@ -38,8 +38,8 @@ const checkAuth = async (req: express.Request & { auth?: AuthInfo }, res: expres
 
     // TODO - this should come from configuration
     const options = {
-        issuer: 'http://login.example.com/oauth/v2/oauth-anonymous',
-        // audience: 'http://mcp.example.com', TODO - figure this one out. How do we set aud in tokens for DCR clients?
+        issuer: 'http://login.demo.example/oauth/v2/oauth-anonymous',
+        // audience: 'http://mcp.demo.example', TODO - figure this one out. How do we set aud in tokens for DCR clients?
         algorithms: ['PS256'],
     } as JWTVerifyOptions;
 
@@ -58,7 +58,7 @@ const checkAuth = async (req: express.Request & { auth?: AuthInfo }, res: expres
         console.log('Invalid token: ' + ex)
 
         res.status(401)
-            .header('WWW-Authenticate', 'Bearer resource_metadata="http://mcp.example.com/.well-known/oauth-protected-resource"') //TODO - this should come from a config
+            .header('WWW-Authenticate', 'Bearer resource_metadata="http://mcp.demo.example/.well-known/oauth-protected-resource"') //TODO - this should come from a config
             .json({
                 jsonrpc: '2.0',
                 error: {
@@ -80,12 +80,12 @@ const server = new McpServer({
     version: "1.0.0"
 });
 
-const apiUrl = process.env.CUSTOMER_API_URL || 'http://api.example.com/users';
+const apiUrl = process.env.STOCKS_API_URL || 'http://mcp.demo.example/stocks';
 server.tool(
-    "fetch-users",
-    "The command fetches the list of users configured in the system",
+    "fetch-stock-prices",
+    "The command fetches information about financial stock prices",
     async (extra) => {
-        console.log('MCP server is fetching users ...');
+        console.log('MCP server is fetching prices from the stocks API ...');
 
         const options = {} as RequestInit;
 
@@ -202,14 +202,14 @@ app.delete('/', handleSessionRequest);
 app.get('/.well-known/oauth-protected-resource', (req, res) => {
     // TODO - these values should probably come from configuration
     res.status(200).json({
-        resource: "http://mcp.example.com",
+        resource: "http://mcp.demo.example",
         resource_name: "An example MCP Customer server",
-        authorization_servers: ["http://login.example.com"],
-        scopes_supported: ['retail'],
+        authorization_servers: ["http://login.demo.example"],
+        scopes_supported: ['stocks/read'],
     }).send();
 });
 
-const jwksUri = process.env.JWKS_URI || 'http://login.example.com/oauth/v2/oauth-anonymous/jwks'
+const jwksUri = process.env.JWKS_URI || 'http://login.demo.example/oauth/v2/oauth-anonymous/jwks'
 const remoteJwksSet = createRemoteJWKSet(<URL>new URL(jwksUri));
 
 const port = 3000;

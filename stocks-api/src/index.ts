@@ -2,7 +2,6 @@ import express, {Request, Response} from 'express';
 import {OAuthFilter} from "./security/oauthFilter.js";
 import {Configuration} from "./configuration.js";
 import {ErrorHandler} from "./errors/errorHandler.js";
-import {ApiError} from "./errors/apiError.js";
 import {ClaimsPrincipal} from "./security/claimsPrincipal.js";
 
 const app = express();
@@ -12,30 +11,35 @@ const oauthFilter = new OAuthFilter(configuration);
 
 app.use(oauthFilter.validateAccessToken);
 
-app.get('/users', (request: Request, response: Response) => {
+app.get('/stocks', (request: Request, response: Response) => {
 
-    console.log('Customer API is returning users ...');
+    console.log('API is returning secured information about stock prices ...');
 
     const user = response.locals.claimsPrincipal as ClaimsPrincipal;
 
-    // Require scope 'retail' to read users
-    user.enforceRequiredScope('retail')
+    // Require scope 'stocks/read' to get price information
+    user.enforceRequiredScope('stocks/read')
 
-    const users = [
+    const stocks = [
         {
-            given_name: 'John',
-            family_name: 'Doe',
-            email: 'john.doe@customer.example',
+            "id": "MSFT",
+            "name": "Microsoft Corporation",
+            "price": 450.22,
         },
         {
-            given_name: 'Jane',
-            family_name: 'Doe',
-            email: 'jane.doe@customer.example',
+            "id": "AAPL",
+            "name": "Apple Inc",
+            "price": 250.62,
+        },
+        {
+            "id": "INTC",
+            "name": "Intel Corp",
+            "price": 21.07,
         },
     ];
 
     response.setHeader('content-type', 'application/json');
-    response.status(200).send(JSON.stringify(users));
+    response.status(200).send(JSON.stringify(stocks));
 });
 
 app.use(ErrorHandler.onUnhandledException)

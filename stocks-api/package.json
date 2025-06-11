@@ -1,7 +1,7 @@
 {
-    "name": "customer-api",
+    "name": "stocks-api",
     "version": "1.0.0",
-    "description": "A customer API that returns information used by AI agents",
+    "description": "A stocks API that exposes read only information to AI agents",
     "author": "Curity",
     "license": "Apache-2.0",
     "main": "index.ts",
