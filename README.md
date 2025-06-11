@@ -170,8 +170,8 @@ The API must then authorize using [scopes](https://curity.io/resources/learn/sco
 See the following resources to read further information on security concepts, threats and mitigations.\
 The tutorial provides further details on the Curity Identity Server configuration and behaviors.
 
-- [Securely Expose APIs to AI Agents](https://curity.io/resources/learn/securely-expose-apis-to-ai-agents/)
-- [AI Agent Secure API Access Tutorial](https://curity.io/resources/learn/ai-agent-secure-api-access/)
+- [Design MCP Authorization for APIs](https://curity.io/resources/learn/design-mcp-authorization-apis/)
+- [Implementing MCP Server Authorization for APIs](https://curity.io/resources/learn/implementing-mcp-authorization-apis/)
 
 ## More Information
 
