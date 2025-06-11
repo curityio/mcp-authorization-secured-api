@@ -1,6 +1,6 @@
 # MCP Authorization Secured API
 
-How to expose an API using the draft [Model Content Protocol Authorization](https://modelcontextprotocol.io/specification/2025-03-26/basic/authorization) specification.\
+How organizations can expose APIs using the draft [Model Content Protocol Authorization](https://modelcontextprotocol.io/specification/2025-03-26/basic/authorization) specification.\
 The code example shows how to use an MCP server to expose existing OAuth-secured APIs to AI agents.
 
 ## Backend Endpoints
