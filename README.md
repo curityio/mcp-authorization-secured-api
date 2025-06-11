@@ -1,11 +1,11 @@
 # Model Context Protocol OAuth Flow Example
 
-A local computer deployment that uses OAuth security from the draft [Model Content Protocol Authorization](https://modelcontextprotocol.io/specification/2025-03-26/basic/authorization) specification.\
-The code example shows how to use an MCP server to expose existing OAuth-secured APIs to AI agents that use MCP clients.
+A local computer deployment that implements the draft [Model Content Protocol Authorization](https://modelcontextprotocol.io/specification/2025-03-26/basic/authorization) specification.\
+The code example shows how to use an MCP server to expose existing OAuth-secured APIs to AI agents.
 
 ## Backend Endpoints
 
-The backend includes a utility MCP server that provides a secure API entry point for AI agents that use MCP clients.\
+The backend includes an MCP server that provides a secure API entry point for AI agents that use MCP clients.\
 The Curity Identity Server implements OAuth standards to enable the authorization from the specification.
 
 | Endpoint | URL |
@@ -24,19 +24,19 @@ Add the following entries to the `/etc/hosts` file to enable the use of these do
 
 ## Run the End-to-End Flow
 
-The end-to-end flow emnables any external MCP client to connect to APIs with access tokens.
+The deployed backend is then compliant with any standards-based MCP client that supports the specification.
 
 ![MCP Flow](images/mcp-flow.png)
 
 ### Install Prerequisites
 
-First, install Docke and Node.js on your local computer.\
+First, install Docker and Node.js on your local computer.\
 Also download a [Trial License](https://developer.curity.io/free-trial) for the Curity Identity Server from the Curity developer portal.\
 Save the license to your desktop as a `license.json` file.
 
 ### Deploy the Backend
 
-Run the following commands to deploy all backend components and enable access to standards-based clients that use MCP and OAuth.
+Run the following commands to deploy all backend components and provide OAuth-secured endpoints.
 
 ```bash
 export LICENSE_FILE_PATH=~/Desktop/license.json
@@ -46,7 +46,7 @@ export LICENSE_FILE_PATH=~/Desktop/license.json
 
 ### Run the MCP Client
 
-Run any MCP client that implements the MCP authorization specification and implements the required OAuth standards.\
+Run any MCP client that implements the behavior from the MCP draft authorization specification.\
 You can run this repo's adapted version of the [TypeScript SDK Example MCP OAuth Client](https://github.com/modelcontextprotocol/typescript-sdk/blob/main/src/examples/client/simpleOAuthClient.ts).\
 Use the following commands to run the MCP client.
 
@@ -56,7 +56,7 @@ npm install
 npm start
 ```
 
-The MCP client runs standards-based flows to integrate with the MCP server and then calls an API to get secure resources:
+The MCP client integrates with the MCP server and then runs a tool to access secure resources:
 
 ```text
 🚀 Simple MCP OAuth Client
@@ -109,9 +109,9 @@ The MCP client uses the following steps to get an access token and call the API:
 - User authentication
 - User consent
 
-Only MCP clients operated by the following administrator approved users (included in the deployment) can gain access to secured API data.\
-To do so they must prove ownership of their corporate email.\
-Simulate that by entering the email and then entering a one-time password delivered to the test email inbox.
+Only MCP clients operated by the following administrator approved users can gain access to secured API data.\
+The deployment includes these users, who must prove ownership of their corporate email to authenticate.\
+Simulate that by entering the email and then a one-time password delivered to the test email inbox.
 
 - john.doe@demo.example
 - jane.test@demo.example
@@ -125,7 +125,7 @@ The user is clearly informed about the level of data access being granted to the
 
 ### Secure Access Tokens
 
-The MCP client then receives a token response with an opaque access token and a limited scope:
+The MCP client then receives the following token response:
 
 ```json
 {
@@ -144,7 +144,7 @@ These measures help to mitigate risks of releasing access tokens to AI agents:
 - The token is short-lived, with a lifetime of 5 minutes.
 
 The [Phantom Token Pattern](https://curity.io/resources/learn/phantom-token-pattern/) runs in the API gateway and delivers a JWT access token to the MCP server.\
-The MCP server then runs a tool to call the API, which receives the following token payload:
+The MCP server executes an MCP tool that calls the API, which receives the following JWT access token payload:
 
 ```json
 {
@@ -167,7 +167,8 @@ The API must then authorize using [scopes](https://curity.io/resources/learn/sco
 
 ## Website Documentation
 
-See the following resources to read further information on MCP security concepts and the example code.
+See the following resources to read further information on security concepts, threats and mitigations.\
+The tutorial provides further details on the Curity Identity Server configuration and behaviors.
 
 - [Securely Expose APIs to AI Agents](https://curity.io/resources/learn/securely-expose-apis-to-ai-agents/)
 - [AI Agent Secure API Access Tutorial](https://curity.io/resources/learn/ai-agent-secure-api-access/)
