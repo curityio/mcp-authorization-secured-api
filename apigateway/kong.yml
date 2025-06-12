@@ -3,17 +3,11 @@ _transform: true
 
 services:
 
-- name: librechat-api
-  url: http://librechat-api:3080
-  routes:
-  - name: librechat-api-route
-    hosts:
-    - agent.external.example
-    paths:
-    - /
-
+#
+# MCP server routes that expose resource server metadata
+#
 - name: utility-mcp-server-well-known
-  url: http://utility-mcp-server:3000/.well-known
+  url: http://utility-mcp-server:3000/stocks/.well-known
   routes:
   - name: utility-mcp-server-well-known-resource-route
     hosts:
@@ -21,6 +15,9 @@ services:
     paths:
     - /.well-known
 
+#
+# To securely connect to the MCP server the MCP client must send an opaque access token
+#
 - name: utility-mcp-server
   url: http://utility-mcp-server:3000
   routes:
@@ -37,15 +34,21 @@ services:
         client_secret: Password1
         token_cache_seconds: 900
 
+#
+# The stocks API can serve AI agents and also other types of clients
+#
 - name: stocks-api
-  url: http://stocks-api:3000/stocks
+  url: http://stocks-api:3000/
   routes:
   - name: stocks-api-route
     hosts:
     - api.demo.example
     paths:
-    - /stocks
+    - /
 
+#
+# The admin UI for the Curity Identity Server
+#
 - name: admin-ui
   url: http://idsvr:6749
   routes:
@@ -55,6 +58,9 @@ services:
     paths:
     - /
 
+#
+# A path rewrite to expose authorization server metadata at the expected location
+#
 - name: authorization-server-metadata
   url: http://idsvr:8443/.well-known/oauth-authorization-server/oauth/v2/oauth-anonymous
   routes:
@@ -64,6 +70,9 @@ services:
     paths:
     - /.well-known/oauth-authorization-server
 
+#
+# The main authorization server endpoints
+#
 - name: authorization-server
   url: http://idsvr:8443
   routes:
@@ -73,6 +82,9 @@ services:
     paths:
     - /
 
+#
+# The email inbox for testing
+#
 - name: email-inbox
   url: http://smtpserver:1080
   routes:

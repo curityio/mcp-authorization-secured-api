@@ -17,22 +17,7 @@ if [ "$LICENSE_KEY" == '' ]; then
 fi
 
 #
-# Configure how the MCP client routes to the MCP server
-#
-if [ "$RUN_LOCAL_MCP_SERVER" == 'true' ]; then
-  export MCP_SERVER_URL='http://host.docker.internal:3000'
-else
-  export MCP_SERVER_URL='http://utility-mcp-server:3000'
-fi
-
-envsubst < apigateway/kong-template.yml > apigateway/kong.yml
-if [ $? -ne 0 ]; then
-  echo 'Problem encountered using the envsubst tool to finalize API gateway configuration'
-  exit 1
-fi
-
-#
-# Run the deployment
+# Then run the deployment
 #
 docker compose down
 docker compose up

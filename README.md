@@ -3,10 +3,18 @@
 How organizations can expose APIs using the draft [Model Content Protocol Authorization](https://modelcontextprotocol.io/specification/2025-03-26/basic/authorization) specification.\
 The code example shows how to use an MCP server to expose existing OAuth-secured APIs to AI agents.
 
+## Overview
+
+An example MCP client and MCP server provide the following end-to-end flow.\
+The Curity Identity Server implements OAuth standards to enable the authorization from the specification.
+
+![MCP Flow](images/mcp-flow.png)
+
 ## Backend Endpoints
 
-The backend includes an MCP server that provides a secure API entry point for AI agents that use MCP clients.\
-The Curity Identity Server implements OAuth standards to enable the authorization from the specification.
+All external URLs are exposed using an instance of the Kong API gateway.\
+The backend includes a utility MCP server that acts like an extension to the API gateway.\
+MCP clients connect to the MCP server using the Streamable HTTP transport.
 
 | Endpoint | URL |
 | -------- | --- |
@@ -16,7 +24,7 @@ The Curity Identity Server implements OAuth standards to enable the authorizatio
 | Curity Identity Server OAuth Metadata | http://login.demo.example/.well-known/oauth-authorization-server |
 | Test Email Inbox | http://mail.demo.example |
 
-Add the following entries to the `/etc/hosts` file to enable the use of these domains on your local computer.
+To enable the use of these domains on your local computer, add the following entries to the `/etc/hosts` file.
 
 ```text
 127.0.0.1 api.demo.example mcp.demo.example admin.demo.example login.demo.example mail.demo.example
@@ -24,14 +32,13 @@ Add the following entries to the `/etc/hosts` file to enable the use of these do
 
 ## Run the End-to-End Flow
 
-The deployed backend is then compliant with any standards-based MCP client that supports the specification.
-
-![MCP Flow](images/mcp-flow.png)
+Typically you do not control the client or its code, and MCP clients make standards-based connections.\
+The deployed backend is compliant with any standards-based MCP client that supports the specification.
 
 ### Install Prerequisites
 
 First, install Docker and Node.js on your local computer.\
-Also download a [Trial License](https://developer.curity.io/free-trial) for the Curity Identity Server from the Curity developer portal.\
+Get a [Trial License](https://developer.curity.io/free-trial) for the Curity Identity Server from the Curity developer portal.\
 Save the license to your desktop as a `license.json` file.
 
 ### Deploy the Backend
@@ -47,7 +54,7 @@ export LICENSE_FILE_PATH=~/Desktop/license.json
 ### Run the MCP Client
 
 Run any MCP client that implements the behavior from the MCP draft authorization specification.\
-You can run this repo's adapted version of the [TypeScript SDK Example MCP OAuth Client](https://github.com/modelcontextprotocol/typescript-sdk/blob/main/src/examples/client/simpleOAuthClient.ts).\
+You can use this repo's adapted version of the [TypeScript SDK Example MCP OAuth Client](https://github.com/modelcontextprotocol/typescript-sdk/blob/main/src/examples/client/simpleOAuthClient.ts).\
 Use the following commands to run the MCP client.
 
 ```bash
@@ -141,9 +148,10 @@ These measures help to mitigate risks of releasing access tokens to AI agents:
 
 - The MCP client is unable to read token claims and gain access to sensitive data intended for APIs.
 - The token has a limited scope and read-only access.
-- The token is short-lived, with a lifetime of 5 minutes.
+- The token is short-lived and no refresh token is issued.
 
-The [Phantom Token Pattern](https://curity.io/resources/learn/phantom-token-pattern/) runs in the API gateway and delivers a JWT access token to the MCP server.\
+The Kong API gateway exposes both [MCP routes and API routes](apigateway/kong.yml).\
+The [phantom token plugin](https://github.com/curityio/nginx-lua-phantom-token-plugin) introspects opaque access tokens and forwards JWT access tokens to the MCP server.
 The MCP server executes an MCP tool that calls the API, which receives the following JWT access token payload:
 
 ```json

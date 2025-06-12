@@ -17,7 +17,7 @@ import { OAuthClientProvider, UnauthorizedError } from '@modelcontextprotocol/sd
 import {z} from "zod";
 
 // Configuration
-const DEFAULT_SERVER_URL = 'http://mcp.demo.example';
+const DEFAULT_SERVER_URL = 'http://mcp.demo.example/stocks';
 const CALLBACK_PORT = 8090; // Use different port than auth server (3001)
 const CALLBACK_URL = `http://localhost:${CALLBACK_PORT}/callback`;
 
@@ -198,6 +198,7 @@ class InteractiveOAuthClient {
       await this.client!.connect(transport);
       console.log('✅ Connected successfully');
     } catch (error) {
+
       if (error instanceof UnauthorizedError) {
         console.log('Registered client data: ' + JSON.stringify(oauthProvider.clientInformation()))
         console.log('🔐 OAuth required - waiting for authorization...');
@@ -398,7 +399,7 @@ class InteractiveOAuthClient {
  * Main entry point
  */
 async function main(): Promise<void> {
-  const serverUrl = process.env.MCP_SERVER_URL || DEFAULT_SERVER_URL;
+  const serverUrl = DEFAULT_SERVER_URL;
 
   console.log('🚀 Simple MCP OAuth Client');
   console.log(`Connecting to: ${serverUrl}`);
