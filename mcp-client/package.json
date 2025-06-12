@@ -38,7 +38,7 @@
     "start": "tsx simpleOAuthClient.ts"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.12.3",
+    "@modelcontextprotocol/sdk": "^1.12.1",
     "undici": "^7.10.0"
   },
   "devDependencies": {

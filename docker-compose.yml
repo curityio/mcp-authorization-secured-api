@@ -26,7 +26,7 @@ services:
     hostname: utility-mcp-server
     environment:
       PORT: '3000'
-      STOCKS_API_BASE_URL: 'http://api.demo.example/stocks'
+      STOCKS_API_BASE_URL: 'http://stocks-api:3000/'
 
   #
   # The stocks API that uses OAuth to secure access to financial data

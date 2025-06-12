@@ -99,7 +99,7 @@ Commands:
   call <tool_name> [args] - Call a tool
   quit - Exit the client
 
-mcp> call fetch-stock-prices
+mcp> call fetch-stock-pricesexport LICENSE_FILE_PATH=~/Desktop/license.json
 
 🔧 Tool 'fetch-stock-prices' result:
 [{"id":"MSFT","name":"Microsoft Corporation","price":450.22},{"id":"AAPL","name":"Apple Inc","price":250.62},{"id":"INTC","name":"Intel Corp","price":21.07}]

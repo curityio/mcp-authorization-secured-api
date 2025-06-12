@@ -48,9 +48,9 @@ export class McpServerApplication {
         this.transports = {};
 
         // Create routes
-        this.expressApp.post('/*_', this.post);
-        this.expressApp.get('/*_', this.get);
-        this.expressApp.delete('/*_', this.delete);
+        this.expressApp.post('/', this.post);
+        this.expressApp.get('/', this.get);
+        this.expressApp.delete('/', this.delete);
     }
 
     /*

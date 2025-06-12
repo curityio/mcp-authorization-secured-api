@@ -15,3 +15,5 @@ Handle both unexpected errors and also access token expiry errors.
 
 Get the dynamically registered client to use the correct scope and audience, with no refresh token.\
 Use a registration endpoint procedure if required.
+
+- https://github.com/modelcontextprotocol/typescript-sdk/issues/580

@@ -7,7 +7,7 @@ services:
 # The MCP server requires an opaque access token that passes introspection
 #
 - name: utility-mcp-server
-  url: http://utility-mcp-server:3000
+  url: http://utility-mcp-server:3000/
   routes:
   - name: utility-mcp-server-route
     hosts:
@@ -35,7 +35,9 @@ services:
     paths:
     # I want to use this path
     - /stocks/.well-known/oauth-protected-resource
+
     # But the TypeScript SDK requires a fixed path of /.well-known/oauth-protected-resource, which only works for one API
+    # - https://github.com/modelcontextprotocol/typescript-sdk/issues/545
     - /.well-known/oauth-protected-resource
 
 #
