@@ -78,7 +78,6 @@ Connecting to: http://mcp.demo.example
 🚢 Creating transport with OAuth provider...
 🚢 Transport created
 🔌 Attempting connection (this will trigger OAuth redirect)...
-Invalid WWW-Authenticate header format, expected 'Bearer'
 📌 OAuth redirect handler called - opening browser
 Opening browser to: http://login.demo.example/oauth/v2/oauth-authorize?response_type=code&client_id=07d66f9e-0d58-406e-80a9-5da570ae42a6&code_challenge=3gvRN6SPz8ML-cRnUtdyR1ec4f3Zf3dDUDKfUBTqQ58&code_challenge_method=S256&redirect_uri=http%3A%2F%2Flocalhost%3A8090%2Fcallback&scope=stocks%2Fread
 🌐 Opening browser for authorization: http://login.demo.example/oauth/v2/oauth-authorize?response_type=code&client_id=07d66f9e-0d58-406e-80a9-5da570ae42a6&code_challenge=3gvRN6SPz8ML-cRnUtdyR1ec4f3Zf3dDUDKfUBTqQ58&code_challenge_method=S256&redirect_uri=http%3A%2F%2Flocalhost%3A8090%2Fcallback&scope=stocks%2Fread

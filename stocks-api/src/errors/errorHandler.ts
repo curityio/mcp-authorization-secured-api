@@ -16,29 +16,37 @@
 
 import {NextFunction, Request, Response} from 'express';
 import {ApiError} from './apiError.js';
+import {Configuration} from '../configuration.js';
 
 /*
  * Basic error handling and logging
  */
 export class ErrorHandler {
 
-    /*
-     * Handle exceptions
-     */
-    public static onUnhandledException(unhandledException: Error, request: Request, response: Response, next: NextFunction): void {
+    private readonly configuration: Configuration;
 
-        const apiError = ErrorHandler.getApiError(unhandledException);
-        ErrorHandler.writeErrorResponse(apiError, response);
+    public constructor(configuration: Configuration) {
+        this.configuration = configuration;
+        this.onUnhandledException = this.onUnhandledException.bind(this);
     }
 
     /*
-     * Create an error on demand
+     * Handle exceptions, log the cause and return a client error
      */
-    public static writeErrorResponse(apiError: ApiError, response: Response): void {
+    public onUnhandledException(unhandledException: Error, request: Request, response: Response, next: NextFunction): void {
 
-        ErrorHandler.logError(apiError);
-        if (apiError.status === 401 || apiError.status == 403) {
-            ErrorHandler.writeAuthenticateHeader(apiError, response);
+        const apiError = this.getApiError(unhandledException);
+        this.writeErrorResponse(apiError, response);
+    }
+
+    /*
+     * Write an error response with parameters
+     */
+    private writeErrorResponse(apiError: ApiError, response: Response): void {
+
+        this.logError(apiError);
+        if (apiError.status === 401) {
+            this.writeAuthenticateHeader(apiError, response);
         }
 
         response.setHeader('Content-Type', 'application/json');
@@ -48,17 +56,21 @@ export class ErrorHandler {
     /*
      * Write standard OAuth error response headers
      */
-    public static writeAuthenticateHeader(apiError: ApiError, response: Response): void {
+    private writeAuthenticateHeader(apiError: ApiError, response: Response): void {
 
-        if (apiError.status === 401 || apiError.status === 403) {
-            response.setHeader('WWW-Authenticate', `Bearer, error=${apiError.code}, error_description=${apiError.message}`);
+        if (apiError.status === 401) {
+            
+            const resourceMetadataUrl = `${this.configuration.externalBaseUrl}`;
+            response.setHeader(
+                'WWW-Authenticate',
+                `Bearer error="${apiError.code}", error_description="${apiError.message}", resource_metadata="${resourceMetadataUrl}"`);
         }
     }
 
     /*
      * Get a caught error into a typed error
      */
-    private static getApiError(unhandledException: any): ApiError {
+    private getApiError(unhandledException: any): ApiError {
 
         if (unhandledException instanceof ApiError) {
             return unhandledException;
@@ -70,8 +82,7 @@ export class ErrorHandler {
     /*
      * Log errors in the API
      */
-    private static logError(error: ApiError) {
-
+    private logError(error: ApiError) {
         console.log(JSON.stringify(error.toLogJson(), null, 2));
     }
 }

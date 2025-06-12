@@ -10,7 +10,7 @@
         "node": ">=20"
     },
     "scripts": {
-        "start": "tsx src/index.ts",
+        "start": "node --env-file=.env --import=tsx --watch ./src/index.ts",
         "build": "rm -rf dist && tsc"
     },
     "dependencies": {

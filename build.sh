@@ -51,5 +51,6 @@ cd ..
 cd apigateway
 docker build --no-cache -t kong-api-gateway:1.0 .
 if [ $? -ne 0 ]; then
-    exit 1
-  fi
+  exit 1
+fi
+cd ..

@@ -1,15 +1,15 @@
 import {McpServer} from '@modelcontextprotocol/sdk/server/mcp.js';
+import {AuthInfo} from '@modelcontextprotocol/sdk/server/auth/types.js';
 import {StreamableHTTPServerTransport} from '@modelcontextprotocol/sdk/server/streamableHttp.js';
 import {RequestHandlerExtra} from '@modelcontextprotocol/sdk/shared/protocol.js';
 import {isInitializeRequest, ServerNotification, ServerRequest} from "@modelcontextprotocol/sdk/types.js"
 import express, {Application, Request, Response} from 'express';
 import {randomUUID} from 'node:crypto';
 import {Configuration} from './configuration.js';
-import {OAuthFilter} from './oauthFilter.js';
 
 /*
  * The application is an MCP server running in the Express HTTP server and acts like an API gateway
- * It checks for a valid access token and then proxies to upstream APIs
+ * It checks for the presence of an access token produced by the phantom token plugin, then proxies it to upstream APIs
  */
 export class McpServerApplication {
 
@@ -17,7 +17,6 @@ export class McpServerApplication {
     private readonly expressApp: Application;
     private readonly mcpServer: McpServer;
     private readonly transports: { [sessionId: string]: StreamableHTTPServerTransport };
-    private readonly oauthFilter: OAuthFilter;
 
     public constructor(configuration: Configuration) {
     
@@ -27,7 +26,6 @@ export class McpServerApplication {
         this.post = this.post.bind(this);
         this.get = this.get.bind(this);
         this.delete = this.delete.bind(this);
-        this.getStocksResourceMetadata = this.getStocksResourceMetadata.bind(this);
         this.fetchStockPricesFromApi = this.fetchStockPricesFromApi.bind(this);
 
         // Create the MCP server
@@ -50,13 +48,9 @@ export class McpServerApplication {
         this.transports = {};
 
         // Create routes
-        this.expressApp.get('/stocks/.well-known/oauth-protected-resource', this.getStocksResourceMetadata);
         this.expressApp.post('/*_', this.post);
         this.expressApp.get('/*_', this.get);
         this.expressApp.delete('/*_', this.delete);
-
-        // Create an object to enforce a secure connection to the MCP server
-        this.oauthFilter = new OAuthFilter(configuration);
     }
 
     /*
@@ -74,12 +68,12 @@ export class McpServerApplication {
      */
     public async post(request: Request, response: Response): Promise<void> {
 
-        await this.oauthFilter.validateAccessToken(request, response);
-        if (!(request as any).auth) {
+        console.log('*** POST ***');
+         if (!this.setAuthInfo(request)) {
             return;
         }
 
-        await this.connectClient(request, response);
+        await this.handlePost(request, response);
     }
 
     /*
@@ -87,7 +81,11 @@ export class McpServerApplication {
      */
     public async get(request: Request, response: Response): Promise<void> {
 
-        await this.oauthFilter.validateAccessToken(request, response);
+        console.log('*** GET ***');
+        if (!this.setAuthInfo(request)) {
+            return;
+        }
+
         if (!(request as any).auth) {
             return;
         }
@@ -100,36 +98,19 @@ export class McpServerApplication {
      */
     public async delete(request: Request, response: Response): Promise<void> {
 
-        await this.oauthFilter.validateAccessToken(request, response);
-        if (!(request as any).auth) {
+        console.log('*** DELETE ***');
+        if (!this.setAuthInfo(request)) {
             return;
         }
 
         await this.handleSessionRequest(request, response);
     }
 
-
-    /*
-     * This endpoint is not secured and instead returns OAuth protected resource metadata for the upstream API
-     * - https://datatracker.ietf.org/doc/rfc9728
-     */
-    public async getStocksResourceMetadata(request: Request, response: Response) : Promise<any> {
-
-        const metadata = {
-            resource: `${this.configuration.baseUrl}/stocks`,
-            resource_name: "Stocks API",
-            authorization_servers: [this.configuration.authorizationServerBaseUrl],
-            scopes_supported: ['stocks/read'],
-        };
-
-        response.status(200).json(metadata).send();
-    }
-
     /*
      * Standard streamable HTTP connection code from the TypeScript SDK
      * - https://github.com/modelcontextprotocol/typescript-sdk
      */
-    private async connectClient(request: Request, response: Response): Promise<void> {
+    private async handlePost(request: Request, response: Response): Promise<void> {
         
           const sessionId = request.headers['mcp-session-id'] as string | undefined;
           let transport: StreamableHTTPServerTransport;
@@ -224,5 +205,29 @@ export class McpServerApplication {
         return {
             content: [{ type: "text", text: data }]
         };
+    }
+
+    /*
+     * The MCP server only needs to check for a valid access token
+     */
+    private setAuthInfo(request: Request): boolean {
+
+        const authorizationHeader = request.header('authorization');
+        if (authorizationHeader) {
+            const parts = authorizationHeader.split(' ');
+            if (parts.length === 2 && parts[0].toLowerCase() === 'bearer') {
+
+                const accessToken = parts[1];
+                const authInfo: AuthInfo = {
+                    token: accessToken,
+                    clientId: '',
+                    scopes: [],
+                };
+                (request as any).auth = authInfo;
+                return true;
+            }
+        }
+
+        return false;
     }
 }

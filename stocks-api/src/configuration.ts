@@ -19,6 +19,9 @@
  */
 export class Configuration {
 
+    public port: string;
+    public externalBaseUrl: string;
+    public authorizationServerBaseUrl: string;
     public jwksUri: string;
     public requiredJwtAlgorithm: string;
     public requiredIssuer: string;
@@ -26,16 +29,18 @@ export class Configuration {
 
     public constructor() {
 
+        this.port = this.getValue('PORT');
+        this.externalBaseUrl = this.getValue('EXTERNAL_BASE_URL');
+        this.authorizationServerBaseUrl = this.getValue('AUTHORIZATION_SERVER_BASE_URL');
         this.jwksUri = this.getValue('JWKS_URI');
         this.requiredJwtAlgorithm = this.getValue('REQUIRED_JWT_ALGORITHM');
         this.requiredIssuer = this.getValue('REQUIRED_JWT_ISSUER');
         this.requiredAudience = this.getValue('REQUIRED_JWT_AUDIENCE');
-
     }
 
-    private getValue(name: string, defaultValue = ''): string {
+    private getValue(name: string): string {
 
-        const value = process.env[name] || defaultValue;
+        const value = process.env[name];
         if (!value) {
             throw new Error(`The environment variable ${name} has not been set`)
         }

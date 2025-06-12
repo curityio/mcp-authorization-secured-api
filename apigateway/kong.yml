@@ -4,19 +4,7 @@ _transform: true
 services:
 
 #
-# MCP server routes that expose resource server metadata
-#
-- name: utility-mcp-server-well-known
-  url: http://utility-mcp-server:3000/stocks/.well-known
-  routes:
-  - name: utility-mcp-server-well-known-resource-route
-    hosts:
-    - mcp.demo.example
-    paths:
-    - /.well-known
-
-#
-# To securely connect to the MCP server the MCP client must send an opaque access token
+# The MCP server requires an opaque access token that passes introspection
 #
 - name: utility-mcp-server
   url: http://utility-mcp-server:3000
@@ -25,7 +13,7 @@ services:
     hosts:
     - mcp.demo.example
     paths:
-    - /
+    - /stocks
   plugins:
     - name: phantom-token
       config:
@@ -33,6 +21,22 @@ services:
         client_id: api-gateway-client
         client_secret: Password1
         token_cache_seconds: 900
+        resource_metadata_url: http://api.demo.example/stocks
+
+#
+# Each API exposes its own resource server metadata at an unsecured endpoint
+#
+- name: stocks-api-resource-metadata
+  url: http://stocks-api:3000/.well-known/oauth-protected-resource
+  routes:
+  - name: utility-mcp-server-well-known-resource-route
+    hosts:
+    - api.demo.example
+    paths:
+    # I want to use this path
+    - /stocks/.well-known/oauth-protected-resource
+    # But the TypeScript SDK requires a fixed path of /.well-known/oauth-protected-resource, which only works for one API
+    - /.well-known/oauth-protected-resource
 
 #
 # The stocks API can serve AI agents and also other types of clients
@@ -44,7 +48,15 @@ services:
     hosts:
     - api.demo.example
     paths:
-    - /
+    - /stocks
+  plugins:
+    - name: phantom-token
+      config:
+        introspection_endpoint: http://idsvr:8443/oauth/v2/oauth-introspect
+        client_id: api-gateway-client
+        client_secret: Password1
+        token_cache_seconds: 900
+        resource_metadata_url: http://api.demo.example/stocks
 
 #
 # The admin UI for the Curity Identity Server

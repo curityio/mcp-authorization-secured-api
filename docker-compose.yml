@@ -18,19 +18,15 @@ services:
       KONG_NGINX_HTTP_LUA_SHARED_DICT: 'phantom-token 10m'
 
   #
-  # The utility MCP server acts as an API gateway that runs in front of the stocks API
+  # The utility MCP server acts as an addon to the API gateway and implements a streamable HTTP transport
+  # The MCP server can use MCP tools that calls APIs and forward its JWT access token
   #
   utility-mcp-server:
     image: utility-mcp-server:1.0
     hostname: utility-mcp-server
     environment:
       PORT: '3000'
-      BASE_URL: 'http://mcp.demo.example'
-      STOCKS_API_BASE_URL: 'http://stocks-api:3000/'
-      AUTHORIZATION_SERVER_BASE_URL: 'http://login.demo.example'
-      JWKS_URI: 'http://idsvr:8443/oauth/v2/oauth-anonymous/jwks'
-      REQUIRED_JWT_ALGORITHM: 'PS256'
-      REQUIRED_JWT_ISSUER: 'http://login.demo.example/oauth/v2/oauth-anonymous'
+      STOCKS_API_BASE_URL: 'http://api.demo.example/stocks'
 
   #
   # The stocks API that uses OAuth to secure access to financial data
@@ -39,6 +35,9 @@ services:
     image: stocks-api:1.0
     hostname: stocks-api
     environment:
+      PORT: '3000'
+      EXTERNAL_BASE_URL: 'http://api.demo.example/stocks'
+      AUTHORIZATION_SERVER_BASE_URL: 'http://login.demo.example'
       JWKS_URI: 'http://idsvr:8443/oauth/v2/oauth-anonymous/jwks'
       REQUIRED_JWT_ALGORITHM: 'PS256'
       REQUIRED_JWT_ISSUER: 'http://login.demo.example/oauth/v2/oauth-anonymous'
