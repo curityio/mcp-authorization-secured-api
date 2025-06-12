@@ -80,12 +80,7 @@ export class OAuthFilter {
      */
     private unauthorized(request: Request, response: Response) {
 
-        console.log('*** UNAUTHORIZED')
-        console.log(request.path);
         const api = request.path.split('/')[0];
-        console.log(api);
-        console.log('*** UNAUTHORIZED DONE')
-
         const url = `${this.configuration.baseUrl}/${api}/.well-known/oauth-protected-resource`;
         response.status(401)
             .header('WWW-Authenticate', `Bearer resource_metadata="${url}"`)
