@@ -5,21 +5,33 @@ import {ErrorHandler} from "./errors/errorHandler.js";
 import {ClaimsPrincipal} from "./security/claimsPrincipal.js";
 
 const app = express();
-
 const configuration = new Configuration();
-const oauthFilter = new OAuthFilter(configuration);
 
+/*
+ * The API validates a JWT access token using security best practices on every request
+ */
+const oauthFilter = new OAuthFilter(configuration);
 app.use(oauthFilter.validateAccessToken);
 
+/*
+ * The API's business logic then runs and has access to a claims principal formed from the JWT access token's payload
+ */
 app.get('/stocks', (request: Request, response: Response) => {
 
     console.log('API is returning secured information about stock prices ...');
+    const claims = response.locals.claimsPrincipal as ClaimsPrincipal;
+    
+    /*
+     * The API checks for its required scope for this endpoint.
+     * The MCP client only has access to this area of data.
+     */
+    claims.enforceRequiredScope('stocks/read')
 
-    const user = response.locals.claimsPrincipal as ClaimsPrincipal;
-
-    // Require scope 'stocks/read' to get price information
-    user.enforceRequiredScope('stocks/read')
-
+    /*
+     * In this example, all stocks in this collection are returned to the AI agent.
+     * A real API could use additional claims associated to the scope, like role, department, country etc.
+     * These claims could be used to restrict access by filtering items based on the user's privileges.
+     */
     const stocks = [
         {
             "id": "MSFT",
@@ -46,5 +58,5 @@ app.use(ErrorHandler.onUnhandledException)
 
 const port = 3000;
 app.listen(port, () => {
-    console.log(`Customer API is listening on HTTP port ${port}`);
+    console.log(`Stocks API is listening on HTTP port ${port}`);
 });

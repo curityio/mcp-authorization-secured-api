@@ -143,7 +143,8 @@ These measures help to mitigate risks of releasing access tokens to AI agents:
 - The token has a limited scope and read-only access.
 - The token is short-lived, with a lifetime of 5 minutes.
 
-The [Phantom Token Pattern](https://curity.io/resources/learn/phantom-token-pattern/) runs in the API gateway and delivers a JWT access token to the MCP server.\
+The Kong API gateway exposes both [MCP routes and API routes](apigateway/kong.yml).\
+The [phantom token plugin](https://github.com/curityio/nginx-lua-phantom-token-plugin) introspects opaque access tokens and forwards JWT access tokens to the MCP server.
 The MCP server executes an MCP tool that calls the API, which receives the following JWT access token payload:
 
 ```json

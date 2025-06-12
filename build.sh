@@ -27,35 +27,29 @@ cd ..
 # Build the MCP server to a docker container
 #
 echo 'Building utility MCP server ...'
+cd utility-mcp-server
 
-if [ "$RUN_LOCAL_MCP_SERVER" != 'true' ]; then
-  cd utility-mcp-server
-
-  npm install
-  if [ $? -ne 0 ]; then
-    exit 1
-  fi
-
-  npm run build
-  if [ $? -ne 0 ]; then
-    exit 1
-  fi
-
-  docker build --no-cache -t utility-mcp-server:1.0 .
-  if [ $? -ne 0 ]; then
-    exit 1
-  fi
-  cd ..
-
-else
-  echo 'Using local MCP server, skipping MCP server build.'
+npm install
+if [ $? -ne 0 ]; then
+  exit 1
 fi
+
+npm run build
+if [ $? -ne 0 ]; then
+  exit 1
+fi
+
+docker build --no-cache -t utility-mcp-server:1.0 .
+if [ $? -ne 0 ]; then
+  exit 1
+fi
+cd ..
 
 #
 # Build the API gateway custom image to a Docker container
 #
 cd apigateway
-docker build --no-cache -t custom-api-gateway:1.0 .
+docker build --no-cache -t kong-api-gateway:1.0 .
 if [ $? -ne 0 ]; then
     exit 1
   fi

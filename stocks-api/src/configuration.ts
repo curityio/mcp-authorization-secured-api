@@ -15,7 +15,7 @@
  */
 
 /*
- * Configuration settings for the code example
+ * Configuration settings for the stocks API
  */
 export class Configuration {
 
@@ -28,8 +28,8 @@ export class Configuration {
 
         this.jwksUri = this.getValue('JWKS_URI');
         this.requiredJwtAlgorithm = this.getValue('REQUIRED_JWT_ALGORITHM');
-        this.requiredIssuer = this.getValue('REQUIRED_ISSUER');
-        this.requiredAudience = this.getValue('REQUIRED_AUDIENCE');
+        this.requiredIssuer = this.getValue('REQUIRED_JWT_ISSUER');
+        this.requiredAudience = this.getValue('REQUIRED_JWT_AUDIENCE');
 
     }
 

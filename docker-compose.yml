@@ -4,7 +4,7 @@ services:
   # The API gateway that exposes backend components at domain based URLs
   #
   api-gateway:
-    image: custom-api-gateway:1.0
+    image: kong-api-gateway:1.0
     ports:
       - 80:3001
     volumes:
@@ -18,14 +18,19 @@ services:
       KONG_NGINX_HTTP_LUA_SHARED_DICT: 'phantom-token 10m'
 
   #
-  # The utility MCP server that runs in front of the stocks API
+  # The utility MCP server acts as an API gateway that runs in front of the stocks API
   #
   utility-mcp-server:
     image: utility-mcp-server:1.0
     hostname: utility-mcp-server
     environment:
-      STOCKS_API_URL: 'http://stocks-api:3000/stocks'
+      PORT: '3000'
+      BASE_URL: 'http://mcp.demo.example'
+      STOCKS_API_BASE_URL: 'http://stocks-api:3000/stocks'
+      AUTHORIZATION_SERVER_BASE_URL: 'http://login.demo.example'
       JWKS_URI: 'http://idsvr:8443/oauth/v2/oauth-anonymous/jwks'
+      REQUIRED_JWT_ALGORITHM: 'PS256'
+      REQUIRED_JWT_ISSUER: 'http://login.demo.example/oauth/v2/oauth-anonymous'
 
   #
   # The stocks API that uses OAuth to secure access to financial data
@@ -36,8 +41,8 @@ services:
     environment:
       JWKS_URI: 'http://idsvr:8443/oauth/v2/oauth-anonymous/jwks'
       REQUIRED_JWT_ALGORITHM: 'PS256'
-      REQUIRED_ISSUER: 'http://login.demo.example/oauth/v2/oauth-anonymous'
-      REQUIRED_AUDIENCE: 'http://api.demo.example'
+      REQUIRED_JWT_ISSUER: 'http://login.demo.example/oauth/v2/oauth-anonymous'
+      REQUIRED_JWT_AUDIENCE: 'http://api.demo.example'
   
   #
   # The Curity Identity Server authenticates users and issues access tokens to MCP clients used by AI agents
@@ -56,7 +61,7 @@ services:
   # The SQL database used by the Curity Identity Server which contains dynamically registered clients
   #
   authorization-server-data:
-    image: postgres:17.4
+    image: postgres:latest
     hostname: dbserver
     volumes:
       - ./idsvr/data-backup.sql:/docker-entrypoint-initdb.d/data-backup.sql
