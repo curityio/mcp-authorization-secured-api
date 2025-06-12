@@ -23,7 +23,7 @@ export class McpServerApplication {
     
         this.configuration = configuration;
 
-        // Ensure that the 'this' parameter is available in async callbacks
+        // Ensure that the 'this' parameter is available in async callbacks when using JavaScript classes with methods
         this.post = this.post.bind(this);
         this.get = this.get.bind(this);
         this.delete = this.delete.bind(this);
@@ -49,10 +49,10 @@ export class McpServerApplication {
         this.transports = {};
 
         // Create routes
-        this.expressApp.post('/', this.post);
-        this.expressApp.get('/', this.get);
-        this.expressApp.delete('/', this.delete);
         this.expressApp.get('/stocks/.well-known/oauth-protected-resource', this.getStocksResourceMetadata);
+        this.expressApp.post('/*_', this.post);
+        this.expressApp.get('/*_', this.get);
+        this.expressApp.delete('/*_', this.delete);
 
         // Create an object to enforce a secure connection to the MCP server
         this.oauthFilter = new OAuthFilter(configuration);

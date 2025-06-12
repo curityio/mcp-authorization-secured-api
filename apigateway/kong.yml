@@ -38,13 +38,13 @@ services:
 # The stocks API can serve AI agents and also other types of clients
 #
 - name: stocks-api
-  url: http://stocks-api:3000/stocks
+  url: http://stocks-api:3000/
   routes:
   - name: stocks-api-route
     hosts:
     - api.demo.example
     paths:
-    - /stocks
+    - /
 
 #
 # The admin UI for the Curity Identity Server

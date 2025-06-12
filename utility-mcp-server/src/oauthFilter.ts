@@ -75,9 +75,18 @@ export class OAuthFilter {
         return null;
     }
 
+    /*
+     * The MCP server uses the request path to work out which API to return resource metadata for
+     */
     private unauthorized(request: Request, response: Response) {
 
-        const url = `${this.configuration.baseUrl}/stocks/.well-known/oauth-protected-resource`;
+        console.log('*** UNAUTHORIZED')
+        console.log(request.path);
+        const api = request.path.split('/')[0];
+        console.log(api);
+        console.log('*** UNAUTHORIZED DONE')
+
+        const url = `${this.configuration.baseUrl}/${api}/.well-known/oauth-protected-resource`;
         response.status(401)
             .header('WWW-Authenticate', `Bearer resource_metadata="${url}"`)
             .json({

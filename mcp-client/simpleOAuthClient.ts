@@ -17,7 +17,7 @@ import { OAuthClientProvider, UnauthorizedError } from '@modelcontextprotocol/sd
 import {z} from "zod";
 
 // Configuration
-const DEFAULT_SERVER_URL = 'http://mcp.demo.example';
+const DEFAULT_SERVER_URL = 'http://mcp.demo.example/stocks';
 const CALLBACK_PORT = 8090; // Use different port than auth server (3001)
 const CALLBACK_URL = `http://localhost:${CALLBACK_PORT}/callback`;
 

@@ -16,7 +16,7 @@ app.use(oauthFilter.validateAccessToken);
 /*
  * The API's business logic then runs and has access to a claims principal formed from the JWT access token's payload
  */
-app.get('/stocks', (request: Request, response: Response) => {
+app.get('/', (request: Request, response: Response) => {
 
     console.log('API is returning secured information about stock prices ...');
     const claims = response.locals.claimsPrincipal as ClaimsPrincipal;
