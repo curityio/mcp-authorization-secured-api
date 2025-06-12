@@ -14,9 +14,19 @@ import {
   ListToolsResultSchema
 } from '@modelcontextprotocol/sdk/types.js';
 import { OAuthClientProvider, UnauthorizedError } from '@modelcontextprotocol/sdk/client/auth.js';
-import {z} from "zod";
 
-// Configuration
+/*
+ * CURITY EDIT: Support HTTP proxy message capture
+ */
+import { setGlobalDispatcher, ProxyAgent } from 'undici';
+if (process.env.http_proxy) {
+  const dispatcher = new ProxyAgent({uri: new URL(process.env.http_proxy).toString() });
+  setGlobalDispatcher(dispatcher);
+}
+
+/*
+ * CURITY EDIT: Updated default server URL
+ */
 const DEFAULT_SERVER_URL = 'http://mcp.demo.example/stocks';
 const CALLBACK_PORT = 8090; // Use different port than auth server (3001)
 const CALLBACK_URL = `http://localhost:${CALLBACK_PORT}/callback`;
@@ -51,10 +61,6 @@ class InMemoryOAuthClientProvider implements OAuthClientProvider {
   }
 
   clientInformation(): OAuthClientInformation | undefined {
-    // return {
-    //   client_id: "mcp-client-test-1",
-    //   client_secret: "Password1"
-    // }
     return this._clientInformation;
   }
 
@@ -198,9 +204,7 @@ class InteractiveOAuthClient {
       await this.client!.connect(transport);
       console.log('✅ Connected successfully');
     } catch (error) {
-
       if (error instanceof UnauthorizedError) {
-        console.log('Registered client data: ' + JSON.stringify(oauthProvider.clientInformation()))
         console.log('🔐 OAuth required - waiting for authorization...');
         const callbackPromise = this.waitForOAuthCallback();
         const authCode = await callbackPromise;
@@ -221,6 +225,9 @@ class InteractiveOAuthClient {
   async connect(): Promise<void> {
     console.log(`🔗 Attempting to connect to ${this.serverUrl}...`);
 
+    /*
+     * CURITY EDIT: Updated scope
+    */
     const clientMetadata: OAuthClientMetadata = {
       client_name: 'Simple OAuth MCP Client',
       redirect_uris: [CALLBACK_URL],
@@ -252,8 +259,6 @@ class InteractiveOAuthClient {
     console.log('🔐 Starting OAuth flow...');
 
     await this.attemptConnection(oauthProvider);
-
-    console.debug("MCP client received token response: " + JSON.stringify(oauthProvider.tokens(), null, 2))
 
     // Start interactive loop
     await this.interactiveLoop();

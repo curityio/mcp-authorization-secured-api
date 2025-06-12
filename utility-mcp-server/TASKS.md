@@ -1,12 +1,13 @@
 # Tasks
 
 Make code read nicely and handle error and expiry conditions so that it is reliable.\
-This ensures a joined up storyline to appeal to readers
+This ensures a joined up storyline to appeal to readers.
 
 ## Exception Handler
 
-Do an initial handler that logs errors to improve our ownproductivity.\
-Make the OAuth filter throw a 401 error and write the resource server metadata in the exception handler.
+Do an initial handler that logs errors to improve PME productivity and troubleshooting.\
+Make the OAuth filter throw a 401 error and write the resource server metadata in the exception handler.\
+Run middleware for all routes apart from exceptions.
 
 ## Client settings
 

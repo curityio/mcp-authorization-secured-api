@@ -31,10 +31,11 @@ export class McpServerApplication {
         this.fetchStockPricesFromApi = this.fetchStockPricesFromApi.bind(this);
 
         // Create the MCP server
-        this.mcpServer = new McpServer({
-            name: 'example-curity-mcp-server',
+        const serverInfo = {
+            name: 'utility-mcp-server',
             version: '1.0.0'
-        });
+        };
+        this.mcpServer = new McpServer(serverInfo);
 
         // Create an MCP tool to call an existing upstream OAuth-secured API
         this.mcpServer.tool(

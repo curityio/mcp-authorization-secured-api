@@ -54,7 +54,7 @@ export LICENSE_FILE_PATH=~/Desktop/license.json
 ### Run the MCP Client
 
 Run any MCP client that implements the behavior from the MCP draft authorization specification.\
-You can use this repo's adapted version of the [TypeScript SDK Example MCP OAuth Client](https://github.com/modelcontextprotocol/typescript-sdk/blob/main/src/examples/client/simpleOAuthClient.ts).\
+You can use this repo's adapted version of the [TypeScript SDK Example MCP OAuth Client](mcp-client/README.md).\
 Use the following commands to run the MCP client.
 
 ```bash
