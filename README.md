@@ -141,7 +141,7 @@ These measures help to mitigate risks of releasing access tokens to AI agents:
 
 - The MCP client is unable to read token claims and gain access to sensitive data intended for APIs.
 - The token has a limited scope and read-only access.
-- The token is short-lived, with a lifetime of 5 minutes.
+- The token is short-lived and no refresh token is issued.
 
 The Kong API gateway exposes both [MCP routes and API routes](apigateway/kong.yml).\
 The [phantom token plugin](https://github.com/curityio/nginx-lua-phantom-token-plugin) introspects opaque access tokens and forwards JWT access tokens to the MCP server.
