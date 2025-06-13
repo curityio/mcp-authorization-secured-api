@@ -1,0 +1,4 @@
+.DS_Store
+license.json
+node_modules
+dist

@@ -1,0 +1,26 @@
+{
+    "name": "stocks-api",
+    "version": "1.0.0",
+    "description": "A stocks API that exposes read only information to AI agents",
+    "author": "Curity",
+    "license": "Apache-2.0",
+    "main": "index.ts",
+    "type": "module",
+    "engines": {
+        "node": ">=20"
+    },
+    "scripts": {
+        "start": "node --env-file=.env --import=tsx --watch ./src/index.ts",
+        "build": "rm -rf dist && tsc"
+    },
+    "dependencies": {
+        "express": "^5.1.0",
+        "jose": "^6.0.11"
+    },
+    "devDependencies": {
+        "@types/express": "^5.0.1",
+        "@types/node": "^20.11.30",
+        "tsx": "^4.19.4",
+        "typescript": "^5.8.3"
+    }
+}
