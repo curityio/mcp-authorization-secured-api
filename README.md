@@ -10,7 +10,7 @@ An example MCP client and MCP server provide the following end-to-end flow.
 ![MCP Flow](images/mcp-flow.png)
 
 The [phantom token plugin](https://github.com/curityio/nginx-lua-phantom-token-plugin) secures connections to the MCP server by requiring a valid opaque access token.\
-APIs requires a different JWT access token to implement their authorization.
+APIs require a different JWT access token to implement their authorization.
 
 ## Backend Endpoints
 
