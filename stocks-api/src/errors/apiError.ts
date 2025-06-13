@@ -35,7 +35,6 @@ export class ApiError extends Error {
     public toClientJson(): any {
 
         return {
-            status: this.status,
             code: this.code,
             message: this.message,
         }

@@ -45,19 +45,15 @@ export class OAuthFilter {
     }
 
     /*
-     * Validate a JWT according to best practices and then prepare authorization
+     * Validate a JWT according to best practices and then prepare claims for authorization
      */
     public async validateAccessToken(request: Request, response: Response, next: NextFunction): Promise<void> {
 
         const accessToken = this.readAccessToken(request);
         if (!accessToken) {
-            next(new ApiError(401, 'invalid_token', 'Missing, invalid or expired access token'));
-            return;
+            throw new ApiError(401, 'invalid_token', 'Missing, invalid or expired access token');
         }
 
-        /*
-         * Currently the dynamic client's audience is not set correctly at the time of dynamic client registration
-         */
         const options = {
             issuer: this.configuration.requiredIssuer,
             // audience: this.configuration.requiredAudience,
@@ -67,16 +63,14 @@ export class OAuthFilter {
         let result: any
         try {
 
-            // validate the access token while following best practices
             result = await jwtVerify(accessToken, this.remoteJwksSet, options);
 
         } catch (ex: any) {
-            next(new ApiError(401, 'invalid_token', 'Missing, invalid or expired access token', ex));
-            return;
+
+            throw new ApiError(401, 'invalid_token', 'Missing, invalid or expired access token', ex);
         }
 
         response.locals.claimsPrincipal = new ClaimsPrincipal(result.payload);
-
         next();
     }
 

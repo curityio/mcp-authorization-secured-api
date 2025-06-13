@@ -1,3 +1,19 @@
+/*
+ *  Copyright 2025 Curity AB
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
 import {McpServer} from '@modelcontextprotocol/sdk/server/mcp.js';
 import {AuthInfo} from '@modelcontextprotocol/sdk/server/auth/types.js';
 import {StreamableHTTPServerTransport} from '@modelcontextprotocol/sdk/server/streamableHttp.js';
@@ -68,11 +84,7 @@ export class McpServerApplication {
      */
     public async post(request: Request, response: Response): Promise<void> {
 
-        console.log('*** POST ***');
-         if (!this.setAuthInfo(request)) {
-            return;
-        }
-
+        this.setAuthInfo(request);
         await this.handlePost(request, response);
     }
 
@@ -81,15 +93,7 @@ export class McpServerApplication {
      */
     public async get(request: Request, response: Response): Promise<void> {
 
-        console.log('*** GET ***');
-        if (!this.setAuthInfo(request)) {
-            return;
-        }
-
-        if (!(request as any).auth) {
-            return;
-        }
-
+        this.setAuthInfo(request);
         await this.handleSessionRequest(request, response);
     }
 
@@ -98,11 +102,7 @@ export class McpServerApplication {
      */
     public async delete(request: Request, response: Response): Promise<void> {
 
-        console.log('*** DELETE ***');
-        if (!this.setAuthInfo(request)) {
-            return;
-        }
-
+        this.setAuthInfo(request);
         await this.handleSessionRequest(request, response);
     }
 
@@ -178,33 +178,52 @@ export class McpServerApplication {
      */
     private async fetchStockPricesFromApi(extra: RequestHandlerExtra<ServerRequest, ServerNotification>): Promise<any> {
 
-        console.log('MCP server is fetching prices from the stocks API ...');
         const options = {} as RequestInit;
 
         if (extra.authInfo) {
             options['headers'] = {
-                'Authorization': 'Bearer ' + extra.authInfo.token
+                'Authorization': 'Bearer ' + extra.authInfo.token,
             }
         }
 
+        console.log('MCP server is fetching prices from the stocks API ...');
         const response = await fetch(this.configuration.stocksApiBaseUrl, options);
 
-        console.log('MCP Server. Received response from API with status ' + response.status);
-        if (response.status == 401) {
-            return {
-                content: [
-                    { 
-                        type: 'text', 
-                        text: "The user needs to authenticate. Immediately call the authenticate-user tool. After the user authenticates, return a response. "
-                    }
-                ]
-            }
-        }
+        if (response.status >= 200 && response.status <= 299) {
 
-        const data = await response.text();
-        return {
-            content: [{ type: "text", text: data }]
-        };
+            console.log('MCP server successfully received stock prices ...');
+            const data = await response.text();
+            return {
+                content: [{
+                    type: "text",
+                    text: data
+                }]
+            };
+
+        } else {
+            
+            console.log(`MCP server received an HTTP ${response.status} status from the stocks API ...`);
+            const data = await response.text();
+            
+            const error: any = { 
+                type: 'text', 
+                text: data,
+            };
+
+            if (response.status === 401) {
+                
+                // When the upstream API returns a 401, return data the client needs to handle 401s and refresh access tokens or create a new session.
+                // In the content of a tool request, the data must be returned as an object rather than a 401 HTTP response.
+                const errorData = JSON.parse(data);
+                errorData.wwAuthenticate = response.headers.get('WWW-Authenticate');
+                error.text = JSON.stringify(errorData);
+            }
+
+            return {
+                isError: true,
+                content: [error],
+            };
+        }
     }
 
     /*
