@@ -18,7 +18,7 @@ import {McpServer} from '@modelcontextprotocol/sdk/server/mcp.js';
 import {AuthInfo} from '@modelcontextprotocol/sdk/server/auth/types.js';
 import {StreamableHTTPServerTransport} from '@modelcontextprotocol/sdk/server/streamableHttp.js';
 import {RequestHandlerExtra} from '@modelcontextprotocol/sdk/shared/protocol.js';
-import {CallToolResult, ServerNotification, ServerRequest} from "@modelcontextprotocol/sdk/types.js"
+import {CallToolResult, ErrorCode, ServerNotification, ServerRequest} from "@modelcontextprotocol/sdk/types.js"
 import express, {Application, Request, Response} from 'express';
 import {Configuration} from './configuration.js';
 
@@ -31,7 +31,6 @@ export class McpServerApplication {
     private readonly configuration: Configuration;
     private readonly expressApp: Application;
     private readonly mcpServer: McpServer;
-    private readonly transports: { [sessionId: string]: StreamableHTTPServerTransport };
 
     public constructor(configuration: Configuration) {
     
@@ -60,7 +59,6 @@ export class McpServerApplication {
         // Create the Express app
         this.expressApp = express();
         this.expressApp.use(express.json());
-        this.transports = {};
 
         // Create routes
         this.expressApp.post('/', this.post);
@@ -92,7 +90,6 @@ export class McpServerApplication {
             });
 
             response.on('close', () => {
-                console.log('*** Request closed');
                 transport.close();
                 this.mcpServer.close();
             });
@@ -103,10 +100,10 @@ export class McpServerApplication {
         } catch (error: any) {
 
             const data = {
-                jsonrpc: "2.0",
+                jsonrpc: '2.0',
                 error: {
-                    code: -32603,
-                    message: "Internal server error"
+                    code: ErrorCode.InternalError,
+                    message: 'Internal server error.'
                 },
                 id: null,
             };
@@ -122,10 +119,10 @@ export class McpServerApplication {
     public async get(request: Request, response: Response): Promise<void> {
 
         const data = {
-            jsonrpc: "2.0",
+            jsonrpc: '2.0',
             error: {
-                code: -32000,
-                message: "Method not allowed."
+                code: ErrorCode.ConnectionClosed,
+                message: 'Method not allowed.'
             },
             id: null,
         };
@@ -140,10 +137,10 @@ export class McpServerApplication {
     public async delete(request: Request, response: Response): Promise<void> {
 
         const data = {
-            jsonrpc: "2.0",
+            jsonrpc: '2.0',
             error: {
-                code: -32000,
-                message: "Method not allowed."
+                code: ErrorCode.ConnectionClosed,
+                message: 'Method not allowed.'
             },
             id: null,
         };
