@@ -18,7 +18,7 @@ import {McpServer} from '@modelcontextprotocol/sdk/server/mcp.js';
 import {AuthInfo} from '@modelcontextprotocol/sdk/server/auth/types.js';
 import {StreamableHTTPServerTransport} from '@modelcontextprotocol/sdk/server/streamableHttp.js';
 import {RequestHandlerExtra} from '@modelcontextprotocol/sdk/shared/protocol.js';
-import {isInitializeRequest, ServerNotification, ServerRequest} from "@modelcontextprotocol/sdk/types.js"
+import {CallToolResult, isInitializeRequest, ServerNotification, ServerRequest} from "@modelcontextprotocol/sdk/types.js"
 import express, {Application, Request, Response} from 'express';
 import {randomUUID} from 'node:crypto';
 import {Configuration} from './configuration.js';
@@ -176,7 +176,7 @@ export class McpServerApplication {
     /*
      * Call the upstream API with the access token
      */
-    private async fetchStockPricesFromApi(extra: RequestHandlerExtra<ServerRequest, ServerNotification>): Promise<any> {
+    private async fetchStockPricesFromApi(extra: RequestHandlerExtra<ServerRequest, ServerNotification>): Promise<CallToolResult> {
 
         const options = {} as RequestInit;
 
@@ -211,10 +211,14 @@ export class McpServerApplication {
             };
 
             if (response.status === 401) {
-                
-                // When the upstream API returns a 401, return data the client needs to handle 401s and refresh access tokens or create a new session.
-                // In the content of a tool request, the data must be returned as an object rather than a 401 HTTP response.
+
+                // For 401s from the upstream API we should return an HTTP 401 to the MCP client so that it can get a new access token
+                // The TypeScript SDK does not support this yet, so we at least ensure that the MCP client gets the HTTP 401 response data
+                // The MCP authorization specification's recommendations are likely to clarify recommended behavior in the near future
+                // https://github.com/modelcontextprotocol/modelcontextprotocol/discussions/256
+
                 const errorData = JSON.parse(data);
+                errorData.status = 401;
                 errorData.wwAuthenticate = response.headers.get('WWW-Authenticate');
                 error.text = JSON.stringify(errorData);
             }
