@@ -18,13 +18,12 @@ import {McpServer} from '@modelcontextprotocol/sdk/server/mcp.js';
 import {AuthInfo} from '@modelcontextprotocol/sdk/server/auth/types.js';
 import {StreamableHTTPServerTransport} from '@modelcontextprotocol/sdk/server/streamableHttp.js';
 import {RequestHandlerExtra} from '@modelcontextprotocol/sdk/shared/protocol.js';
-import {CallToolResult, isInitializeRequest, ServerNotification, ServerRequest} from "@modelcontextprotocol/sdk/types.js"
+import {CallToolResult, ServerNotification, ServerRequest} from "@modelcontextprotocol/sdk/types.js"
 import express, {Application, Request, Response} from 'express';
-import {randomUUID} from 'node:crypto';
 import {Configuration} from './configuration.js';
 
 /*
- * The application is an MCP server running in the Express HTTP server and acts like an API gateway
+ * The application is a stateless MCP server running in the Express HTTP server and acts like an API gateway
  * It checks for the presence of an access token produced by the phantom token plugin, then proxies it to upstream APIs
  */
 export class McpServerApplication {
@@ -80,97 +79,76 @@ export class McpServerApplication {
     }
 
     /*
-     * Establish a secured MCP server connection from the client
+     * Stateless POST handling from the TypeScript SDK
+     * - https://github.com/modelcontextprotocol/typescript-sdk
      */
     public async post(request: Request, response: Response): Promise<void> {
 
         this.setAuthInfo(request);
-        await this.handlePost(request, response);
+        try {
+
+            const transport = new StreamableHTTPServerTransport({
+                sessionIdGenerator: undefined,
+            });
+
+            response.on('close', () => {
+                console.log('*** Request closed');
+                transport.close();
+                this.mcpServer.close();
+            });
+
+            await this.mcpServer.connect(transport);
+            await transport.handleRequest(request, response, request.body);
+
+        } catch (error: any) {
+
+            const data = {
+                jsonrpc: "2.0",
+                error: {
+                    code: -32603,
+                    message: "Internal server error"
+                },
+                id: null,
+            };
+            
+            response.status(500).send(JSON.stringify(data));
+        }
     }
 
     /*
-     * Handle GET session requests
+     * Stateless GET handling from the TypeScript SDK
+     * - https://github.com/modelcontextprotocol/typescript-sdk
      */
     public async get(request: Request, response: Response): Promise<void> {
 
-        this.setAuthInfo(request);
-        await this.handleSessionRequest(request, response);
+        const data = {
+            jsonrpc: "2.0",
+            error: {
+                code: -32000,
+                message: "Method not allowed."
+            },
+            id: null,
+        };
+        
+        response.writeHead(405).end(JSON.stringify(data));
     }
 
     /*
-     * Handle DELETE session requests
+     * Stateless DELETE handling from the TypeScript SDK
+     * - https://github.com/modelcontextprotocol/typescript-sdk
      */
     public async delete(request: Request, response: Response): Promise<void> {
 
-        this.setAuthInfo(request);
-        await this.handleSessionRequest(request, response);
-    }
-
-    /*
-     * Standard streamable HTTP connection code from the TypeScript SDK
-     * - https://github.com/modelcontextprotocol/typescript-sdk
-     */
-    private async handlePost(request: Request, response: Response): Promise<void> {
+        const data = {
+            jsonrpc: "2.0",
+            error: {
+                code: -32000,
+                message: "Method not allowed."
+            },
+            id: null,
+        };
         
-          const sessionId = request.headers['mcp-session-id'] as string | undefined;
-          let transport: StreamableHTTPServerTransport;
-        
-          // Reuse existing transports
-          if (sessionId && this.transports[sessionId]) {
-                transport = this.transports[sessionId];
-
-          } else if (!sessionId && isInitializeRequest(request.body)) {
-            
-                // Create a new transport and map it to a session ID
-                transport = new StreamableHTTPServerTransport({
-                    sessionIdGenerator: () => randomUUID(),
-                    onsessioninitialized: (sessionId) => {
-                        this.transports[sessionId] = transport;
-                    }
-                });
-        
-                // Clean up the transport when closed
-                transport.onclose = () => {
-                if (transport.sessionId) {
-                    delete this.transports[transport.sessionId];
-                }
-            };
-        
-            // Connect to the MCP server
-            await this.mcpServer.connect(transport);
-
-          } else {
-
-                // Handle invalid requests
-                response.status(400).json({
-                    jsonrpc: '2.0',
-                    error: {
-                        code: -32000,
-                        message: 'Bad Request: No valid session ID provided',
-                    },
-                    id: null,
-                });
-                return;
-          }
-        
-          // Pass the request to the transport
-          await transport.handleRequest(request, response, request.body);
-    }
-
-    /*
-     * Standard streamable HTTP session code from the TypeScript SDK
-     * - https://github.com/modelcontextprotocol/typescript-sdk
-     */
-    private async handleSessionRequest(request: Request, response: Response): Promise<void> {
-
-        const sessionId = request.headers['mcp-session-id'] as string | undefined;
-        if (!sessionId || !this.transports[sessionId]) {
-            response.status(400).send('Invalid or missing session ID');
-            return;
-        }
-        
-        const transport = this.transports[sessionId];
-        await transport.handleRequest(request, response);
+        response.writeHead(405).end(JSON.stringify(data));
     }
 
     /*
