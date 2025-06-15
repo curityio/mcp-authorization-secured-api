@@ -7,7 +7,7 @@ This is a copy of the [TypeScript SDK Example MCP OAuth Client](https://github.c
 The initial request URL from the MCP client was updated to match this deployment.
 
 ```typescript
-const DEFAULT_SERVER_URL = 'http://mcp.demo.example/stocks';
+const DEFAULT_SERVER_URL = 'http://mcp.demo.example';
 ```
 
 The scope was updated to match this deployment.

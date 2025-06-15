@@ -5,7 +5,7 @@ The code example shows how to use an MCP server to expose existing OAuth-secured
 
 ## Overview
 
-An example MCP client and MCP server provide the following end-to-end flow.
+A stateless MCP server and example client that provide the following end-to-end flow.
 
 ![MCP Flow](images/mcp-flow.png)
 
@@ -86,11 +86,13 @@ Connecting to: http://mcp.demo.example
 🚢 Transport created
 🔌 Attempting connection (this will trigger OAuth redirect)...
 📌 OAuth redirect handler called - opening browser
+Opening browser to: http://login.demo.example/oauth/v2/oauth-authorize?response_type=code&client_id=24ae8cd9-3d44-434e-9506-1342d76eea5c&code_challenge=u1IP4WbEWQQbS04foPIsNdjE28v_-8yQefhrqr9zE9M&code_challenge_method=S256&redirect_uri=http%3A%2F%2Flocalhost%3A8090%2Fcallback&scope=stocks%2Fread
+🌐 Opening browser for authorization: http://login.demo.example/oauth/v2/oauth-authorize?response_type=code&client_id=24ae8cd9-3d44-434e-9506-1342d76eea5c&code_challenge=u1IP4WbEWQQbS04foPIsNdjE28v_-8yQefhrqr9zE9M&code_challenge_method=S256&redirect_uri=http%3A%2F%2Flocalhost%3A8090%2Fcallback&scope=stocks%2Fread
 🔐 OAuth required - waiting for authorization...
 OAuth callback server started on http://localhost:8090
-📥 Received callback: /callback?iss=http%3A%2F%2Flogin.demo.example%2Foauth%2Fv2%2Foauth-anonymous&code=VTrM7o0KzCRIdE2bMm9MByosKocMa9w3
-✅ Authorization code received: VTrM7o0KzC...
-🔐 Authorization code received: VTrM7o0KzCRIdE2bMm9MByosKocMa9w3
+📥 Received callback: /callback?iss=http%3A%2F%2Flogin.demo.example%2Foauth%2Fv2%2Foauth-anonymous&code=dodc5hVzHJ3kAKmHgnGRyiyNgkVIVyNx
+✅ Authorization code received: dodc5hVzHJ...
+🔐 Authorization code received: dodc5hVzHJ3kAKmHgnGRyiyNgkVIVyNx
 🔌 Reconnecting with authenticated transport...
 🚢 Creating transport with OAuth provider...
 🚢 Transport created
@@ -153,10 +155,10 @@ These measures help to mitigate risks of releasing access tokens to AI agents:
 - The token has a limited scope and read-only access.
 - The token is short-lived and no refresh token is issued.
 
-The Kong API gateway exposes both [MCP routes and API routes](apigateway/kong.yml).\
+The [Kong API gateway routes](apigateway/kong.yml) expose both the MCP server and API routes.\
 When the MCP client calls the MCP server the phantom token plugin introspects opaque access tokens.\
-The MCP server receives a JWT access tokens with a payload similar to the following.\
-The MCP server does not need to process JWTs and simply forwards them to upstream APIs.
+The MCP server receives a scoped JWT access token with a payload similar to the following.\
+The MCP server forwards a JWT access token to upstream APIs.
 
 ```json
 {
@@ -174,7 +176,7 @@ The MCP server does not need to process JWTs and simply forwards them to upstrea
 ```
 
 The Curity Identity Server can also issue any custom claims to the access token.\
-APIs must then authorize using [scopes](https://curity.io/resources/learn/scope-best-practices/) and [claims](https://curity.io/resources/learn/claims-best-practices/).
+APIs must then authorize, to protect data using [scopes](https://curity.io/resources/learn/scope-best-practices/) and [claims](https://curity.io/resources/learn/claims-best-practices/).
 
 ## Website Documentation
 

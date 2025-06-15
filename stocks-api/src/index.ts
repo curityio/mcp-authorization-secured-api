@@ -26,10 +26,10 @@ const configuration = new Configuration();
 /*
  * The API publishes its own resource metadata from an unsecured endpoint
  */
-app.get('/.well-known/oauth-protected-resource', (request: Request, response: Response) => {
+app.get('/.well-known/oauth-protected-resource/stocks', (request: Request, response: Response) => {
 
     const metadata = {
-        resource: configuration.externalBaseUrl,
+        resource: `${configuration.externalBaseUrl}/stocks`,
         resource_name: "Stocks API",
         authorization_servers: [configuration.authorizationServerBaseUrl],
         scopes_supported: ['stocks/read'],

@@ -13,7 +13,7 @@ services:
     hosts:
     - mcp.demo.example
     paths:
-    - /stocks
+    - /
   plugins:
     - name: phantom-token
       config:
@@ -21,19 +21,19 @@ services:
         client_id: api-gateway-client
         client_secret: Password1
         token_cache_seconds: 900
-        resource_metadata_url: http://api.demo.example/stocks
+        resource_metadata_url: http://api.demo.example/.well-known/oauth-protected-resource/stocks
 
 #
-# Each API exposes its resource server metadata at an unsecured endpoint
+# Each API exposes its resource server metadata at an unsecured endpoint with a suffix
 #
 - name: stocks-api-resource-metadata
-  url: http://stocks-api:3000/.well-known/oauth-protected-resource
+  url: http://stocks-api:3000/.well-known/oauth-protected-resource/stocks
   routes:
   - name: stocks-api-resource-metadata-route
     hosts:
     - api.demo.example
     paths:
-    - /stocks/.well-known/oauth-protected-resource
+    - /.well-known/oauth-protected-resource/stocks
 
 #
 # The main stocks API route serves AI agents and can also serve other types of clients
@@ -53,7 +53,7 @@ services:
         client_id: api-gateway-client
         client_secret: Password1
         token_cache_seconds: 900
-        resource_metadata_url: http://api.demo.example/stocks
+        resource_metadata_url: http://api.demo.example/.well-known/oauth-protected-resource/stocks
 
 #
 # The main authorization server endpoints
@@ -92,26 +92,26 @@ services:
     - /
 
 #
-# HACK: The TypeScript SDK currently requires a route for a root level OAuth authorization server metadata endpoint
+# The TypeScript SDK currently requires a route for a root level OAuth authorization server metadata endpoint
 # - https://github.com/modelcontextprotocol/typescript-sdk/issues/545
 #
-- name: authorization-server-metadata-hack
+- name: authorization-server-metadata-reroute
   url: http://idsvr:8443/.well-known/oauth-authorization-server/oauth/v2/oauth-anonymous
   routes:
-  - name: authorization-server-metadata-hack-route
+  - name: authorization-server-metadata-reroute
     hosts:
     - login.demo.example
     paths:
     - /.well-known/oauth-authorization-server
 
 #
-# HACK: The TypeScript SDK currently requires a route for a root level OAuth protected resource metadata endpoint
+# The TypeScript SDK currently requires a route for a root level OAuth protected resource metadata endpoint
 # - https://github.com/modelcontextprotocol/typescript-sdk/issues/545
 #
-- name: stocks-resource-server-metadata-hack
-  url: http://stocks-api:3000/.well-known/oauth-protected-resource
+- name: stocks-resource-server-metadata-reroute
+  url: http://stocks-api:3000/.well-known/oauth-protected-resource/stocks
   routes:
-  - name: stocks-resource-server-metadata-hack-route
+  - name: stocks-resource-server-metadata-hack-reroute
     hosts:
     - api.demo.example
     paths:

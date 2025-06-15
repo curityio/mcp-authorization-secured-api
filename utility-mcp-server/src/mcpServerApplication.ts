@@ -89,6 +89,7 @@ export class McpServerApplication {
                 sessionIdGenerator: undefined,
             });
 
+            // For a stateless connection, the close event fires after every HTTP response from the MCP server
             response.on('close', () => {
                 transport.close();
                 this.mcpServer.close();
@@ -187,9 +188,9 @@ export class McpServerApplication {
 
             if (response.status === 401) {
 
-                // For 401s from the upstream API we should return an HTTP 401 to the MCP client so that it can get a new access token
-                // The TypeScript SDK does not support this yet, so we at least ensure that the MCP client gets the HTTP 401 response data
-                // The MCP authorization specification's recommendations are likely to clarify recommended behavior in the near future
+                // For 401s from the upstream API we should return an HTTP 401 to the MCP client so that it can get a new access token.
+                // There is no standard solution for doing so yet, so at least ensure that the MCP client gets the correct error values.
+                // The MCP authorization specification is likely to provide standardized behaviors in the near future.
                 // https://github.com/modelcontextprotocol/modelcontextprotocol/discussions/256
 
                 const errorData = JSON.parse(data);

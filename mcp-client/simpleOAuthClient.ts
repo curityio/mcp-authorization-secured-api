@@ -27,7 +27,7 @@ if (process.env.http_proxy) {
 /*
  * CURITY EDIT: Updated default server URL
  */
-const DEFAULT_SERVER_URL = 'http://mcp.demo.example/stocks';
+const DEFAULT_SERVER_URL = 'http://mcp.demo.example';
 const CALLBACK_PORT = 8090; // Use different port than auth server (3001)
 const CALLBACK_URL = `http://localhost:${CALLBACK_PORT}/callback`;
 

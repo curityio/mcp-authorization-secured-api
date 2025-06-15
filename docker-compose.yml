@@ -36,7 +36,7 @@ services:
     hostname: stocks-api
     environment:
       PORT: '3000'
-      EXTERNAL_BASE_URL: 'http://api.demo.example/stocks'
+      EXTERNAL_BASE_URL: 'http://api.demo.example'
       AUTHORIZATION_SERVER_BASE_URL: 'http://login.demo.example'
       JWKS_URI: 'http://idsvr:8443/oauth/v2/oauth-anonymous/jwks'
       REQUIRED_JWT_ALGORITHM: 'PS256'
