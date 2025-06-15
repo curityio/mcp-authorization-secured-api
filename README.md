@@ -16,13 +16,13 @@ APIs use a JWT access token to implement their authorization.
 ## Backend Endpoints
 
 All external URLs are exposed using an instance of the Kong API gateway.\
-The backend includes a utility MCP server that acts like an extension to the API gateway.\
+The backend includes a utility MCP server that acts as an extension to the API gateway.\
 MCP clients connect to the MCP server using a Streamable HTTP transport.
 
 | Endpoint | URL |
 | -------- | --- |
+| MCP Server Entry Point | http://mcp.demo.example |
 | Stocks API | http://api.demo.example/stocks |
-| Utility MCP Server | http://mcp.demo.example |
 | Curity Identity Server Admin UI | http://admin.demo.example/admin |
 | Curity Identity Server OAuth Metadata | http://login.demo.example/.well-known/oauth-authorization-server |
 | Test Email Inbox | http://mail.demo.example |
@@ -153,13 +153,12 @@ Notice the following access token characteristics returned to MCP clients (and t
 These measures help to mitigate risks of releasing access tokens to AI agents:
 
 - The MCP client is unable to read any access token claims.
-- The token has a limited scope and read-only access.
-- The token is short-lived and no refresh token is issued.
+- The MCP client's access token is short-lived with a limited scope.
+- The MCP client does not receive a refresh token.
 
-The [Kong API gateway routes](apigateway/kong.yml) expose both the MCP server and API routes.\
-When the MCP client calls the MCP server the phantom token plugin introspects opaque access tokens.\
+The [Kong API gateway routes](apigateway/kong.yml) expose both the MCP server and API endpoints.\
 The MCP server receives a scoped JWT access token with a payload similar to the following.\
-The MCP server forwards a JWT access token to upstream APIs.
+The MCP server forwards this JWT access token to upstream APIs.
 
 ```json
 {
