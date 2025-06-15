@@ -5,12 +5,13 @@ The code example shows how to use an MCP server to expose existing OAuth-secured
 
 ## Overview
 
-A stateless MCP server and example client that provide the following end-to-end flow.
+The end-to-end flow starts when an example MCP client calls a stateless MCP server.
 
 ![MCP Flow](images/mcp-flow.png)
 
-The [phantom token plugin](https://github.com/curityio/nginx-lua-phantom-token-plugin) secures connections to the MCP server by requiring a valid opaque access token.\
-APIs require a different JWT access token to implement their authorization.
+The MCP client securely connects to the MCP server with an opaque access token.\
+A [phantom token plugin](https://github.com/curityio/nginx-lua-phantom-token-plugin) uses OAuth introspection to translate the opaque access token to a JWT access token.\
+APIs use a JWT access token to implement their authorization.
 
 ## Backend Endpoints
 
