@@ -23,8 +23,9 @@ MCP clients connect to the MCP server using a Streamable HTTP transport.
 | -------- | --- |
 | MCP Server Entry Point | http://mcp.demo.example |
 | Stocks API | http://api.demo.example/stocks |
-| Curity Identity Server Admin UI | http://admin.demo.example/admin |
+| Stocks API Resource Server Metadata | http://api.demo.example/.well-known/oauth-protected-resource/stocks |
 | Curity Identity Server OAuth Metadata | http://login.demo.example/.well-known/oauth-authorization-server |
+| Curity Identity Server Admin UI | http://admin.demo.example/admin |
 | Test Email Inbox | http://mail.demo.example |
 
 To enable the use of these domains on your local computer, add the following entries to the `/etc/hosts` file.
