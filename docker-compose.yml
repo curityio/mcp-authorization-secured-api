@@ -26,6 +26,8 @@ services:
     hostname: utility-mcp-server
     environment:
       PORT: '3000'
+      EXTERNAL_BASE_URL: 'http://mcp.demo.example'
+      AUTHORIZATION_SERVER_BASE_URL: 'http://login.demo.example'
       STOCKS_API_BASE_URL: 'http://stocks-api:3000/'
 
   #
@@ -36,8 +38,6 @@ services:
     hostname: stocks-api
     environment:
       PORT: '3000'
-      EXTERNAL_BASE_URL: 'http://api.demo.example'
-      AUTHORIZATION_SERVER_BASE_URL: 'http://login.demo.example'
       JWKS_URI: 'http://idsvr:8443/oauth/v2/oauth-anonymous/jwks'
       REQUIRED_JWT_ALGORITHM: 'PS256'
       REQUIRED_JWT_ISSUER: 'http://login.demo.example/oauth/v2/oauth-anonymous'

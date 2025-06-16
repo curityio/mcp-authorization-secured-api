@@ -20,11 +20,14 @@
 export class Configuration {
 
     public port: string;
+    public externalBaseUrl: string;
+    public authorizationServerBaseUrl: string;
     public stocksApiBaseUrl: string;
     
     public constructor() {
-
         this.port = this.getValue('PORT');
+        this.externalBaseUrl = this.getValue('EXTERNAL_BASE_URL');
+        this.authorizationServerBaseUrl = this.getValue('AUTHORIZATION_SERVER_BASE_URL');
         this.stocksApiBaseUrl = this.getValue('STOCKS_API_BASE_URL');
         
     }

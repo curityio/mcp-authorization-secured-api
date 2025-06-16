@@ -60,10 +60,9 @@ export class ErrorHandler {
 
         if (apiError.status === 401) {
             
-            const resourceMetadataUrl = `${this.configuration.externalBaseUrl}/.well-known/oauth-protected-resource/stocks`;
             response.setHeader(
                 'WWW-Authenticate',
-                `Bearer error="${apiError.code}", error_description="${apiError.message}", resource_metadata="${resourceMetadataUrl}"`);
+                `Bearer error="${apiError.code}", error_description="${apiError.message}"`);
         }
     }
 
