@@ -385,7 +385,7 @@
         </endpoint>
         <endpoint>
           <id>token-service-dynamic-client-registration</id>
-          <uri>/token-service/oauth-registration</uri>
+          <uri>/oauth/v2/oauth-registration</uri>
           <endpoint-kind>oauth-dynamic-client-registration</endpoint-kind>
           <pre-processing-procedure>mcp-client-registration-policy</pre-processing-procedure>
         </endpoint>

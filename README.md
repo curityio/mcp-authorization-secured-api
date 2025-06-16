@@ -1,32 +1,47 @@
 # MCP Authorization Secured API
 
-How organizations can expose APIs using the draft [Model Content Protocol Authorization](https://modelcontextprotocol.io/specification/2025-03-26/basic/authorization) specification.\
+This repository contains a code example to illustrate how organizations can expose APIs using the draft [Model Content Protocol Authorization](https://modelcontextprotocol.io/specification/2025-03-26/basic/authorization) specification.\
 The code example shows how to use an MCP server to expose existing OAuth-secured APIs to AI agents.
 
 ## Overview
+
+The example includes the following components:
+
+* Example MCP client
+* Stocks API that simulates an existing API
+* MCP server that proxies requests to the API
+* Authorization server (the Curity Identity Server) that issues access tokens
+* API gateway that exposes public endpoints and includes a phantom token plugin (see [the phantom token approach](https://curity.io/resources/learn/phantom-token-pattern/))
+
+The MCP client is typically part of an AI agent that users interact with using natural language. The AI agent selects and invokes the MCP client that, in turn, integrates with the MCP server. For simplicity, this example does not include an AI agent. However, it includes an example of an MCP client that you can run locally on your computer.
 
 The end-to-end flow starts when an example MCP client calls a stateless MCP server.
 
 ![MCP Flow](images/mcp-flow.png)
 
-The MCP client securely connects to the MCP server with an opaque access token.\
+First, the MCP client runs an OAuth flow to retrieve an opaque access token. It then securely connects to the MCP server with that token.\
 A [phantom token plugin](https://github.com/curityio/nginx-lua-phantom-token-plugin) uses OAuth introspection to translate the opaque access token to a JWT access token.\
-APIs use a JWT access token to implement their authorization.
+The MCP server forwards the JWT access token to the existing API.\
+The API uses the JWT access token to implement its authorization.
 
 ## Backend Endpoints
 
-All external URLs are exposed using an instance of the Kong API gateway.\
-The backend includes a utility MCP server that acts as an extension to the API gateway.\
+All external URLs in this code example are exposed using an instance of the Kong API gateway.\
+The backend includes a utility MCP server that acts as an extension to the API gateway (that is, it only proxies requests to an existing API).\
 MCP clients connect to the MCP server using a Streamable HTTP transport.
 
-| Endpoint | URL |
-| -------- | --- |
-| MCP Server Entry Point | http://mcp.demo.example |
-| Stocks API | http://api.demo.example/stocks |
-| Stocks API Resource Server Metadata | http://api.demo.example/.well-known/oauth-protected-resource/stocks |
-| Curity Identity Server OAuth Metadata | http://login.demo.example/.well-known/oauth-authorization-server |
-| Curity Identity Server Admin UI | http://admin.demo.example/admin |
-| Test Email Inbox | http://mail.demo.example |
+| Endpoint | URL | Description |
+| -------- | --- | ----------- |
+| MCP Server Entry Point | `http://mcp.demo.example` | Endpoint that the MCP client integrates with. |
+| Stocks API | `http://api.demo.example/stocks` | The API entry point for non MCP clients. |
+| Stocks API Resource Server Metadata | `http://mcp.demo.example/.well-known/oauth-protected-resource` | Used by the MCP client to discover the MCP server's authorization server. |
+| Curity Identity Server OAuth Metadata | `http://login.demo.example/.well-known/oauth-authorization-server` | Used by the MCP client to discover the capabilities of the authorization server, e.g. authorization endpoint. |
+| Curity Identity Server Admin UI | `http://admin.demo.example/admin` | Administration interface of the Curity Identity Server. |
+| Curity Identity Server DCR | `http://login.demo.example/oauth/v2/oauth-registration` | Endpoint of the Curity Identity Server that enables the MCP client to automatically register, e.g. its redirect URI. |
+| Curity Identity Server Authorization Endpoint | `http://login.demo.example/oauth/v2/oauth-authorize` | Endpoint discovered by the MCP client for starting the OAuth flow. |
+| Curity Identity Server Token Endpoint | `http://login.demo.example/oauth/v2/oauth-token` | Endpoint from where the MCP client gets the access token at the end. |
+| Curity Identity Server Login Interfaces | `http://login.demo.example/authn/authenticate/` | The base URL for authentication related user interaction. |
+| Test Email Inbox | `http://mail.demo.example` | A mail server for testing purposes that lets you receive any emails that the Curity Identity Server sends. |
 
 To enable the use of these domains on your local computer, add the following entries to the `/etc/hosts` file.
 
@@ -34,13 +49,13 @@ To enable the use of these domains on your local computer, add the following ent
 127.0.0.1 api.demo.example mcp.demo.example admin.demo.example login.demo.example mail.demo.example
 ```
 
-The Curity Identity Server implements OAuth standards to enable the authorization from the specification.\
+The Curity Identity Server implements OAuth standards (DCR, code flow) to enable the authorization as defined for MCP.\
 You can log into the Admin UI with a username and password of `admin / Password1`.
 
 ## Run the End-to-End Flow
 
 Typically you do not control the client or its code, and MCP clients make standards-based connections.\
-The deployed backend uses standards-based security to enable many MCP clients to connect.
+The deployed backend in this code example uses standards-based security to enable many MCP clients to connect.
 
 ### Install Prerequisites
 
@@ -50,7 +65,7 @@ Save the license to your desktop as a `license.json` file.
 
 ### Deploy the Backend
 
-Run the following commands to deploy all backend components and provide OAuth-secured endpoints.
+Run the following commands to deploy all backend components and provide OAuth-secured endpoints. Adapt the path of the license file if necessary.
 
 ```bash
 export LICENSE_FILE_PATH=~/Desktop/license.json
@@ -133,7 +148,7 @@ You can simulate that by entering one of the emails and typing a one-time passwo
 ![user-authentication](images/user-authentication.png)
 
 Users must then consent to granting the MCP client access to API data.\
-The user is informed about the level of data access the AI agent requests.
+The user is informed about the level of data access that the AI agent requests.
 
 ![user-consent](images/user-consent.png)
 
@@ -150,7 +165,7 @@ The MCP client then receives the following form of token response:
 }
 ```
 
-Notice the following access token characteristics returned to MCP clients (and therefore AI agents).\
+Notice the following characteristics of the access token that gets returned to MCP clients (and therefore AI agents).\
 These measures help to mitigate risks of releasing access tokens to AI agents:
 
 - The MCP client is unable to read any access token claims.
@@ -177,7 +192,7 @@ The MCP server forwards this JWT access token to upstream APIs.
 ```
 
 The Curity Identity Server can also issue any custom claims to the access token.\
-APIs must then authorize, to protect data using [scopes](https://curity.io/resources/learn/scope-best-practices/) and [claims](https://curity.io/resources/learn/claims-best-practices/).
+APIs must then authorize to protect data using [scopes](https://curity.io/resources/learn/scope-best-practices/) and [claims](https://curity.io/resources/learn/claims-best-practices/).
 
 ## Website Documentation
 
