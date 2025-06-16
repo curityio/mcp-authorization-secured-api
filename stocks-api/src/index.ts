@@ -24,23 +24,6 @@ const app = express();
 const configuration = new Configuration();
 
 /*
- * The API publishes its own resource metadata from an unsecured endpoint
- */
-app.get('/.well-known/oauth-protected-resource/stocks', (request: Request, response: Response) => {
-
-    const metadata = {
-        resource: `${configuration.externalBaseUrl}/stocks`,
-        resource_name: "Stocks API",
-        authorization_servers: [configuration.authorizationServerBaseUrl],
-        scopes_supported: ['stocks/read'],
-    };
-
-    response.setHeader('content-type', 'application/json');
-    response.status(200).send(JSON.stringify(metadata));
-
-});
-
-/*
  * The API validates a JWT access token using security best practices on every request
  */
 const oauthFilter = new OAuthFilter(configuration);

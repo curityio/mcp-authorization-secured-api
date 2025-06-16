@@ -4,12 +4,13 @@ _transform: true
 services:
 
 #
-# The initial MCP server connection is secured by opaque access tokens that pass introspection
+# The MCP server connection is secured by opaque access tokens that pass introspection
+# The phantom token plugin returns a 401 that points the MCP client to resource metadata
 #
-- name: utility-mcp-server
+- name: mcp-server
   url: http://utility-mcp-server:3000/
   routes:
-  - name: utility-mcp-server-route
+  - name: mcp-server-route
     hosts:
     - mcp.demo.example
     paths:
@@ -21,42 +22,32 @@ services:
         client_id: api-gateway-client
         client_secret: Password1
         token_cache_seconds: 900
-        resource_metadata_url: http://api.demo.example/.well-known/oauth-protected-resource/stocks
-    - name: cors
-      config:
-        origins:
-        - http://localhost:6274
-        methods:
-        - GET
-        - POST
-        headers:
-        - Authorization
-        exposed_headers:
-        - WWW-Authenticate
+        resource_metadata_url: http://mcp.demo.example/.well-known/oauth-protected-resource
 
 #
-# Each API exposes its resource server metadata at an unsecured endpoint with a suffix
+# The MCP server exposes OAuth protected resource metadata that points MCP clients to the authorization server
 #
-- name: stocks-api-resource-metadata
-  url: http://stocks-api:3000/.well-known/oauth-protected-resource/stocks
+- name: mcp-server-resource-metadata
+  url: http://utility-mcp-server:3000/.well-known/oauth-protected-resource
   routes:
-  - name: stocks-api-resource-metadata-route
+  - name: mcp-server-resource-metadata-route
     hosts:
-    - api.demo.example
+    - mcp.demo.example
     paths:
-    - /.well-known/oauth-protected-resource/stocks
-  plugins:
-    - name: cors
-      config:
-        origins:
-        - http://localhost:6274
-        methods:
-        - GET
-        - POST
-        headers:
-        - Authorization
-        exposed_headers:
-        - WWW-Authenticate
+    - /.well-known/oauth-protected-resource
+
+#
+# MCP authorization requires a root level OAuth authorization server metadata endpoint
+# - https://github.com/modelcontextprotocol/typescript-sdk/issues/545
+#
+- name: authorization-server-metadata-reroute
+  url: http://idsvr:8443/.well-known/oauth-authorization-server/oauth/v2/oauth-anonymous
+  routes:
+  - name: authorization-server-metadata-reroute
+    hosts:
+    - login.demo.example
+    paths:
+    - /.well-known/oauth-authorization-server
 
 #
 # The main stocks API route serves AI agents and can also serve other types of clients
@@ -76,18 +67,6 @@ services:
         client_id: api-gateway-client
         client_secret: Password1
         token_cache_seconds: 900
-        resource_metadata_url: http://api.demo.example/.well-known/oauth-protected-resource/stocks
-    - name: cors
-      config:
-        origins:
-        - http://localhost:6274
-        methods:
-        - GET
-        - POST
-        headers:
-        - Authorization
-        exposed_headers:
-        - WWW-Authenticate
 
 #
 # The main authorization server endpoints
@@ -124,53 +103,3 @@ services:
     - mail.demo.example
     paths:
     - /
-
-#
-# The TypeScript SDK currently requires a route for a root level OAuth authorization server metadata endpoint
-# - https://github.com/modelcontextprotocol/typescript-sdk/issues/545
-#
-- name: authorization-server-metadata-reroute
-  url: http://idsvr:8443/.well-known/oauth-authorization-server/oauth/v2/oauth-anonymous
-  routes:
-  - name: authorization-server-metadata-reroute
-    hosts:
-    - login.demo.example
-    paths:
-    - /.well-known/oauth-authorization-server
-  plugins:
-    - name: cors
-      config:
-        origins:
-        - http://localhost:6274
-        methods:
-        - GET
-        - POST
-        headers:
-        - Authorization
-        exposed_headers:
-        - WWW-Authenticate
-
-#
-# The TypeScript SDK currently requires a route for a root level OAuth protected resource metadata endpoint
-# - https://github.com/modelcontextprotocol/typescript-sdk/issues/545
-#
-- name: stocks-resource-server-metadata-reroute
-  url: http://stocks-api:3000/.well-known/oauth-protected-resource/stocks
-  routes:
-  - name: stocks-resource-server-metadata-hack-reroute
-    hosts:
-    - api.demo.example
-    paths:
-    - /.well-known/oauth-protected-resource
-  plugins:
-    - name: cors
-      config:
-        origins:
-        - http://localhost:6274
-        methods:
-        - GET
-        - POST
-        headers:
-        - Authorization
-        exposed_headers:
-        - WWW-Authenticate

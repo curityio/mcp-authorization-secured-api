@@ -40,6 +40,7 @@ export class McpServerApplication {
         this.post = this.post.bind(this);
         this.get = this.get.bind(this);
         this.delete = this.delete.bind(this);
+        this.getResourceMetadata = this.getResourceMetadata.bind(this);
         this.fetchStockPricesFromApi = this.fetchStockPricesFromApi.bind(this);
 
         // Create the MCP server
@@ -64,6 +65,7 @@ export class McpServerApplication {
         this.expressApp.post('/', this.post);
         this.expressApp.get('/', this.get);
         this.expressApp.delete('/', this.delete);
+        this.expressApp.get('/.well-known/oauth-protected-resource', this.getResourceMetadata);
     }
 
     /*
@@ -150,6 +152,21 @@ export class McpServerApplication {
     }
 
     /*
+     * The MCP server points clients to its authorization server
+     */
+    private getResourceMetadata(request: Request, response: Response) {
+
+        const metadata = {
+            resource: this.configuration.externalBaseUrl,
+            resource_name: "MCP Server",
+            authorization_servers: [this.configuration.authorizationServerBaseUrl],
+        };
+
+        response.setHeader('content-type', 'application/json');
+        response.status(200).send(JSON.stringify(metadata));
+    }
+
+    /*
      * Call the upstream API with the access token
      */
     private async fetchStockPricesFromApi(extra: RequestHandlerExtra<ServerRequest, ServerNotification>): Promise<CallToolResult> {
@@ -195,7 +212,8 @@ export class McpServerApplication {
 
                 const errorData = JSON.parse(data);
                 errorData.status = 401;
-                errorData.wwAuthenticate = response.headers.get('WWW-Authenticate');
+                const resourceMetadataUrl = `${this.configuration.externalBaseUrl}/.well-known/oauth-protected-resource`;
+                errorData.wwAuthenticate = response.headers.get('WWW-Authenticate') + `, resource_metadata="${resourceMetadataUrl}"`;
                 error.text = JSON.stringify(errorData);
             }
 
