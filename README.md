@@ -110,7 +110,7 @@ Commands:
 mcp> call fetch-stock-prices
 
 🔧 Tool 'fetch-stock-prices' result:
-[{"id":"MSFT","name":"Microsoft Corporation","price":450.22},{"id":"AAPL","name":"Apple Inc","price":250.62},{"id":"INTC","name":"Intel Corp","price":21.07}]
+[{"id":"COM1","name":Company 1","price":450.22},{"id":"COM2","name":"Company 2","price":250.62},{"id":"COM3","name":"Company 3","price":21.07}]
 ```
 
 ### MCP Client Flow

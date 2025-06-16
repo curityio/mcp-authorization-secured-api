@@ -68,18 +68,18 @@ app.get('/', (request: Request, response: Response) => {
      */
     const stocks = [
         {
-            "id": "MSFT",
-            "name": "Microsoft Corporation",
+            "id": "COM1",
+            "name": "Company 1",
             "price": 450.22,
         },
         {
-            "id": "AAPL",
-            "name": "Apple Inc",
+            "id": "COM2",
+            "name": "Company 2",
             "price": 250.62,
         },
         {
-            "id": "INTC",
-            "name": "Intel Corp",
+            "id": "COM3",
+            "name": "Company 3",
             "price": 21.07,
         },
     ];

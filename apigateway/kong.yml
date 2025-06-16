@@ -22,6 +22,17 @@ services:
         client_secret: Password1
         token_cache_seconds: 900
         resource_metadata_url: http://api.demo.example/.well-known/oauth-protected-resource/stocks
+    - name: cors
+      config:
+        origins:
+        - http://localhost:6274
+        methods:
+        - GET
+        - POST
+        headers:
+        - Authorization
+        exposed_headers:
+        - WWW-Authenticate
 
 #
 # Each API exposes its resource server metadata at an unsecured endpoint with a suffix
@@ -34,6 +45,18 @@ services:
     - api.demo.example
     paths:
     - /.well-known/oauth-protected-resource/stocks
+  plugins:
+    - name: cors
+      config:
+        origins:
+        - http://localhost:6274
+        methods:
+        - GET
+        - POST
+        headers:
+        - Authorization
+        exposed_headers:
+        - WWW-Authenticate
 
 #
 # The main stocks API route serves AI agents and can also serve other types of clients
@@ -54,6 +77,17 @@ services:
         client_secret: Password1
         token_cache_seconds: 900
         resource_metadata_url: http://api.demo.example/.well-known/oauth-protected-resource/stocks
+    - name: cors
+      config:
+        origins:
+        - http://localhost:6274
+        methods:
+        - GET
+        - POST
+        headers:
+        - Authorization
+        exposed_headers:
+        - WWW-Authenticate
 
 #
 # The main authorization server endpoints
@@ -103,6 +137,18 @@ services:
     - login.demo.example
     paths:
     - /.well-known/oauth-authorization-server
+  plugins:
+    - name: cors
+      config:
+        origins:
+        - http://localhost:6274
+        methods:
+        - GET
+        - POST
+        headers:
+        - Authorization
+        exposed_headers:
+        - WWW-Authenticate
 
 #
 # The TypeScript SDK currently requires a route for a root level OAuth protected resource metadata endpoint
@@ -116,3 +162,15 @@ services:
     - api.demo.example
     paths:
     - /.well-known/oauth-protected-resource
+  plugins:
+    - name: cors
+      config:
+        origins:
+        - http://localhost:6274
+        methods:
+        - GET
+        - POST
+        headers:
+        - Authorization
+        exposed_headers:
+        - WWW-Authenticate
