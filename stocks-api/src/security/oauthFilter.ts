@@ -56,7 +56,7 @@ export class OAuthFilter {
 
         const options = {
             issuer: this.configuration.requiredIssuer,
-            // audience: this.configuration.requiredAudience,
+            audience: this.configuration.requiredAudience,
             algorithms: [this.configuration.requiredJwtAlgorithm],
         } as JWTVerifyOptions;
 

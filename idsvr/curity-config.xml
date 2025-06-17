@@ -15,7 +15,7 @@
         <zones>
           <default-zone>
             <email-provider>smtp</email-provider>
-            <symmetric-key>data:text/plain;aes,v:S.UnZUWkpTNEdkQnF6ZHFsOA==.isS2H2SF_pyHnnQDXnP08Q==.55c-L4tQBUhFv03i4-J5CDUMRurISVpCemMuIcTAwBr4f5PbPcOyQo9hBxsM8q9gZ0UhQQNLRAN4PM8waeVt5qzn61wLpFT1AlscYCG2rak=.AiN6WmE6U2rT1Qf6ffjgH5YF_xHV13bqV-bHeXEj010=</symmetric-key>
+            <symmetric-key>data:text/plain;aes,v:S.U25FRTJrVUIwSzMxZ3lReQ==.-WZWut-syGvZvV3yTwY-NQ==.gvC6v3G6pMXKH11CMQ2S2luDPye9HImvRs36OI167oZDClagEIb9_jcy_t9hgulxSEHgxw2O1f2Ibp0VpLBluIMCp5EAjNZ6FxI3gFXHi0A=.Br-lvnnGdSCcLNzs7GKrT2kjfuamH_SLAbFVkxYbYtE=</symmetric-key>
           </default-zone>
         </zones>
         <service-role>
@@ -408,6 +408,10 @@
           <id>token-service-token</id>
           <uri>/oauth/v2/oauth-token</uri>
           <endpoint-kind>oauth-token</endpoint-kind>
+          <token-endpoint-procedures>
+            <flow>oauth-token-authorization-code</flow>
+            <procedure>set-access-token-audience</procedure>
+          </token-endpoint-procedures>
         </endpoint>
         <endpoint>
           <id>token-service-userinfo</id>
@@ -431,11 +435,11 @@
       <data-source>
         <id>default-datasource</id>
         <jdbc xmlns="https://curity.se/ns/ext-conf/jdbc">
-          <connection-string>data:text/plain;aes,v:S.WkQ1amJGdWM4eUpabmdFcA==.fDTr__DqhLS5Gz8aB6Z4Dg==.aiw6K8ZCMpO9xjCiU_l83tvnEuU14faMR4P29rpHPHTLvMSgveyMKvr6PYV3f8Tb.jLCOAK39ePGgmAvReMpiRsPF_Vfu1ZeU7IRCkVBd9dM=</connection-string>
+          <connection-string>data:text/plain;aes,v:S.QWZrWkNRbmcwOTlMaWFWZg==.EsE6xj1AQoRB4USrMlECjA==.326zf8YnroppHK0KZ5nc_aofM9w_ZySB5wbyoVfJbJ68ktY5RHVEcwJtDgnD6tzu.ZTJWzFP_NlMjoXvzD7GvAQTdVTRDmbQUZh0_aT8cygY=</connection-string>
           <standard-credentials-mode>
           </standard-credentials-mode>
           <driver>org.postgresql.Driver</driver>
-          <password>data:text/plain;aes,v:S.OGYxMFdPTXlxempGTzVUdQ==.ADeW5KPrRbxjQZ7GkW1Qrg==.oL033Yh_ad8d0fPY_vzDHA==.GgRtTZQF1cPAwteAdrVBb3jESyb3lkmJGlJvGRDfd6Q=</password>
+          <password>data:text/plain;aes,v:S.djZqSDZJaGc1SWdsOHV6Mg==.BSJPbc5sAHrDvzJqe8Yx0Q==.GLCy9cP4MdS01aNLSBFUag==.fu40DkRaX0XHvbdpuUAWl1Ou_wIoz2w3uTIfaCJFOZA=</password>
           <username>postgres</username>
         </jdbc>
       </data-source>
@@ -481,6 +485,11 @@
   <processing xmlns="https://curity.se/ns/conf/base">
     <license-key>#{LICENSE_KEY}</license-key>
     <procedures>
+      <token-procedure>
+        <id>set-access-token-audience</id>
+        <flow>oauth-token-authorization-code</flow>
+        <script>LyoqCiAqIEBwYXJhbSB7c2UuY3VyaXR5LmlkZW50aXR5c2VydmVyLnByb2NlZHVyZXMuY29udGV4dC5PcGVuSWRDb25uZWN0QXV0aG9yaXphdGlvbkNvZGVUb2tlblByb2NlZHVyZUNvbnRleHR9IGNvbnRleHQKICovCmZ1bmN0aW9uIHJlc3VsdChjb250ZXh0KSB7CiAgdmFyIGRlbGVnYXRpb25EYXRhID0gY29udGV4dC5nZXREZWZhdWx0RGVsZWdhdGlvbkRhdGEoKTsKICB2YXIgaXNzdWVkRGVsZWdhdGlvbiA9IGNvbnRleHQuZGVsZWdhdGlvbklzc3Vlci5pc3N1ZShkZWxlZ2F0aW9uRGF0YSk7CgogIHZhciBhY2Nlc3NUb2tlbkRhdGEgPSBjb250ZXh0LmdldERlZmF1bHRBY2Nlc3NUb2tlbkRhdGEoKTsKICAKICAvLyBBIHdvcmthcm91bmQgdG8gc2V0IHRoZSBjb3JyZWN0IGF1ZGllbmNlIGZvciBBUEkgYWNjZXNzIHRva2VucyBmb3IgZHluYW1pYyBjbGllbnRzCiAgaWYgKGFjY2Vzc1Rva2VuRGF0YS5zY29wZS5zcGxpdCgnICcpLmluZGV4T2YoJ3N0b2Nrcy9yZWFkJykgIT09IC0xKSB7CiAgICBhY2Nlc3NUb2tlbkRhdGEuYXVkID0gJ2h0dHA6Ly9hcGkuZGVtby5leGFtcGxlJzsKICB9CiAgCiAgdmFyIGlzc3VlZEFjY2Vzc1Rva2VuID0gY29udGV4dC5hY2Nlc3NUb2tlbklzc3Vlci5pc3N1ZShhY2Nlc3NUb2tlbkRhdGEsIGlzc3VlZERlbGVnYXRpb24pOwoKICB2YXIgcmVmcmVzaFRva2VuRGF0YSA9IGNvbnRleHQuZ2V0RGVmYXVsdFJlZnJlc2hUb2tlbkRhdGEoKTsKICB2YXIgaXNzdWVkUmVmcmVzaFRva2VuID0gY29udGV4dC5yZWZyZXNoVG9rZW5Jc3N1ZXIuaXNzdWUocmVmcmVzaFRva2VuRGF0YSwgaXNzdWVkRGVsZWdhdGlvbik7CgogIHZhciByZXNwb25zZURhdGEgPSB7CiAgICBhY2Nlc3NfdG9rZW46IGlzc3VlZEFjY2Vzc1Rva2VuLAogICAgc2NvcGU6IGFjY2Vzc1Rva2VuRGF0YS5zY29wZSwKICAgIHJlZnJlc2hfdG9rZW46IGlzc3VlZFJlZnJlc2hUb2tlbiwKICAgIHRva2VuX3R5cGU6ICdiZWFyZXInLAogICAgZXhwaXJlc19pbjogc2Vjb25kc1VudGlsKGFjY2Vzc1Rva2VuRGF0YS5leHApLAogIH07CgogIHZhciBpZFRva2VuRGF0YSA9IGNvbnRleHQuZ2V0RGVmYXVsdElkVG9rZW5EYXRhKCk7CiAgaWYgKGlkVG9rZW5EYXRhKSB7CiAgICB2YXIgaWRUb2tlbklzc3VlciA9IGNvbnRleHQuaWRUb2tlbklzc3VlcjsKICAgIGlkVG9rZW5EYXRhLmF0X2hhc2ggPSBpZFRva2VuSXNzdWVyLmF0SGFzaChpc3N1ZWRBY2Nlc3NUb2tlbik7CgogICAgcmVzcG9uc2VEYXRhLmlkX3Rva2VuID0gaWRUb2tlbklzc3Vlci5pc3N1ZShpZFRva2VuRGF0YSwgaXNzdWVkRGVsZWdhdGlvbik7CiAgfQoKICByZXR1cm4gcmVzcG9uc2VEYXRhOwp9</script>
+      </token-procedure>
       <pre-processing-procedure>
         <id>mcp-client-registration-policy</id>
         <script>LyoqCiAqIFRoaXMgaXMgYW4gZXhhbXBsZSBwcm9jZWR1cmUgdGhhdCBwZXJmb3JtcyBubyB0cmFuc2Zvcm1hdGlvbgogKiBAcGFyYW0ge3NlLmN1cml0eS5pZGVudGl0eXNlcnZlci5wcm9jZWR1cmVzLmNvbnRleHQuRGNyUHJlUHJvY2Vzc2luZ1Byb2NlZHVyZUNvbnRleHR9IGNvbnRleHQKICogQHJldHVybnMgeyp9CiAqLwpmdW5jdGlvbiByZXN1bHQoY29udGV4dCkgewoKICAgIHZhciByZXF1ZXN0ID0gY29udGV4dC5nZXRSZXF1ZXN0KCk7CiAgICB2YXIgaHR0cE1ldGhvZCA9IHJlcXVlc3QuZ2V0TWV0aG9kKCk7CiAgICB2YXIgYXR0cmlidXRlcyA9IHt9OwoKICAgIGlmIChodHRwTWV0aG9kID09PSAnUE9TVCcpIHsKICAgICAgICB2YXIgYm9keSA9IHJlcXVlc3QuZ2V0UGFyc2VkQm9keUFzSnNvbigpOwogICAgICAgIGlmIChib2R5ICYmIGJvZHkuc2NvcGUpIHsKICAgICAgICAgICAgaWYgKGJvZHkuc2NvcGUuc3BsaXQoJyAnKS5pbmRleE9mKCdzdG9ja3MvcmVhZCcpICE9PSAtMSkgewogICAgICAgICAgICAgICAgYXR0cmlidXRlcy5yZXF1aXJlX3Byb29mX2tleSA9IHRydWU7CiAgICAgICAgICAgICAgICBhdHRyaWJ1dGVzLmFjY2Vzc190b2tlbl90dGwgPSA5MDA7CiAgICAgICAgICAgICAgICBhdHRyaWJ1dGVzLnJlZnJlc2hfdG9rZW5fdHRsID0gMDsKICAgICAgICAgICAgfQogICAgICAgIH0KICAgIH0KCiAgICByZXR1cm4gYXR0cmlidXRlczsKfQ==</script>
