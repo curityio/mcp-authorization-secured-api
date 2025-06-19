@@ -16,7 +16,6 @@ services:
       KONG_LOG_LEVEL: 'info'
       KONG_PLUGINS: 'bundled,phantom-token'
       KONG_NGINX_HTTP_LUA_SHARED_DICT: 'phantom-token 10m'
-      # KONG_NGINX_PROXY_PROXY_BUFFER_SIZE: '8k'
 
   #
   # The MCP server implements a streamable HTTP transport for MCP clients.
