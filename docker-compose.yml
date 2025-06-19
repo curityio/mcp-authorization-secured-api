@@ -19,7 +19,7 @@ services:
 
   #
   # The utility MCP server acts as an addon to the API gateway and implements a streamable HTTP transport
-  # The MCP server can use MCP tools that forward incoming JWT access tokens to APIs
+  # The MCP server can use MCP tools that call upstream APIs with JWT access tokens
   #
   utility-mcp-server:
     image: utility-mcp-server:1.0
@@ -29,6 +29,10 @@ services:
       EXTERNAL_BASE_URL: 'http://mcp.demo.example'
       AUTHORIZATION_SERVER_BASE_URL: 'http://login.demo.example'
       STOCKS_API_BASE_URL: 'http://stocks-api:3000/'
+      JWKS_URI: 'http://idsvr:8443/oauth/v2/oauth-anonymous/jwks'
+      REQUIRED_JWT_ALGORITHM: 'PS256'
+      REQUIRED_JWT_ISSUER: 'http://login.demo.example/oauth/v2/oauth-anonymous'
+      REQUIRED_JWT_AUDIENCE: 'http://mcp.demo.example/'
 
   #
   # The stocks API that uses OAuth to secure access to financial data

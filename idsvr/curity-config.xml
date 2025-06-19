@@ -15,7 +15,7 @@
         <zones>
           <default-zone>
             <email-provider>smtp</email-provider>
-            <symmetric-key>data:text/plain;aes,v:S.U25FRTJrVUIwSzMxZ3lReQ==.-WZWut-syGvZvV3yTwY-NQ==.gvC6v3G6pMXKH11CMQ2S2luDPye9HImvRs36OI167oZDClagEIb9_jcy_t9hgulxSEHgxw2O1f2Ibp0VpLBluIMCp5EAjNZ6FxI3gFXHi0A=.Br-lvnnGdSCcLNzs7GKrT2kjfuamH_SLAbFVkxYbYtE=</symmetric-key>
+            <symmetric-key>data:text/plain;aes,v:S.d1JxV2JtRDZnVDZHRVhnNQ==.6yPtP-_-mpQVRS-ZgEuIQg==.UR2cmg4NAEGUTSriZ5DF0jahGMaq_8XzDHw1g0mwzJ-dzwokaZuyocbbmOfypAgBGE0kOF3MCOPcsSr3ajLnu6Bjq1wKBvUvNQNswH2HJBM=.X2t0pnzOY6iEE4ApEYtp55_RGlTlmNvjn_2DWajN-gs=</symmetric-key>
           </default-zone>
         </zones>
         <service-role>
@@ -435,11 +435,11 @@
       <data-source>
         <id>default-datasource</id>
         <jdbc xmlns="https://curity.se/ns/ext-conf/jdbc">
-          <connection-string>data:text/plain;aes,v:S.QWZrWkNRbmcwOTlMaWFWZg==.EsE6xj1AQoRB4USrMlECjA==.326zf8YnroppHK0KZ5nc_aofM9w_ZySB5wbyoVfJbJ68ktY5RHVEcwJtDgnD6tzu.ZTJWzFP_NlMjoXvzD7GvAQTdVTRDmbQUZh0_aT8cygY=</connection-string>
+          <connection-string>data:text/plain;aes,v:S.QmZnb2JKZmtTNThIUkk1Tg==.K7lNtdy275vZDCHM-oReSA==.-TFSKB9tCDpkt1OPRZTTQ5-eYuxKBC4qIm2c3ljGlQBatkmJu8okX7Y8SvrLmaBG.IYjKqI3g_JiE_RSwie6-aIsqfqslhZ-LWdxxbZR33jA=</connection-string>
           <standard-credentials-mode>
           </standard-credentials-mode>
           <driver>org.postgresql.Driver</driver>
-          <password>data:text/plain;aes,v:S.djZqSDZJaGc1SWdsOHV6Mg==.BSJPbc5sAHrDvzJqe8Yx0Q==.GLCy9cP4MdS01aNLSBFUag==.fu40DkRaX0XHvbdpuUAWl1Ou_wIoz2w3uTIfaCJFOZA=</password>
+          <password>data:text/plain;aes,v:S.SE8ydUVFSmdJekZQNGtkUA==.FHRvHhePCmUkbfzOBHljZg==.z9BP2peRGX7cqnfN6ohGcw==.RxmEztydR6V-HMLP2i-2zAtn8FgandKCmJNpjaEDhYY=</password>
           <username>postgres</username>
         </jdbc>
       </data-source>
@@ -488,7 +488,7 @@
       <token-procedure>
         <id>set-access-token-audience</id>
         <flow>oauth-token-authorization-code</flow>
-        <script>LyoqCiAqIEBwYXJhbSB7c2UuY3VyaXR5LmlkZW50aXR5c2VydmVyLnByb2NlZHVyZXMuY29udGV4dC5PcGVuSWRDb25uZWN0QXV0aG9yaXphdGlvbkNvZGVUb2tlblByb2NlZHVyZUNvbnRleHR9IGNvbnRleHQKICovCmZ1bmN0aW9uIHJlc3VsdChjb250ZXh0KSB7CiAgdmFyIGRlbGVnYXRpb25EYXRhID0gY29udGV4dC5nZXREZWZhdWx0RGVsZWdhdGlvbkRhdGEoKTsKICB2YXIgaXNzdWVkRGVsZWdhdGlvbiA9IGNvbnRleHQuZGVsZWdhdGlvbklzc3Vlci5pc3N1ZShkZWxlZ2F0aW9uRGF0YSk7CgogIHZhciBhY2Nlc3NUb2tlbkRhdGEgPSBjb250ZXh0LmdldERlZmF1bHRBY2Nlc3NUb2tlbkRhdGEoKTsKICAKICAvLyBBIHdvcmthcm91bmQgdG8gc2V0IHRoZSBjb3JyZWN0IGF1ZGllbmNlIGZvciBBUEkgYWNjZXNzIHRva2VucyBmb3IgZHluYW1pYyBjbGllbnRzCiAgaWYgKGFjY2Vzc1Rva2VuRGF0YS5zY29wZS5zcGxpdCgnICcpLmluZGV4T2YoJ3N0b2Nrcy9yZWFkJykgIT09IC0xKSB7CiAgICBhY2Nlc3NUb2tlbkRhdGEuYXVkID0gJ2h0dHA6Ly9hcGkuZGVtby5leGFtcGxlJzsKICB9CiAgCiAgdmFyIGlzc3VlZEFjY2Vzc1Rva2VuID0gY29udGV4dC5hY2Nlc3NUb2tlbklzc3Vlci5pc3N1ZShhY2Nlc3NUb2tlbkRhdGEsIGlzc3VlZERlbGVnYXRpb24pOwoKICB2YXIgcmVmcmVzaFRva2VuRGF0YSA9IGNvbnRleHQuZ2V0RGVmYXVsdFJlZnJlc2hUb2tlbkRhdGEoKTsKICB2YXIgaXNzdWVkUmVmcmVzaFRva2VuID0gY29udGV4dC5yZWZyZXNoVG9rZW5Jc3N1ZXIuaXNzdWUocmVmcmVzaFRva2VuRGF0YSwgaXNzdWVkRGVsZWdhdGlvbik7CgogIHZhciByZXNwb25zZURhdGEgPSB7CiAgICBhY2Nlc3NfdG9rZW46IGlzc3VlZEFjY2Vzc1Rva2VuLAogICAgc2NvcGU6IGFjY2Vzc1Rva2VuRGF0YS5zY29wZSwKICAgIHJlZnJlc2hfdG9rZW46IGlzc3VlZFJlZnJlc2hUb2tlbiwKICAgIHRva2VuX3R5cGU6ICdiZWFyZXInLAogICAgZXhwaXJlc19pbjogc2Vjb25kc1VudGlsKGFjY2Vzc1Rva2VuRGF0YS5leHApLAogIH07CgogIHZhciBpZFRva2VuRGF0YSA9IGNvbnRleHQuZ2V0RGVmYXVsdElkVG9rZW5EYXRhKCk7CiAgaWYgKGlkVG9rZW5EYXRhKSB7CiAgICB2YXIgaWRUb2tlbklzc3VlciA9IGNvbnRleHQuaWRUb2tlbklzc3VlcjsKICAgIGlkVG9rZW5EYXRhLmF0X2hhc2ggPSBpZFRva2VuSXNzdWVyLmF0SGFzaChpc3N1ZWRBY2Nlc3NUb2tlbik7CgogICAgcmVzcG9uc2VEYXRhLmlkX3Rva2VuID0gaWRUb2tlbklzc3Vlci5pc3N1ZShpZFRva2VuRGF0YSwgaXNzdWVkRGVsZWdhdGlvbik7CiAgfQoKICByZXR1cm4gcmVzcG9uc2VEYXRhOwp9</script>
+        <script>LyoqCiAqIEBwYXJhbSB7c2UuY3VyaXR5LmlkZW50aXR5c2VydmVyLnByb2NlZHVyZXMuY29udGV4dC5PcGVuSWRDb25uZWN0QXV0aG9yaXphdGlvbkNvZGVUb2tlblByb2NlZHVyZUNvbnRleHR9IGNvbnRleHQKICovCmZ1bmN0aW9uIHJlc3VsdChjb250ZXh0KSB7CiAgdmFyIGRlbGVnYXRpb25EYXRhID0gY29udGV4dC5nZXREZWZhdWx0RGVsZWdhdGlvbkRhdGEoKTsKICB2YXIgaXNzdWVkRGVsZWdhdGlvbiA9IGNvbnRleHQuZGVsZWdhdGlvbklzc3Vlci5pc3N1ZShkZWxlZ2F0aW9uRGF0YSk7CgogIHZhciBhY2Nlc3NUb2tlbkRhdGEgPSBjb250ZXh0LmdldERlZmF1bHRBY2Nlc3NUb2tlbkRhdGEoKTsKICAKICAvLyBBIHdvcmthcm91bmQgdG8gc2V0IHRoZSBjb3JyZWN0IGF1ZGllbmNlIGZvciBBUEkgYWNjZXNzIHRva2VucyBmb3IgZHluYW1pYyBjbGllbnRzCiAgaWYgKGFjY2Vzc1Rva2VuRGF0YS5zY29wZS5zcGxpdCgnICcpLmluZGV4T2YoJ3N0b2Nrcy9yZWFkJykgIT09IC0xKSB7CiAgICBhY2Nlc3NUb2tlbkRhdGEuYXVkID0gWydodHRwOi8vYXBpLmRlbW8uZXhhbXBsZScsICdodHRwOi8vbWNwLmRlbW8uZXhhbXBsZS8nXTsKICB9CiAgCiAgdmFyIGlzc3VlZEFjY2Vzc1Rva2VuID0gY29udGV4dC5hY2Nlc3NUb2tlbklzc3Vlci5pc3N1ZShhY2Nlc3NUb2tlbkRhdGEsIGlzc3VlZERlbGVnYXRpb24pOwoKICB2YXIgcmVmcmVzaFRva2VuRGF0YSA9IGNvbnRleHQuZ2V0RGVmYXVsdFJlZnJlc2hUb2tlbkRhdGEoKTsKICB2YXIgaXNzdWVkUmVmcmVzaFRva2VuID0gY29udGV4dC5yZWZyZXNoVG9rZW5Jc3N1ZXIuaXNzdWUocmVmcmVzaFRva2VuRGF0YSwgaXNzdWVkRGVsZWdhdGlvbik7CgogIHZhciByZXNwb25zZURhdGEgPSB7CiAgICBhY2Nlc3NfdG9rZW46IGlzc3VlZEFjY2Vzc1Rva2VuLAogICAgc2NvcGU6IGFjY2Vzc1Rva2VuRGF0YS5zY29wZSwKICAgIHJlZnJlc2hfdG9rZW46IGlzc3VlZFJlZnJlc2hUb2tlbiwKICAgIHRva2VuX3R5cGU6ICdiZWFyZXInLAogICAgZXhwaXJlc19pbjogc2Vjb25kc1VudGlsKGFjY2Vzc1Rva2VuRGF0YS5leHApLAogIH07CgogIHZhciBpZFRva2VuRGF0YSA9IGNvbnRleHQuZ2V0RGVmYXVsdElkVG9rZW5EYXRhKCk7CiAgaWYgKGlkVG9rZW5EYXRhKSB7CiAgICB2YXIgaWRUb2tlbklzc3VlciA9IGNvbnRleHQuaWRUb2tlbklzc3VlcjsKICAgIGlkVG9rZW5EYXRhLmF0X2hhc2ggPSBpZFRva2VuSXNzdWVyLmF0SGFzaChpc3N1ZWRBY2Nlc3NUb2tlbik7CgogICAgcmVzcG9uc2VEYXRhLmlkX3Rva2VuID0gaWRUb2tlbklzc3Vlci5pc3N1ZShpZFRva2VuRGF0YSwgaXNzdWVkRGVsZWdhdGlvbik7CiAgfQoKICByZXR1cm4gcmVzcG9uc2VEYXRhOwp9</script>
       </token-procedure>
       <pre-processing-procedure>
         <id>mcp-client-registration-policy</id>
