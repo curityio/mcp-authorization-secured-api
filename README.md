@@ -27,7 +27,7 @@ The overall flow uses the following steps:
 4. The [phantom token plugin](https://github.com/curityio/nginx-lua-phantom-token-plugin) introspects the opaque access token and forwards a JWT access token to the MCP server.
 5. The MCP server validates the JWT access token and checks that it has an audience of `http://mcp.demo.example/`.
 6. Before calling the API the MCP server uses token exchange to change the token audience to`http://api.demo.example`.
-7. The MCP server sends the exchanges access token to the stocks API.
+7. The MCP server sends the exchanged access token to the stocks API.
 8. The API validates the access token and uses its claims for authorization that protects business resources.
 
 ## Backend Endpoints
