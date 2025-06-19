@@ -1,6 +1,6 @@
 # MCP Authorization Secured API
 
-This repository contains a code example to illustrate how organizations can expose APIs using the draft [Model Content Protocol Authorization](https://modelcontextprotocol.io/specification/2025-03-26/basic/authorization) specification.\
+This repository contains a code example to illustrate how organizations can expose APIs using the draft [Model Content Protocol Authorization](https://modelcontextprotocol.io/specification/2025-06-18/basic/authorization) specification.\
 The code example shows how to use an MCP server to expose existing OAuth-secured APIs to AI agents.
 
 ## Overview
@@ -19,10 +19,12 @@ The end-to-end flow starts when an example MCP client calls a stateless MCP serv
 
 ![MCP Flow](images/mcp-flow.png)
 
-First, the MCP client runs an OAuth flow to retrieve an opaque access token. It then securely connects to the MCP server with that token.\
+First, the MCP client runs an OAuth flow to retrieve an opaque access token.\
+It then securely connects to the MCP server with that token.\
 A [phantom token plugin](https://github.com/curityio/nginx-lua-phantom-token-plugin) uses OAuth introspection to translate the opaque access token to a JWT access token.\
-The MCP server forwards the JWT access token to the existing API.\
-The API uses the JWT access token to implement its authorization.
+The MCP server validates the incoming JWT access token and calls the upstream API with that token.\
+Both MCP server and API follow [JWT Security Best Practices](https://curity.io/resources/learn/jwt-best-practices/) including audience restriction checks.\
+The API implements claims-based authorization using the JWT access token's payload, to protect its business resources.
 
 ## Backend Endpoints
 
@@ -174,7 +176,8 @@ These measures help to mitigate risks of releasing access tokens to AI agents:
 
 The [Kong API gateway routes](apigateway/kong.yml) expose both the MCP server and API endpoints.\
 The MCP server receives a scoped JWT access token with a payload similar to the following.\
-The MCP server forwards this JWT access token to upstream APIs.
+The MCP server calls upstream APIs with this JWT access token.\
+If you prefer, the MCP server could instead use token exchange to get a new JWT access token to send to upstream APIs.
 
 ```json
 {
@@ -185,7 +188,7 @@ The MCP server forwards this JWT access token to upstream APIs.
   "scope": "stocks/read",
   "iss": "http://login.demo.example/oauth/v2/oauth-anonymous",
   "sub": "john.doe@demo.example",
-  "aud": "8e636b87-6b22-4ca0-a602-a8ecacec1b84",
+  "aud": ["http://mcp.demo.example/", "http://api.example.com"],
   "iat": 1749650109,
   "purpose": "access_token"
 }

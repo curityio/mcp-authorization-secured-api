@@ -19,8 +19,10 @@ import {AuthInfo} from '@modelcontextprotocol/sdk/server/auth/types.js';
 import {StreamableHTTPServerTransport} from '@modelcontextprotocol/sdk/server/streamableHttp.js';
 import {RequestHandlerExtra} from '@modelcontextprotocol/sdk/shared/protocol.js';
 import {CallToolResult, ErrorCode, ServerNotification, ServerRequest} from "@modelcontextprotocol/sdk/types.js"
-import express, {Application, Request, Response} from 'express';
+import express, {Application, NextFunction, Request, Response} from 'express';
 import {Configuration} from './configuration.js';
+import {ErrorHandler} from './errors/errorHandler.js';
+import {OAuthFilter} from './security/oauthFilter.js';
 
 /*
  * The application is a stateless MCP server running in the Express HTTP server and acts like an API gateway
@@ -31,10 +33,12 @@ export class McpServerApplication {
     private readonly configuration: Configuration;
     private readonly expressApp: Application;
     private readonly mcpServer: McpServer;
+    private readonly oauthFilter: OAuthFilter;
 
     public constructor(configuration: Configuration) {
     
         this.configuration = configuration;
+        this.oauthFilter = new OAuthFilter(configuration);
 
         // Ensure that the 'this' parameter is available in async callbacks when using JavaScript classes with methods
         this.post = this.post.bind(this);
@@ -61,11 +65,21 @@ export class McpServerApplication {
         this.expressApp = express();
         this.expressApp.use(express.json());
 
-        // Create routes
+        // Expose protected resource metadata
+        this.expressApp.get('/.well-known/oauth-protected-resource', this.getResourceMetadata);
+
+        // Add middleware to validate the JWT access token on MCP requests from the client
+        // The MCP server enforces audience restrictions and prevents the use of unauthorized access tokens
+        this.expressApp.use('/', this.oauthFilter.validateAccessToken);
+
+        // Create MCP routes
         this.expressApp.post('/', this.post);
         this.expressApp.get('/', this.get);
         this.expressApp.delete('/', this.delete);
-        this.expressApp.get('/.well-known/oauth-protected-resource', this.getResourceMetadata);
+
+        // Also add an error handler middleware
+        const errorHander = new ErrorHandler(configuration);
+        this.expressApp.use(errorHander.onUnhandledException)
     }
 
     /*
@@ -82,7 +96,7 @@ export class McpServerApplication {
      * Stateless POST handling from the TypeScript SDK
      * - https://github.com/modelcontextprotocol/typescript-sdk
      */
-    public async post(request: Request, response: Response): Promise<void> {
+    public async post(request: Request, response: Response, next: NextFunction): Promise<void> {
 
         this.setAuthInfo(request);
         try {
@@ -152,12 +166,13 @@ export class McpServerApplication {
     }
 
     /*
-     * The MCP server points clients to its authorization server
+     * The MCP server returns its resource information and points clients to its authorization server
+     * The TypeScript SDK's example client requires a resource value that ends with a trailing backslash
      */
     private getResourceMetadata(request: Request, response: Response) {
 
         const metadata = {
-            resource: this.configuration.externalBaseUrl,
+            resource: `${this.configuration.externalBaseUrl}/`,
             resource_name: "MCP Server",
             authorization_servers: [this.configuration.authorizationServerBaseUrl],
         };
@@ -225,7 +240,7 @@ export class McpServerApplication {
     }
 
     /*
-     * The MCP server only needs to check for a valid access token
+     * The MCP server makes the access token available to tools that call upstream APIs
      */
     private setAuthInfo(request: Request): boolean {
 
