@@ -19,7 +19,7 @@ The end-to-end flow starts when an example MCP client calls a stateless MCP serv
 
 ![AI agent Flow](images/ai-agent-flow.jpg)
 
-The flow uses the following steps:
+The overall flow uses the following steps:
 
 1. The MCP client runs OAuth flows to retrieve an access token.
 2. The Curity Identity Server issues the MCP client a confidential (opaque) access token.
