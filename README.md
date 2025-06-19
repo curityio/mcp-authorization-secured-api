@@ -7,7 +7,7 @@ This repository contains a code example to illustrate how organizations can expo
 The example includes the following components:
 
 * Example MCP client
-* Stocks API that simulates an existing API
+* Stocks API that simulates an existing APIf
 * MCP server that proxies requests to the API
 * Authorization server (the Curity Identity Server) that issues access tokens
 * API gateway that exposes public endpoints and includes a phantom token plugin (see [the phantom token approach](https://curity.io/resources/learn/phantom-token-pattern/))
@@ -32,7 +32,7 @@ The overall flow uses the following steps:
 ## Backend Endpoints
 
 All external URLs in this code example are exposed using an instance of the Kong API gateway.\
-The backend includes a utility MCP server receives all requests from MCP clients and proxies them to existing APIs.\
+The backend includes an MCP server receives all requests from MCP clients and proxies them to existing APIs.\
 MCP clients connect to the MCP server using a Streamable HTTP transport.
 
 | Endpoint | URL | Description |
