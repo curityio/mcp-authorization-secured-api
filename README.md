@@ -38,8 +38,8 @@ MCP clients connect to the MCP server using a Streamable HTTP transport.
 | Endpoint | URL | Description |
 | -------- | --- | ----------- |
 | MCP Server Entry Point | `http://mcp.demo.example` | Endpoint that receives all API requests from MCP clients. |
+| MCP Server Resource Metadata | `http://mcp.demo.example/.well-known/oauth-protected-resource` | Used by the MCP client to discover the MCP server's authorization server. |
 | Stocks API | `http://api.demo.example/stocks` | The API entry point for non MCP clients. |
-| Stocks API Resource Server Metadata | `http://mcp.demo.example/.well-known/oauth-protected-resource` | Used by the MCP client to discover the MCP server's authorization server. |
 | Curity Identity Server OAuth Metadata | `http://login.demo.example/.well-known/oauth-authorization-server` | Used by the MCP client to discover the capabilities of the authorization server, e.g. authorization endpoint. |
 | Curity Identity Server Admin UI | `http://admin.demo.example/admin` | Administration interface of the Curity Identity Server. |
 | Curity Identity Server DCR | `http://login.demo.example/oauth/v2/oauth-registration` | Endpoint of the Curity Identity Server that enables the MCP client to automatically register, e.g. its redirect URI. |
