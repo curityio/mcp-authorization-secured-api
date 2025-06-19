@@ -31,17 +31,14 @@ export class TokenExchangeClient {
 
     public async exchangeAccessToken(accessToken: string): Promise<string> {
 
-        console.log('*** ORIGINAL')
-        console.log(accessToken);
-        console.log('*** ORIGINAL')
-        const upstreamApiScope = 'http://api.demo/example';
+        const upstreamApiAudience = 'http://api.demo.example';
 
         let body = 'grant_type=urn:ietf:params:oauth:grant-type:token-exchange';
         body += `&client_id=${this.configuration.tokenExchageClientId}`;
         body += `&client_secret=${this.configuration.tokenExchageClientSecret}`;
         body += `&subject_token=${accessToken}`;
         body += '&subject_token_type=urn:ietf:params:oauth:token-type:access_token';
-        body += `&audience=${upstreamApiScope}`;
+        body += `&audience=${upstreamApiAudience}`;
 
         try {
         
@@ -57,9 +54,6 @@ export class TokenExchangeClient {
             if (response.status >= 200 && response.status <= 299) {
 
                 const responseData = await response.json() as any;
-                console.log('*** EXCHANGED')
-                console.log(responseData.access_token);
-                console.log('*** EXCHANGED')
                 return responseData.access_token;
             }
 

@@ -35,8 +35,8 @@ export class ErrorHandler {
      */
     public onUnhandledException(unhandledException: Error, request: Request, response: Response, next: NextFunction): void {
 
-        const apiError = this.getApiError(unhandledException);
-        this.writeExpressErrorResponse(apiError, response);
+        const error = this.getApiError(unhandledException);
+        this.writeExpressErrorResponse(error, response);
     }
 
     /*
@@ -49,29 +49,26 @@ export class ErrorHandler {
     /*
      * Write an Express error response
      */
-    private writeExpressErrorResponse(apiError: McpServerError, response: Response): void {
+    private writeExpressErrorResponse(error: McpServerError, response: Response): void {
 
-        this.logError(apiError);
-        if (apiError.status === 401) {
-            this.writeAuthenticateHeader(apiError, response);
+        this.logError(error);
+        if (error.status === 401) {
+            this.writeAuthenticateHeader(error, response);
         }
 
         response.setHeader('Content-Type', 'application/json');
-        response.status(apiError.status).send(JSON.stringify(apiError.toClientObject()));
+        response.status(error.status).send(JSON.stringify(error.toClientObject()));
     }
 
     /*
      * Write standard OAuth error response headers
      */
-    private writeAuthenticateHeader(apiError: McpServerError, response: Response): void {
+    private writeAuthenticateHeader(error: McpServerError, response: Response): void {
 
-        if (apiError.status === 401) {
-            
-            const resourceMetadataUrl = `${this.configuration.externalBaseUrl}/.well-known/oauth-protected-resource`;
-            response.setHeader(
-                'WWW-Authenticate',
-                `Bearer error="${apiError.code}", error_description="${apiError.message}, resource_metadata=${resourceMetadataUrl}"`);
-        }
+        const resourceMetadataUrl = `${this.configuration.externalBaseUrl}/.well-known/oauth-protected-resource`;
+        response.setHeader(
+            'WWW-Authenticate',
+            `Bearer error="${error.code}", error_description="${error.message}, resource_metadata=${resourceMetadataUrl}"`);
     }
 
     /*

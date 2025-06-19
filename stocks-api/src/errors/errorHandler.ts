@@ -35,8 +35,8 @@ export class ErrorHandler {
      */
     public onUnhandledException(unhandledException: Error, request: Request, response: Response, next: NextFunction): void {
 
-        const apiError = this.getApiError(unhandledException);
-        this.writeErrorResponse(apiError, response);
+        const error = this.getApiError(unhandledException);
+        this.writeErrorResponse(error, response);
     }
 
     /*
@@ -49,28 +49,25 @@ export class ErrorHandler {
     /*
      * Write an error response with parameters
      */
-    private writeErrorResponse(apiError: ApiError, response: Response): void {
+    private writeErrorResponse(error: ApiError, response: Response): void {
 
-        this.logError(apiError);
-        if (apiError.status === 401) {
-            this.writeAuthenticateHeader(apiError, response);
+        this.logError(error);
+        if (error.status === 401) {
+            this.writeAuthenticateHeader(error, response);
         }
 
         response.setHeader('Content-Type', 'application/json');
-        response.status(apiError.status).send(JSON.stringify(apiError.toClientObject()));
+        response.status(error.status).send(JSON.stringify(error.toClientObject()));
     }
 
     /*
      * Write standard OAuth error response headers
      */
-    private writeAuthenticateHeader(apiError: ApiError, response: Response): void {
+    private writeAuthenticateHeader(error: ApiError, response: Response): void {
 
-        if (apiError.status === 401) {
-            
-            response.setHeader(
-                'WWW-Authenticate',
-                `Bearer error="${apiError.code}", error_description="${apiError.message}"`);
-        }
+        response.setHeader(
+            'WWW-Authenticate',
+            `Bearer error="${error.code}", error_description="${error.message}"`);
     }
 
     /*
