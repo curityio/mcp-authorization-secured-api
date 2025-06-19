@@ -54,7 +54,7 @@ export class McpServerApplication {
 
         // Create the MCP server
         const serverInfo = {
-            name: 'utility-mcp-server',
+            name: 'mcp-server',
             version: '1.0.0'
         };
         this.mcpServer = new McpServer(serverInfo);

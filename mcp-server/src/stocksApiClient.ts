@@ -19,7 +19,7 @@ import {Configuration} from './configuration.js';
 import {McpServerError} from './errors/mcpServerError.js';
 
 /*
- * A utility to manage calls to upstream APIs
+ * Manage calls to upstream APIs
  */
 export class StocksApiClient {
 
