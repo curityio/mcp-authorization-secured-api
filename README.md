@@ -19,10 +19,11 @@ The end-to-end flow starts when an example MCP client calls a stateless MCP serv
 
 ![MCP Flow](images/mcp-flow.png)
 
-First, the MCP client runs an OAuth flow to retrieve an opaque access token. It then securely connects to the MCP server with that token.\
+First, the MCP client runs an OAuth flow to retrieve an opaque access token.\
+It then securely connects to the MCP server with that token.\
 A [phantom token plugin](https://github.com/curityio/nginx-lua-phantom-token-plugin) uses OAuth introspection to translate the opaque access token to a JWT access token.\
 The MCP server validates the incoming JWT access token and calls the upstream API with a JWT access token.\
-Both MCP server and API follow [JWT Security Best Practices](https://curity.io/resources/learn/jwt-best-practices/) including audience restrictions.\
+Both MCP server and API follow [JWT Security Best Practices](https://curity.io/resources/learn/jwt-best-practices/) including audience restriction checks.\
 The API implements claims-based authorization using the JWT access token's payload, to protect its business resources.
 
 ## Backend Endpoints
