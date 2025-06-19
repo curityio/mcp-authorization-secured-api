@@ -32,7 +32,7 @@ The overall flow uses the following steps:
 ## Backend Endpoints
 
 All external URLs in this code example are exposed using an instance of the Kong API gateway.\
-The backend includes a utility MCP server that acts as an extension to the API gateway (that is, it only proxies requests to an existing API).\
+The backend includes a utility MCP server receives all requests from MCP clients and proxies them to existing APIs.\
 MCP clients connect to the MCP server using a Streamable HTTP transport.
 
 | Endpoint | URL | Description |
