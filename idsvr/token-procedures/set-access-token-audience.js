@@ -11,15 +11,15 @@ function result(context) {
   var resource = context.getRequest().getFormParameter("resource");
 
   if (resource) {
-    // Allow if resource is part of configured audiences
+    // Allow if the requested resource value is part of the client's configured audiences
     if (context.client.audiencesAsString.split(" ").indexOf(resource) != -1) {
       accessTokenData.aud = [resource];
     }
-    // Allow if resource is configured in client properties (DCR clients)
+    // Allow if the requested resource value is configured in client properties (DCR clients)
     else if (context.client.properties.audiences.indexOf(resource) != -1) {
-      accessTokenData.aud = [resource, 'http://api.demo.example'];
+      accessTokenData.aud = [resource];
     }
-    // Attempt to request access to resources that the client is not allowed to request.
+    // Reject the request if the client is unauthorized to the resource.
     else {
       throw exceptionFactory.badRequestException(
         "invalid_target",
