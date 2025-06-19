@@ -16,8 +16,9 @@
 
 import {Request, Response, NextFunction} from 'express';
 import {createRemoteJWKSet, JWTVerifyGetKey, JWTVerifyOptions, jwtVerify} from 'jose';
+import {JOSEError} from 'jose/errors';
 import {Configuration} from '../configuration.js';
-import {ApiError} from '../errors/apiError.js';
+import {McpServerError} from '../errors/mcpServerError.js';
 import {ClaimsPrincipal} from './claimsPrincipal.js';
 
 /*
@@ -51,7 +52,7 @@ export class OAuthFilter {
 
         const accessToken = this.readAccessToken(request);
         if (!accessToken) {
-            throw new ApiError(401, 'invalid_token', 'Missing, invalid or expired access token');
+            throw new McpServerError(401, 'invalid_token', 'Missing, invalid or expired access token');
         }
 
         const options = {
@@ -67,7 +68,15 @@ export class OAuthFilter {
 
         } catch (ex: any) {
 
-            throw new ApiError(401, 'invalid_token', 'Missing, invalid or expired access token', ex);
+            let extra: any = null;
+            if (ex instanceof JOSEError) {
+               extra = {
+                   code: ex.code,
+                    message: ex.message,
+               }
+            }
+
+            throw new McpServerError(401, 'invalid_token', 'Missing, invalid or expired access token', extra);
         }
 
         response.locals.claimsPrincipal = new ClaimsPrincipal(result.payload);
@@ -77,7 +86,7 @@ export class OAuthFilter {
     /*
      * Read the access token from the HTTP authorization header
      */
-    private readAccessToken(request: Request): string | null {
+    public readAccessToken(request: Request): string | null {
 
         const authorizationHeader = request.header('authorization');
         if (authorizationHeader) {

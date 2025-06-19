@@ -61,7 +61,7 @@ The deployed backend in this code example uses standards-based security to enabl
 
 ### Install Prerequisites
 
-First, install Docker and Node.js on your local computer.\
+First, install Docker and Node.js 22 or later on your local computer.\
 Get a [Trial License](https://developer.curity.io/free-trial) for the Curity Identity Server from the Curity developer portal.\
 Save the license to your desktop as a `license.json` file.
 

@@ -14,52 +14,49 @@
  *  limitations under the License.
  */
 
-import * as jose from 'jose';
-
 /*
- * A simple error class
+ * A simple MCP server error object
  */
-export class ApiError extends Error {
+export class McpServerError extends Error {
 
     public readonly status: number;
     public readonly code: string;
     public readonly extra: any;
+    public wwwAuthenticate: string | null;
 
     public constructor(status: number, code: string, message: string, extra: any = null) {
         super(message);
         this.status = status;
         this.code = code;
         this.extra = extra;
+        this.wwwAuthenticate = null;
     }
 
-    public toClientJson(): any {
+    public toClientObject(): any {
 
-        return {
+        const data: any = {
             code: this.code,
             message: this.message,
         }
+
+        if (this.wwwAuthenticate) {
+            data.wwwAuthenticate = this.wwwAuthenticate;
+        }
+        return data;
     }
 
-    public toLogJson(): any {
+    public toLogObject(): any {
 
-        return {
+        const data: any = {
             status: this.status,
             code: this.code,
             message: this.message,
-            details: this.getDetails(),
-        }
-    }
-
-    public getDetails(): string {
-
-        if (this.extra instanceof jose.errors.JOSEError) {
-            return `${this.extra.code}, ${this.extra.message}`;
         }
 
-        if (typeof this.extra === 'string') {
-            return this.extra;
+        if (this.extra) {
+            data.extra = this.extra;
         }
 
-        return '';
+        return data;
     }
 }

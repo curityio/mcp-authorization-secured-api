@@ -19,9 +19,9 @@ services:
       KONG_NGINX_HTTP_LUA_SHARED_DICT: 'phantom-token 10m'
 
   #
-  # The utility MCP server acts as an addon to the API gateway and implements a streamable HTTP transport
-  # The MCP server can use MCP tools that call upstream APIs with JWT access tokens
-  #
+  # The MCP server implements a streamable HTTP transport for MCP clients
+  # The MCP server requires its own access token audience
+  # The MCP server uses tools that can call upstream APIs with a different access token audience
   utility-mcp-server:
     image: utility-mcp-server:1.0
     hostname: utility-mcp-server
@@ -34,6 +34,9 @@ services:
       REQUIRED_JWT_ALGORITHM: 'PS256'
       REQUIRED_JWT_ISSUER: 'http://login.demo.example/oauth/v2/oauth-anonymous'
       REQUIRED_JWT_AUDIENCE: 'http://mcp.demo.example/'
+      TOKEN_EXCHANGE_CLIENT_ID: 'mcp-server'
+      TOKEN_EXCHANGE_CLIENT_SECRET: 'Password1'
+      TOKEN_ENDPOINT: 'http://idsvr:8443/oauth/v2/oauth-token'
 
   #
   # The stocks API that uses OAuth to secure access to financial data

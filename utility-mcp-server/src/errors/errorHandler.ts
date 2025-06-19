@@ -15,7 +15,7 @@
  */
 
 import {NextFunction, Request, Response} from 'express';
-import {ApiError} from './apiError.js';
+import {McpServerError} from './mcpServerError.js';
 import {Configuration} from '../configuration.js';
 
 /*
@@ -36,13 +36,20 @@ export class ErrorHandler {
     public onUnhandledException(unhandledException: Error, request: Request, response: Response, next: NextFunction): void {
 
         const apiError = this.getApiError(unhandledException);
-        this.writeErrorResponse(apiError, response);
+        this.writeExpressErrorResponse(apiError, response);
     }
 
     /*
-     * Write an error response with parameters
+     * Log errors in the API
      */
-    private writeErrorResponse(apiError: ApiError, response: Response): void {
+    public logError(error: McpServerError) {
+        console.log(JSON.stringify(error.toLogObject(), null, 2));
+    }
+
+    /*
+     * Write an Express error response
+     */
+    private writeExpressErrorResponse(apiError: McpServerError, response: Response): void {
 
         this.logError(apiError);
         if (apiError.status === 401) {
@@ -50,13 +57,13 @@ export class ErrorHandler {
         }
 
         response.setHeader('Content-Type', 'application/json');
-        response.status(apiError.status).send(JSON.stringify(apiError.toClientJson()));
+        response.status(apiError.status).send(JSON.stringify(apiError.toClientObject()));
     }
 
     /*
      * Write standard OAuth error response headers
      */
-    private writeAuthenticateHeader(apiError: ApiError, response: Response): void {
+    private writeAuthenticateHeader(apiError: McpServerError, response: Response): void {
 
         if (apiError.status === 401) {
             
@@ -70,19 +77,12 @@ export class ErrorHandler {
     /*
      * Get a caught error into a typed error
      */
-    private getApiError(unhandledException: any): ApiError {
+    private getApiError(unhandledException: any): McpServerError {
 
-        if (unhandledException instanceof ApiError) {
+        if (unhandledException instanceof McpServerError) {
             return unhandledException;
         }
 
-        return new ApiError(500, 'server_error', 'Problem encountered in the MCP server', unhandledException.message);
-    }
-
-    /*
-     * Log errors in the API
-     */
-    private logError(error: ApiError) {
-        console.log(JSON.stringify(error.toLogJson(), null, 2));
+        return new McpServerError(500, 'server_error', 'Problem encountered in the MCP server', unhandledException.message);
     }
 }
