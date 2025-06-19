@@ -190,7 +190,7 @@ The access token is only accepted at MCP entry points and not at other API endpo
   "scope": "stocks/read",
   "iss": "http://login.demo.example/oauth/v2/oauth-anonymous",
   "sub": "john.doe@demo.example",
-  "aud": ["http://mcp.demo.example/"],
+  "aud": "http://mcp.demo.example/",
   "iat": 1749650109,
   "purpose": "access_token"
 }
@@ -198,7 +198,7 @@ The access token is only accepted at MCP entry points and not at other API endpo
 
 The MCP server uses token exchange to update the access token's audience and calls the stocks API.\
 The Curity Identity Server could also issue any required custom claims to the access token.\
-APIs must then authorize to protect data using [scopes](https://curity.io/resources/learn/scope-best-practices/) and [claims](https://curity.io/resources/learn/claims-best-practices/).
+Finally, APIs must authorize to protect data using [scopes](https://curity.io/resources/learn/scope-best-practices/) and [claims](https://curity.io/resources/learn/claims-best-practices/).
 
 ## Website Documentation
 
