@@ -15,7 +15,7 @@
         <zones>
           <default-zone>
             <email-provider>smtp</email-provider>
-            <symmetric-key>data:text/plain;aes,v:S.OHBLV2VjMEp2ZmRvQUhxYQ==.953izKO8y7cgveQSfVviDQ==.cb-f4CZJmJw2C0OABRKy-D9avtKXO3HSwOHqzARePgBTSO_6n4Sr-0EZ8QhU4IPCAhiPLLqe3iXCXfxqdCzZSFc8C-nSOfuuM1koALV9-8I=.ToxAHfBJ4fJTo8JdxGjX-QPBWEySuCIvyHCXzKTL_T0=</symmetric-key>
+            <symmetric-key>data:text/plain;aes,v:S.aUpzY0tHaFJuaUR5b01ubA==.CyFShHkzG74OtG-VZnRgMQ==.kIzh_TUSPHFI75q-f3zpIv1wJm6yvwbz402yAZcOyzEm3Y4NX1wL7HF6GRa0v-SvHF3q-cRNt3rk3rMWWrLZ8TLuyZC5XeH1qisobYGGTrA=.Q38eC4-r0G7I2R6OuFAt7C_yz5Pq3qbtKonpd3wrmJk=</symmetric-key>
           </default-zone>
         </zones>
         <service-role>
@@ -435,11 +435,11 @@
       <data-source>
         <id>default-datasource</id>
         <jdbc xmlns="https://curity.se/ns/ext-conf/jdbc">
-          <connection-string>data:text/plain;aes,v:S.bkdiUWJsUmxlNmRUamtJTQ==.A8Si5hN8-g2j4eMYxQw7hQ==.IR17gfzEWu1IgFU-9phBy-q22Li9a5ApcMISl5ftMQaz0lqvE2qnTPsXqYI8UwNq.5VHR1rIAZnZ5lr6Yh3t8SN9nBTT6jzAAcUrm571KBpU=</connection-string>
+          <connection-string>data:text/plain;aes,v:S.SU9VaWlmSGFrNU44ZkNLTQ==.cElMDBz7M4knt70AosfcUg==.9LlUG8aUsXol_wNkkl5uNBJ3eD3sp3GiNc5XrVEThbJC2nVlF8AjzfzWIysF7aj2.WH54DcWNXa1HFGYdaZyOb9oF26qNxDZ82hRAyre3Mn0=</connection-string>
           <standard-credentials-mode>
           </standard-credentials-mode>
           <driver>org.postgresql.Driver</driver>
-          <password>data:text/plain;aes,v:S.T1hLZFFZRURyamlaRGhRUA==.vy-YRKEyT1zJrYMgZ7CEBg==.PCDxP8x1-OLQte7z-Lq-WQ==.8qXKFgXoUHhxNXa0MeJt19ywswpnaUBXS-50-p7c9Gs=</password>
+          <password>data:text/plain;aes,v:S.cnhiSkxlYWlkRVQ4WWl4Vw==.1aNHPxfLhSEArHTZLKziqw==.31T45YEtPPjyl07MgNoA0Q==.mVwglRB_PbfFz9624gR3pRhdNc51VtDU3zE_2ojt1Ro=</password>
           <username>postgres</username>
         </jdbc>
       </data-source>

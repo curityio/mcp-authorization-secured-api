@@ -188,7 +188,7 @@ If you prefer, the MCP server could instead use token exchange to get a new JWT 
   "scope": "stocks/read",
   "iss": "http://login.demo.example/oauth/v2/oauth-anonymous",
   "sub": "john.doe@demo.example",
-  "aud": ["http://mcp.demo.example/", "http://api.example.com"],
+  "aud": ["http://mcp.demo.example", "http://api.example.com"],
   "iat": 1749650109,
   "purpose": "access_token"
 }

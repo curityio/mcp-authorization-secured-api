@@ -166,7 +166,8 @@ export class McpServerApplication {
     }
 
     /*
-     * The MCP server points clients to its authorization server
+     * The MCP server returns its resource information and points clients to its authorization server
+     * The TypeScript SDK's example client requires a resource value that ends with a trailing backslash
      */
     private getResourceMetadata(request: Request, response: Response) {
 
@@ -239,7 +240,7 @@ export class McpServerApplication {
     }
 
     /*
-     * The MCP server only needs to check for a valid access token
+     * The MCP server makes the access token available to tools that call upstream APIs
      */
     private setAuthInfo(request: Request): boolean {
 
