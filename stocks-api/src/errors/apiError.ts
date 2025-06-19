@@ -14,10 +14,9 @@
  *  limitations under the License.
  */
 
-import * as jose from 'jose';
 
 /*
- * A simple error class
+ * A simple API error object
  */
 export class ApiError extends Error {
 
@@ -32,7 +31,7 @@ export class ApiError extends Error {
         this.extra = extra;
     }
 
-    public toClientJson(): any {
+    public toClientObject(): any {
 
         return {
             code: this.code,
@@ -40,26 +39,18 @@ export class ApiError extends Error {
         }
     }
 
-    public toLogJson(): any {
+    public toLogObject(): any {
 
-        return {
+        const data: any = {
             status: this.status,
             code: this.code,
             message: this.message,
-            details: this.getDetails(),
-        }
-    }
-
-    public getDetails(): string {
-
-        if (this.extra instanceof jose.errors.JOSEError) {
-            return `${this.extra.code}, ${this.extra.message}`;
         }
 
-        if (typeof this.extra === 'string') {
-            return this.extra;
+        if (this.extra) {
+            data.extra = this.extra;
         }
 
-        return '';
+        return data;
     }
 }

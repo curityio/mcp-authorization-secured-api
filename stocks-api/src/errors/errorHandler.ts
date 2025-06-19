@@ -40,6 +40,13 @@ export class ErrorHandler {
     }
 
     /*
+     * Log errors in the API
+     */
+    private logError(error: ApiError) {
+        console.log(JSON.stringify(error.toLogObject(), null, 2));
+    }
+
+    /*
      * Write an error response with parameters
      */
     private writeErrorResponse(apiError: ApiError, response: Response): void {
@@ -50,7 +57,7 @@ export class ErrorHandler {
         }
 
         response.setHeader('Content-Type', 'application/json');
-        response.status(apiError.status).send(JSON.stringify(apiError.toClientJson()));
+        response.status(apiError.status).send(JSON.stringify(apiError.toClientObject()));
     }
 
     /*
@@ -76,12 +83,5 @@ export class ErrorHandler {
         }
 
         return new ApiError(500, 'server_error', 'Problem encountered in the API', unhandledException.message);
-    }
-
-    /*
-     * Log errors in the API
-     */
-    private logError(error: ApiError) {
-        console.log(JSON.stringify(error.toLogJson(), null, 2));
     }
 }
