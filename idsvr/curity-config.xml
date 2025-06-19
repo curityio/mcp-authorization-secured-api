@@ -15,7 +15,7 @@
         <zones>
           <default-zone>
             <email-provider>smtp</email-provider>
-            <symmetric-key>data:text/plain;aes,v:S.d1JxV2JtRDZnVDZHRVhnNQ==.6yPtP-_-mpQVRS-ZgEuIQg==.UR2cmg4NAEGUTSriZ5DF0jahGMaq_8XzDHw1g0mwzJ-dzwokaZuyocbbmOfypAgBGE0kOF3MCOPcsSr3ajLnu6Bjq1wKBvUvNQNswH2HJBM=.X2t0pnzOY6iEE4ApEYtp55_RGlTlmNvjn_2DWajN-gs=</symmetric-key>
+            <symmetric-key>data:text/plain;aes,v:S.OHBLV2VjMEp2ZmRvQUhxYQ==.953izKO8y7cgveQSfVviDQ==.cb-f4CZJmJw2C0OABRKy-D9avtKXO3HSwOHqzARePgBTSO_6n4Sr-0EZ8QhU4IPCAhiPLLqe3iXCXfxqdCzZSFc8C-nSOfuuM1koALV9-8I=.ToxAHfBJ4fJTo8JdxGjX-QPBWEySuCIvyHCXzKTL_T0=</symmetric-key>
           </default-zone>
         </zones>
         <service-role>
@@ -435,11 +435,11 @@
       <data-source>
         <id>default-datasource</id>
         <jdbc xmlns="https://curity.se/ns/ext-conf/jdbc">
-          <connection-string>data:text/plain;aes,v:S.QmZnb2JKZmtTNThIUkk1Tg==.K7lNtdy275vZDCHM-oReSA==.-TFSKB9tCDpkt1OPRZTTQ5-eYuxKBC4qIm2c3ljGlQBatkmJu8okX7Y8SvrLmaBG.IYjKqI3g_JiE_RSwie6-aIsqfqslhZ-LWdxxbZR33jA=</connection-string>
+          <connection-string>data:text/plain;aes,v:S.bkdiUWJsUmxlNmRUamtJTQ==.A8Si5hN8-g2j4eMYxQw7hQ==.IR17gfzEWu1IgFU-9phBy-q22Li9a5ApcMISl5ftMQaz0lqvE2qnTPsXqYI8UwNq.5VHR1rIAZnZ5lr6Yh3t8SN9nBTT6jzAAcUrm571KBpU=</connection-string>
           <standard-credentials-mode>
           </standard-credentials-mode>
           <driver>org.postgresql.Driver</driver>
-          <password>data:text/plain;aes,v:S.SE8ydUVFSmdJekZQNGtkUA==.FHRvHhePCmUkbfzOBHljZg==.z9BP2peRGX7cqnfN6ohGcw==.RxmEztydR6V-HMLP2i-2zAtn8FgandKCmJNpjaEDhYY=</password>
+          <password>data:text/plain;aes,v:S.T1hLZFFZRURyamlaRGhRUA==.vy-YRKEyT1zJrYMgZ7CEBg==.PCDxP8x1-OLQte7z-Lq-WQ==.8qXKFgXoUHhxNXa0MeJt19ywswpnaUBXS-50-p7c9Gs=</password>
           <username>postgres</username>
         </jdbc>
       </data-source>
@@ -488,7 +488,7 @@
       <token-procedure>
         <id>set-access-token-audience</id>
         <flow>oauth-token-authorization-code</flow>
-        <script>LyoqCiAqIEBwYXJhbSB7c2UuY3VyaXR5LmlkZW50aXR5c2VydmVyLnByb2NlZHVyZXMuY29udGV4dC5PcGVuSWRDb25uZWN0QXV0aG9yaXphdGlvbkNvZGVUb2tlblByb2NlZHVyZUNvbnRleHR9IGNvbnRleHQKICovCmZ1bmN0aW9uIHJlc3VsdChjb250ZXh0KSB7CiAgdmFyIGRlbGVnYXRpb25EYXRhID0gY29udGV4dC5nZXREZWZhdWx0RGVsZWdhdGlvbkRhdGEoKTsKICB2YXIgaXNzdWVkRGVsZWdhdGlvbiA9IGNvbnRleHQuZGVsZWdhdGlvbklzc3Vlci5pc3N1ZShkZWxlZ2F0aW9uRGF0YSk7CgogIHZhciBhY2Nlc3NUb2tlbkRhdGEgPSBjb250ZXh0LmdldERlZmF1bHRBY2Nlc3NUb2tlbkRhdGEoKTsKICAKICAvLyBBIHdvcmthcm91bmQgdG8gc2V0IHRoZSBjb3JyZWN0IGF1ZGllbmNlIGZvciBBUEkgYWNjZXNzIHRva2VucyBmb3IgZHluYW1pYyBjbGllbnRzCiAgaWYgKGFjY2Vzc1Rva2VuRGF0YS5zY29wZS5zcGxpdCgnICcpLmluZGV4T2YoJ3N0b2Nrcy9yZWFkJykgIT09IC0xKSB7CiAgICBhY2Nlc3NUb2tlbkRhdGEuYXVkID0gWydodHRwOi8vYXBpLmRlbW8uZXhhbXBsZScsICdodHRwOi8vbWNwLmRlbW8uZXhhbXBsZS8nXTsKICB9CiAgCiAgdmFyIGlzc3VlZEFjY2Vzc1Rva2VuID0gY29udGV4dC5hY2Nlc3NUb2tlbklzc3Vlci5pc3N1ZShhY2Nlc3NUb2tlbkRhdGEsIGlzc3VlZERlbGVnYXRpb24pOwoKICB2YXIgcmVmcmVzaFRva2VuRGF0YSA9IGNvbnRleHQuZ2V0RGVmYXVsdFJlZnJlc2hUb2tlbkRhdGEoKTsKICB2YXIgaXNzdWVkUmVmcmVzaFRva2VuID0gY29udGV4dC5yZWZyZXNoVG9rZW5Jc3N1ZXIuaXNzdWUocmVmcmVzaFRva2VuRGF0YSwgaXNzdWVkRGVsZWdhdGlvbik7CgogIHZhciByZXNwb25zZURhdGEgPSB7CiAgICBhY2Nlc3NfdG9rZW46IGlzc3VlZEFjY2Vzc1Rva2VuLAogICAgc2NvcGU6IGFjY2Vzc1Rva2VuRGF0YS5zY29wZSwKICAgIHJlZnJlc2hfdG9rZW46IGlzc3VlZFJlZnJlc2hUb2tlbiwKICAgIHRva2VuX3R5cGU6ICdiZWFyZXInLAogICAgZXhwaXJlc19pbjogc2Vjb25kc1VudGlsKGFjY2Vzc1Rva2VuRGF0YS5leHApLAogIH07CgogIHZhciBpZFRva2VuRGF0YSA9IGNvbnRleHQuZ2V0RGVmYXVsdElkVG9rZW5EYXRhKCk7CiAgaWYgKGlkVG9rZW5EYXRhKSB7CiAgICB2YXIgaWRUb2tlbklzc3VlciA9IGNvbnRleHQuaWRUb2tlbklzc3VlcjsKICAgIGlkVG9rZW5EYXRhLmF0X2hhc2ggPSBpZFRva2VuSXNzdWVyLmF0SGFzaChpc3N1ZWRBY2Nlc3NUb2tlbik7CgogICAgcmVzcG9uc2VEYXRhLmlkX3Rva2VuID0gaWRUb2tlbklzc3Vlci5pc3N1ZShpZFRva2VuRGF0YSwgaXNzdWVkRGVsZWdhdGlvbik7CiAgfQoKICByZXR1cm4gcmVzcG9uc2VEYXRhOwp9</script>
+        <script>LyoqCiAqIEBwYXJhbSB7c2UuY3VyaXR5LmlkZW50aXR5c2VydmVyLnByb2NlZHVyZXMuY29udGV4dC5PcGVuSWRDb25uZWN0QXV0aG9yaXphdGlvbkNvZGVUb2tlblByb2NlZHVyZUNvbnRleHR9IGNvbnRleHQKICovCmZ1bmN0aW9uIHJlc3VsdChjb250ZXh0KSB7CiAgdmFyIGRlbGVnYXRpb25EYXRhID0gY29udGV4dC5nZXREZWZhdWx0RGVsZWdhdGlvbkRhdGEoKTsKICB2YXIgaXNzdWVkRGVsZWdhdGlvbiA9IGNvbnRleHQuZGVsZWdhdGlvbklzc3Vlci5pc3N1ZShkZWxlZ2F0aW9uRGF0YSk7CgogIHZhciBhY2Nlc3NUb2tlbkRhdGEgPSBjb250ZXh0LmdldERlZmF1bHRBY2Nlc3NUb2tlbkRhdGEoKTsKCiAgLy8gVGhlIGZvbGxvd2luZyBleGFtcGxlIGxvZ2ljIHNob3dzIG9uZSB3YXkgdG8gY29udHJvbCB0aGUgYXVkaWVuY2UgY2xhaW0gZHluYW1pY2FsbHkKICAvLyBBcyBsb25nIGFzIHRoZSBNQ1AgY2xpZW50IHVzZXMgYSBsb3cgcHJpdmlsZWdlIHNjb3BlLCBpbmNsdWRlIHRoZSBBUEkgYXVkaWVuY2UgaW4gYWNjZXNzIHRva2VucwogIHZhciByZXNvdXJjZSA9IGNvbnRleHQuZ2V0UmVxdWVzdCgpLmdldEZvcm1QYXJhbWV0ZXIoJ3Jlc291cmNlJyk7CiAgaWYgKHJlc291cmNlID09PSAnaHR0cDovL21jcC5kZW1vLmV4YW1wbGUvJykgewogICAgaWYgKGFjY2Vzc1Rva2VuRGF0YS5zY29wZS5zcGxpdCgnICcpLmluZGV4T2YoJ3N0b2Nrcy9yZWFkJykgIT09IC0xKSB7CiAgICAgIGFjY2Vzc1Rva2VuRGF0YS5hdWQgPSBbJ2h0dHA6Ly9tY3AuZGVtby5leGFtcGxlLycsICdodHRwOi8vYXBpLmRlbW8uZXhhbXBsZSddOwogICAgfQogIH0KICAKICB2YXIgaXNzdWVkQWNjZXNzVG9rZW4gPSBjb250ZXh0LmFjY2Vzc1Rva2VuSXNzdWVyLmlzc3VlKGFjY2Vzc1Rva2VuRGF0YSwgaXNzdWVkRGVsZWdhdGlvbik7CgogIHZhciByZWZyZXNoVG9rZW5EYXRhID0gY29udGV4dC5nZXREZWZhdWx0UmVmcmVzaFRva2VuRGF0YSgpOwogIHZhciBpc3N1ZWRSZWZyZXNoVG9rZW4gPSBjb250ZXh0LnJlZnJlc2hUb2tlbklzc3Vlci5pc3N1ZShyZWZyZXNoVG9rZW5EYXRhLCBpc3N1ZWREZWxlZ2F0aW9uKTsKCiAgdmFyIHJlc3BvbnNlRGF0YSA9IHsKICAgIGFjY2Vzc190b2tlbjogaXNzdWVkQWNjZXNzVG9rZW4sCiAgICBzY29wZTogYWNjZXNzVG9rZW5EYXRhLnNjb3BlLAogICAgcmVmcmVzaF90b2tlbjogaXNzdWVkUmVmcmVzaFRva2VuLAogICAgdG9rZW5fdHlwZTogJ2JlYXJlcicsCiAgICBleHBpcmVzX2luOiBzZWNvbmRzVW50aWwoYWNjZXNzVG9rZW5EYXRhLmV4cCksCiAgfTsKCiAgdmFyIGlkVG9rZW5EYXRhID0gY29udGV4dC5nZXREZWZhdWx0SWRUb2tlbkRhdGEoKTsKICBpZiAoaWRUb2tlbkRhdGEpIHsKICAgIHZhciBpZFRva2VuSXNzdWVyID0gY29udGV4dC5pZFRva2VuSXNzdWVyOwogICAgaWRUb2tlbkRhdGEuYXRfaGFzaCA9IGlkVG9rZW5Jc3N1ZXIuYXRIYXNoKGlzc3VlZEFjY2Vzc1Rva2VuKTsKCiAgICByZXNwb25zZURhdGEuaWRfdG9rZW4gPSBpZFRva2VuSXNzdWVyLmlzc3VlKGlkVG9rZW5EYXRhLCBpc3N1ZWREZWxlZ2F0aW9uKTsKICB9CgogIHJldHVybiByZXNwb25zZURhdGE7Cn0=</script>
       </token-procedure>
       <pre-processing-procedure>
         <id>mcp-client-registration-policy</id>

@@ -54,8 +54,6 @@ export class OAuthFilter {
             throw new ApiError(401, 'invalid_token', 'Missing, invalid or expired access token');
         }
 
-        console.log(accessToken);
-
         const options = {
             issuer: this.configuration.requiredIssuer,
             audience: this.configuration.requiredAudience,
