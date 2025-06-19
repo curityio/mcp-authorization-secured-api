@@ -9,7 +9,6 @@ function result(context) {
 
   // Support for resource identifier and audience restricted access tokens
   var resource = context.getRequest().getFormParameter("resource");
-  logger.error("Requested resource " + resource);
 
   if (resource) {
     // Allow if resource is part of configured audiences
@@ -18,7 +17,7 @@ function result(context) {
     }
     // Allow if resource is configured in client properties (DCR clients)
     else if (context.client.properties.audiences.indexOf(resource) != -1) {
-      accessTokenData.aud = [resource];
+      accessTokenData.aud = [resource, 'http://api.demo.example'];
     }
     // Attempt to request access to resources that the client is not allowed to request.
     else {

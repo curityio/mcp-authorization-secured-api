@@ -15,6 +15,7 @@ function result(context) {
         attributes.require_proof_key = true;
         attributes.access_token_ttl = 900;
         attributes.refresh_token_ttl = 0;
+
         // Add custom property that specifies the audiences of this DCR client
         attributes.audiences = ["http://mcp.demo.example/"];
       }
