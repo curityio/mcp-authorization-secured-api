@@ -15,8 +15,8 @@ services:
       KONG_PROXY_LISTEN: '0.0.0.0:3001'
       KONG_LOG_LEVEL: 'info'
       KONG_PLUGINS: 'bundled,phantom-token'
-      KONG_NGINX_PROXY_PROXY_BUFFER_SIZE: '16k'
       KONG_NGINX_HTTP_LUA_SHARED_DICT: 'phantom-token 10m'
+      # KONG_NGINX_PROXY_PROXY_BUFFER_SIZE: '8k'
 
   #
   # The MCP server implements a streamable HTTP transport for MCP clients
@@ -59,6 +59,8 @@ services:
     hostname: idsvr
     volumes:
       - ./idsvr/curity-config.xml:/opt/idsvr/etc/init/curity-config.xml
+      - ./idsvr/token-procedures/set-access-token-audience.js:/opt/idsvr/etc/init/token-procedures/oauth-token-authorization-code/set-access-token-audience.js
+      - ./idsvr/pre-processing-procedures/mcp-client-registration-policy.js:/opt/idsvr/etc/init/pre-processing-procedures/mcp-client-registration-policy.js
     environment:
       ADMIN: 'true'
       LICENSE_KEY: "${LICENSE_KEY}"
