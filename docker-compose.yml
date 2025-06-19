@@ -19,9 +19,10 @@ services:
       # KONG_NGINX_PROXY_PROXY_BUFFER_SIZE: '8k'
 
   #
-  # The MCP server implements a streamable HTTP transport for MCP clients
-  # The MCP server requires its own access token audience
-  # The MCP server uses tools that can call upstream APIs with a different access token audience
+  # The MCP server implements a streamable HTTP transport for MCP clients.
+  # The MCP server uses an access token audience different to that of APIs.
+  # To call APIs the MCP server uses token exchange to update the access token audience.
+  #
   utility-mcp-server:
     image: utility-mcp-server:1.0
     hostname: utility-mcp-server
