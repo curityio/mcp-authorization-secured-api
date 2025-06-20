@@ -47,6 +47,15 @@ export class ErrorHandler {
     }
 
     /*
+     * Get the resource metadata part of the WWW-Authenticate string
+     */
+    public getResourceMetadataSuffix(): string {
+
+        const resourceMetadataUrl = `${this.configuration.externalBaseUrl}/.well-known/oauth-protected-resource`;
+        return `resource_metadata="${resourceMetadataUrl}"`;
+    }
+
+    /*
      * Write an Express error response
      */
     private writeExpressErrorResponse(error: McpServerError, response: Response): void {
@@ -61,14 +70,14 @@ export class ErrorHandler {
     }
 
     /*
-     * Write standard OAuth error response headers
+     * Write the WWW-Authenticate header for 401 responses
      */
     private writeAuthenticateHeader(error: McpServerError, response: Response): void {
 
-        const resourceMetadataUrl = `${this.configuration.externalBaseUrl}/.well-known/oauth-protected-resource`;
+        const suffix = this.getResourceMetadataSuffix();
         response.setHeader(
             'WWW-Authenticate',
-            `Bearer error="${error.code}", error_description="${error.message}, resource_metadata=${resourceMetadataUrl}"`);
+            `Bearer error="${error.code}", error_description="${error.message}", ${suffix}"`);
     }
 
     /*

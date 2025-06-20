@@ -16,6 +16,7 @@
 
 
 import {Configuration} from './configuration.js';
+import {ErrorHandler} from './errors/errorHandler.js';
 import {McpServerError} from './errors/mcpServerError.js';
 
 /*
@@ -23,10 +24,12 @@ import {McpServerError} from './errors/mcpServerError.js';
  */
 export class StocksApiClient {
 
-    private readonly configuration: Configuration
+    private readonly configuration: Configuration;
+    private readonly errorHandler: ErrorHandler;
 
-    public constructor(configuration: Configuration) {
+    public constructor(configuration: Configuration, errorHandler: ErrorHandler) {
         this.configuration = configuration;
+        this.errorHandler = errorHandler;
     }
 
     public async getStocks(accessToken: string): Promise<any> {
@@ -46,7 +49,9 @@ export class StocksApiClient {
 
             let wwwAuthenticate: string | null = '';
             if (response.status === 401) {
-                wwwAuthenticate = response.headers.get('WWW-Authenticate');
+                
+                const suffix = this.errorHandler.getResourceMetadataSuffix();
+                wwwAuthenticate = response.headers.get('WWW-Authenticate') + `, ${suffix}`;
             }
 
             const responseError = await this.getResponseError(response);
@@ -55,9 +60,9 @@ export class StocksApiClient {
                 'stocks_api_error',
                 'Problem encountered calling the stocks API',
                 responseError);
-            
-            if (response.status === 401) {
-                error.wwwAuthenticate = response.headers.get('WWW-Authenticate');
+
+            if (wwwAuthenticate) {
+                error.wwwAuthenticate = wwwAuthenticate;
             }
 
             throw error;

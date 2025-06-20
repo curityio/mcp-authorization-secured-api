@@ -5,10 +5,10 @@ function result(context) {
   
   var tokenData = context.getPresentedSubjectToken();
   var presentedDelegation = context.getPresentedSubjectTokenDelegation();
-
-  // Allow audience overrides by token exchange clients like the MCP server
+  
+  // Allow the MCP server to use token exchange to update its token audience to the API audience
   var newAudience = context.request.getFormParameter('audience');
-  if (newAudience) {
+  if (tokenData.aud === 'http://mcp.demo.example/' && newAudience === 'http://api.demo.example') {
     tokenData.aud = [newAudience];
   }
 

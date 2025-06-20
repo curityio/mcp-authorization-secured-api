@@ -208,13 +208,13 @@ export class McpServerApplication {
         try {
             
             const receivedAccessToken = extra.authInfo?.token || '';
-            const oauthClient = new TokenExchangeClient(this.configuration);
+            const oauthClient = new TokenExchangeClient(this.configuration, this.errorHandler);
             const exchangedAccessToken = await oauthClient.exchangeAccessToken(receivedAccessToken);
         
-            const apiClient = new StocksApiClient(this.configuration);
+            const apiClient = new StocksApiClient(this.configuration, this.errorHandler);
             const data = await apiClient.getStocks(exchangedAccessToken);
             
-            console.log('MCP server successfully called upstream API');
+            console.log('MCP server successfully called stocks API');
             return {
                 content: [{
                     type: "text",

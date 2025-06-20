@@ -16,6 +16,7 @@
 
 
 import {Configuration} from '../configuration.js';
+import {ErrorHandler} from '../errors/errorHandler.js';
 import {McpServerError} from '../errors/mcpServerError.js';
 
 /*
@@ -23,10 +24,12 @@ import {McpServerError} from '../errors/mcpServerError.js';
  */
 export class TokenExchangeClient {
 
-    private readonly configuration: Configuration
+    private readonly configuration: Configuration;
+    private readonly errorHandler: ErrorHandler;
 
-    public constructor(configuration: Configuration) {
+    public constructor(configuration: Configuration, errorHandler: ErrorHandler) {
         this.configuration = configuration;
+        this.errorHandler = errorHandler;
     }
 
     public async exchangeAccessToken(accessToken: string): Promise<string> {
@@ -58,11 +61,18 @@ export class TokenExchangeClient {
             }
 
             const responseError = await this.getResponseError(response);
-            throw new McpServerError(
+            const error = new McpServerError(
                 response.status,
                 'authorization_server_error',
                 'Problem encountered calling the authorization server',
                 responseError);
+
+            if (response.status === 401) {
+                const suffix = this.errorHandler.getResourceMetadataSuffix();
+                error.wwwAuthenticate = `Bearer error="${error.code}", error_description="${error.message}", ${suffix}"`;
+            }
+
+            throw error;
 
         } catch (e: any) {
 
