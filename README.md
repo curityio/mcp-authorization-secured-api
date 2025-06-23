@@ -16,7 +16,7 @@ The MCP client is typically part of an AI agent that users interact with using n
 
 The end-to-end flow starts when an example MCP client calls a stateless MCP server.
 
-![AI agent Flow](images/ai-agent-flow.jpg)
+![AI agent Flow](images/ai-agent-flow.svg)
 
 The overall flow uses the following steps:
 
