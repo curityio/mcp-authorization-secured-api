@@ -50,7 +50,7 @@ export class StocksApiClient {
             let wwwAuthenticate: string | null = '';
             if (response.status === 401) {
                 
-                const suffix = this.errorHandler.getResourceMetadataSuffix();
+                const suffix = this.errorHandler.getResourceMetadataUrl();
                 wwwAuthenticate = response.headers.get('WWW-Authenticate') + `, ${suffix}`;
             }
 

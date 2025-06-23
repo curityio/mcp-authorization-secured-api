@@ -68,7 +68,7 @@ export class TokenExchangeClient {
                 responseError);
 
             if (response.status === 401) {
-                const suffix = this.errorHandler.getResourceMetadataSuffix();
+                const suffix = this.errorHandler.getResourceMetadataUrl();
                 error.wwwAuthenticate = `Bearer error="${error.code}", error_description="${error.message}", ${suffix}"`;
             }
 

@@ -26,7 +26,6 @@ function result(context) {
 
   return {
     scope: tokenData.scope,
-    claims: tokenData.claims,
     access_token: issuedAccessToken,
     token_type: 'bearer',
     expires_in: secondsUntil(tokenData.exp),

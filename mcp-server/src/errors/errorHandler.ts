@@ -47,9 +47,9 @@ export class ErrorHandler {
     }
 
     /*
-     * Get the resource metadata part of the WWW-Authenticate string
+     * Get the resource metadata part of the WWW-Authenticate string, to append as a suffix
      */
-    public getResourceMetadataSuffix(): string {
+    public getResourceMetadataUrl(): string {
 
         const resourceMetadataUrl = `${this.configuration.externalBaseUrl}/.well-known/oauth-protected-resource`;
         return `resource_metadata="${resourceMetadataUrl}"`;
@@ -74,7 +74,7 @@ export class ErrorHandler {
      */
     private writeAuthenticateHeader(error: McpServerError, response: Response): void {
 
-        const suffix = this.getResourceMetadataSuffix();
+        const suffix = this.getResourceMetadataUrl();
         response.setHeader(
             'WWW-Authenticate',
             `Bearer error="${error.code}", error_description="${error.message}", ${suffix}"`);
