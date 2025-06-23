@@ -27,6 +27,9 @@ export class Configuration {
     public requiredJwtAlgorithm: string;
     public requiredIssuer: string;
     public requiredAudience: string;
+    public tokenExchageClientId: string;
+    public tokenExchageClientSecret: string;
+    public tokenEndpoint: string;
     
     public constructor() {
         this.port = this.getValue('PORT');
@@ -37,7 +40,9 @@ export class Configuration {
         this.requiredJwtAlgorithm = this.getValue('REQUIRED_JWT_ALGORITHM');
         this.requiredIssuer = this.getValue('REQUIRED_JWT_ISSUER');
         this.requiredAudience = this.getValue('REQUIRED_JWT_AUDIENCE');
-        
+        this.tokenExchageClientId = this.getValue('TOKEN_EXCHANGE_CLIENT_ID');
+        this.tokenExchageClientSecret = this.getValue('TOKEN_EXCHANGE_CLIENT_SECRET');
+        this.tokenEndpoint = this.getValue('TOKEN_ENDPOINT');
     }
 
     private getValue(name: string): string {

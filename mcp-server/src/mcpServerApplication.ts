@@ -22,7 +22,10 @@ import {CallToolResult, ErrorCode, ServerNotification, ServerRequest} from "@mod
 import express, {Application, NextFunction, Request, Response} from 'express';
 import {Configuration} from './configuration.js';
 import {ErrorHandler} from './errors/errorHandler.js';
+import {McpServerError} from './errors/mcpServerError.js';
 import {OAuthFilter} from './security/oauthFilter.js';
+import {TokenExchangeClient} from './security/tokenExchangeClient.js';
+import {StocksApiClient } from './stocksApiClient.js';
 
 /*
  * The application is a stateless MCP server running in the Express HTTP server and acts like an API gateway
@@ -31,13 +34,15 @@ import {OAuthFilter} from './security/oauthFilter.js';
 export class McpServerApplication {
 
     private readonly configuration: Configuration;
+    private readonly errorHandler: ErrorHandler;
     private readonly expressApp: Application;
     private readonly mcpServer: McpServer;
     private readonly oauthFilter: OAuthFilter;
 
-    public constructor(configuration: Configuration) {
+    public constructor(configuration: Configuration, errorHandler: ErrorHandler) {
     
         this.configuration = configuration;
+        this.errorHandler = errorHandler;
         this.oauthFilter = new OAuthFilter(configuration);
 
         // Ensure that the 'this' parameter is available in async callbacks when using JavaScript classes with methods
@@ -49,7 +54,7 @@ export class McpServerApplication {
 
         // Create the MCP server
         const serverInfo = {
-            name: 'utility-mcp-server',
+            name: 'mcp-server',
             version: '1.0.0'
         };
         this.mcpServer = new McpServer(serverInfo);
@@ -78,8 +83,7 @@ export class McpServerApplication {
         this.expressApp.delete('/', this.delete);
 
         // Also add an error handler middleware
-        const errorHander = new ErrorHandler(configuration);
-        this.expressApp.use(errorHander.onUnhandledException)
+        this.expressApp.use(this.errorHandler.onUnhandledException)
     }
 
     /*
@@ -167,7 +171,7 @@ export class McpServerApplication {
 
     /*
      * The MCP server returns its resource information and points clients to its authorization server
-     * The TypeScript SDK's example client requires a resource value that ends with a trailing backslash
+    * The TypeScript SDK's example client currently requires a resource identifier that ends with a trailing backslash
      */
     private getResourceMetadata(request: Request, response: Response) {
 
@@ -182,25 +186,35 @@ export class McpServerApplication {
     }
 
     /*
-     * Call the upstream API with the access token
+     * The MCP server makes the access token available to tools that call upstream APIs
+     */
+    private setAuthInfo(request: Request) {
+
+        const accessToken = this.oauthFilter.readAccessToken(request) || '';
+
+        const authInfo: AuthInfo = {
+            token: accessToken,
+            clientId: '',
+            scopes: [],
+        };
+        (request as any).auth = authInfo;
+    }
+
+    /*
+     * Run tool logic to call the upstream API
      */
     private async fetchStockPricesFromApi(extra: RequestHandlerExtra<ServerRequest, ServerNotification>): Promise<CallToolResult> {
 
-        const options = {} as RequestInit;
-
-        if (extra.authInfo) {
-            options['headers'] = {
-                'Authorization': 'Bearer ' + extra.authInfo.token,
-            }
-        }
-
-        console.log('MCP server is fetching prices from the stocks API ...');
-        const response = await fetch(this.configuration.stocksApiBaseUrl, options);
-
-        if (response.status >= 200 && response.status <= 299) {
-
-            console.log('MCP server successfully received stock prices ...');
-            const data = await response.text();
+        try {
+            
+            const receivedAccessToken = extra.authInfo?.token || '';
+            const oauthClient = new TokenExchangeClient(this.configuration, this.errorHandler);
+            const exchangedAccessToken = await oauthClient.exchangeAccessToken(receivedAccessToken);
+        
+            const apiClient = new StocksApiClient(this.configuration, this.errorHandler);
+            const data = await apiClient.getStocks(exchangedAccessToken);
+            
+            console.log('MCP server successfully called stocks API');
             return {
                 content: [{
                     type: "text",
@@ -208,58 +222,28 @@ export class McpServerApplication {
                 }]
             };
 
-        } else {
-            
-            console.log(`MCP server received an HTTP ${response.status} status from the stocks API ...`);
-            const data = await response.text();
-            
-            const error: any = { 
-                type: 'text', 
-                text: data,
-            };
+        } catch (e: any) {
 
-            if (response.status === 401) {
-
-                // For 401s from the upstream API we should return an HTTP 401 to the MCP client so that it can get a new access token.
-                // There is no standard solution for doing so yet, so at least ensure that the MCP client gets the correct error values.
-                // The MCP authorization specification is likely to provide standardized behaviors in the near future.
-                // https://github.com/modelcontextprotocol/modelcontextprotocol/discussions/256
-
-                const errorData = JSON.parse(data);
-                errorData.status = 401;
-                const resourceMetadataUrl = `${this.configuration.externalBaseUrl}/.well-known/oauth-protected-resource`;
-                errorData.wwAuthenticate = response.headers.get('WWW-Authenticate') + `, resource_metadata="${resourceMetadataUrl}"`;
-                error.text = JSON.stringify(errorData);
-            }
-
-            return {
-                isError: true,
-                content: [error],
-            };
+            return this.toolErrorResponse(e as McpServerError);
         }
     }
 
     /*
-     * The MCP server makes the access token available to tools that call upstream APIs
+     * Log the error and return it to the MCP client in the JSON-RPC format
      */
-    private setAuthInfo(request: Request): boolean {
+    private toolErrorResponse(e: McpServerError): any {
 
-        const authorizationHeader = request.header('authorization');
-        if (authorizationHeader) {
-            const parts = authorizationHeader.split(' ');
-            if (parts.length === 2 && parts[0].toLowerCase() === 'bearer') {
+        this.errorHandler.logError(e);
+        const error = e.toClientObject();
 
-                const accessToken = parts[1];
-                const authInfo: AuthInfo = {
-                    token: accessToken,
-                    clientId: '',
-                    scopes: [],
-                };
-                (request as any).auth = authInfo;
-                return true;
-            }
-        }
-
-        return false;
+        const data: any = { 
+            type: 'text', 
+            text: JSON.stringify(error),
+        };
+        
+        return {
+            isError: true,
+            content: [data],
+        };
     }
 }

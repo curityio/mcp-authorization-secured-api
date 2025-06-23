@@ -15,7 +15,7 @@
  */
 
 import {JWTPayload} from 'jose';
-import {ApiError} from '../errors/apiError.js';
+import {McpServerError} from '../errors/mcpServerError.js';
 
 /*
  * A convenience wrapper to expose type-safe claims to the API
@@ -37,7 +37,7 @@ export class ClaimsPrincipal {
         if (scopes.indexOf(requiredScope) === -1) {
 
             const info = `Required scope is '${requiredScope}' and received access token has scope '${this.scope}'`
-            throw new ApiError(403, 'insufficient_scope', 'The access token cannot be used at this API', info);
+            throw new McpServerError(403, 'insufficient_scope', 'The access token cannot be used at this API', info);
         }
     }
 
@@ -45,7 +45,7 @@ export class ClaimsPrincipal {
 
         const value = claims[name];
         if (!value && required) {
-            throw new ApiError(403, 'insufficient_scope', `The access token does not contain the required ${name} claim`);
+            throw new McpServerError(403, 'insufficient_scope', `The access token does not contain the required ${name} claim`);
         }
 
         return value;

@@ -16,7 +16,10 @@
 
 import {McpServerApplication} from './mcpServerApplication.js';
 import {Configuration} from './configuration.js';
+import {ErrorHandler} from './errors/errorHandler.js';
 
 const configuration = new Configuration();
-const mcpServerApplication = new McpServerApplication(configuration);
+const errorHandler = new ErrorHandler(configuration);
+
+const mcpServerApplication = new McpServerApplication(configuration, errorHandler);
 mcpServerApplication.start();

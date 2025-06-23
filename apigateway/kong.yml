@@ -8,7 +8,7 @@ services:
 # The phantom token plugin returns a 401 that points the MCP client to resource metadata
 #
 - name: mcp-server
-  url: http://utility-mcp-server:3000/
+  url: http://mcp-server:3000/
   routes:
   - name: mcp-server-route
     hosts:
@@ -28,7 +28,7 @@ services:
 # The MCP server exposes OAuth protected resource metadata that points MCP clients to the authorization server
 #
 - name: mcp-server-resource-metadata
-  url: http://utility-mcp-server:3000/.well-known/oauth-protected-resource
+  url: http://mcp-server:3000/.well-known/oauth-protected-resource
   routes:
   - name: mcp-server-resource-metadata-route
     hosts:

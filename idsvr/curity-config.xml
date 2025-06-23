@@ -111,6 +111,7 @@
     <profile>
       <id>token-service</id>
       <type xmlns:as="https://curity.se/ns/conf/profile/oauth">as:oauth-service</type>
+      <expose-detailed-error-messages/>
       <settings>
         <authorization-server xmlns="https://curity.se/ns/conf/profile/oauth">
           <authentication-service>
@@ -119,13 +120,8 @@
           <client-capabilities>
             <code>
             </code>
-            <implicit/>
-            <resource-owner-password-credentials>
-              <credential-manager>default-credential-manager</credential-manager>
-            </resource-owner-password-credentials>
-            <client-credentials/>
             <introspection/>
-            <token-exchange/>
+            <oauth-token-exchange/>
           </client-capabilities>
           <scopes>
             <scope>
@@ -340,6 +336,14 @@
                   <introspection/>
                 </capabilities>
               </client>
+              <client>
+                <id>mcp-server</id>
+                <secret>$5$4VcWtNqulwJgD7Zw$419nONvuY5nMFnyA7nYmrdhYE5wp1dP/ZPeeE1U3WAA</secret>
+                <scope>stocks/read</scope>
+                <capabilities>
+                  <oauth-token-exchange/>
+                </capabilities>
+              </client>
             </config-backed>
           </client-store>
           <dynamic-client-registration>
@@ -411,6 +415,10 @@
           <token-endpoint-procedures>
             <flow>oauth-token-authorization-code</flow>
             <procedure>set-access-token-audience</procedure>
+          </token-endpoint-procedures>
+          <token-endpoint-procedures>
+            <flow>oauth-token-oauth-token-exchange</flow>
+            <procedure>set-token-exchange-audience</procedure>
           </token-endpoint-procedures>
         </endpoint>
         <endpoint>

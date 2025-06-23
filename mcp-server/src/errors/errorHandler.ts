@@ -15,7 +15,7 @@
  */
 
 import {NextFunction, Request, Response} from 'express';
-import {ApiError} from './apiError.js';
+import {McpServerError} from './mcpServerError.js';
 import {Configuration} from '../configuration.js';
 
 /*
@@ -36,20 +36,29 @@ export class ErrorHandler {
     public onUnhandledException(unhandledException: Error, request: Request, response: Response, next: NextFunction): void {
 
         const error = this.getApiError(unhandledException);
-        this.writeErrorResponse(error, response);
+        this.writeExpressErrorResponse(error, response);
     }
 
     /*
      * Log errors in the API
      */
-    private logError(error: ApiError) {
+    public logError(error: McpServerError) {
         console.log(JSON.stringify(error.toLogObject(), null, 2));
     }
 
     /*
-     * Write an error response with parameters
+     * Get the resource metadata part of the WWW-Authenticate string, to append as a suffix
      */
-    private writeErrorResponse(error: ApiError, response: Response): void {
+    public getResourceMetadataUrl(): string {
+
+        const resourceMetadataUrl = `${this.configuration.externalBaseUrl}/.well-known/oauth-protected-resource`;
+        return `resource_metadata="${resourceMetadataUrl}"`;
+    }
+
+    /*
+     * Write an Express error response
+     */
+    private writeExpressErrorResponse(error: McpServerError, response: Response): void {
 
         this.logError(error);
         if (error.status === 401) {
@@ -61,24 +70,25 @@ export class ErrorHandler {
     }
 
     /*
-     * Write standard OAuth error response headers
+     * Write the WWW-Authenticate header for 401 responses
      */
-    private writeAuthenticateHeader(error: ApiError, response: Response): void {
+    private writeAuthenticateHeader(error: McpServerError, response: Response): void {
 
+        const suffix = this.getResourceMetadataUrl();
         response.setHeader(
             'WWW-Authenticate',
-            `Bearer error="${error.code}", error_description="${error.message}"`);
+            `Bearer error="${error.code}", error_description="${error.message}", ${suffix}"`);
     }
 
     /*
      * Get a caught error into a typed error
      */
-    private getApiError(unhandledException: any): ApiError {
+    private getApiError(unhandledException: any): McpServerError {
 
-        if (unhandledException instanceof ApiError) {
+        if (unhandledException instanceof McpServerError) {
             return unhandledException;
         }
 
-        return new ApiError(500, 'server_error', 'Problem encountered in the API', unhandledException.message);
+        return new McpServerError(500, 'server_error', 'Problem encountered in the MCP server', unhandledException.message);
     }
 }

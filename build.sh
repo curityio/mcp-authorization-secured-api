@@ -26,8 +26,8 @@ cd ..
 #
 # Build the MCP server to a docker container
 #
-echo 'Building utility MCP server ...'
-cd utility-mcp-server
+echo 'Building MCP server ...'
+cd mcp-server
 
 npm install
 if [ $? -ne 0 ]; then
@@ -39,7 +39,7 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-docker build --no-cache -t utility-mcp-server:1.0 .
+docker build --no-cache -t mcp-server:1.0 .
 if [ $? -ne 0 ]; then
   exit 1
 fi

@@ -1,13 +1,13 @@
 {
-    "name": "utility-mcpserver",
+    "name": "mcpserver",
     "version": "1.0.0",
-    "description": "A utility MCP server that enables AI agents to securely connect to the stocks API",
+    "description": "An MCP server that enables AI agents to securely connect to the stocks API",
     "author": "Curity",
     "license": "Apache-2.0",
     "main": "index.ts",
     "type": "module",
     "engines": {
-        "node": ">=20"
+        "node": ">=22"
     },
     "scripts": {
         "start": "node --env-file=.env --import=tsx --watch ./src/index.ts",
