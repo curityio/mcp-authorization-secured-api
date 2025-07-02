@@ -4,6 +4,7 @@ _transform: true
 services:
 
 #
+# All API requests use this API gateway entry point
 # The MCP server connection is secured by opaque access tokens that pass introspection
 # The phantom token plugin returns a 401 that points the MCP client to resource metadata
 #
@@ -50,7 +51,7 @@ services:
     - /.well-known/oauth-authorization-server
 
 #
-# The main stocks API route serves AI agents and can also serve other types of clients
+# The main stocks API route serves other types of API clients
 #
 - name: stocks-api
   url: http://stocks-api:3000/
