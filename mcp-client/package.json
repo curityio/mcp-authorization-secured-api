@@ -38,12 +38,12 @@
     "start": "tsx simpleOAuthClient.ts"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.13.0",
+    "@modelcontextprotocol/sdk": "^1.17.0",
     "undici": "^7.10.0"
   },
   "devDependencies": {
     "@types/node": "^22.0.2",
-    "tsx": "^4.16.5"
+    "tsx": "^4.19.4"
   },
   "resolutions": {
     "strip-ansi": "6.0.1"
