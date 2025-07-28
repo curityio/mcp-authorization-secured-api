@@ -35,7 +35,7 @@
     "dist"
   ],
   "scripts": {
-    "start": "tsx simpleOAuthClient.ts"
+    "start": "MCP_SERVER_URL='http://mcp.demo.example' tsx simpleOAuthClient.ts"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.17.0",

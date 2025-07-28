@@ -24,10 +24,7 @@ if (process.env.http_proxy) {
   setGlobalDispatcher(dispatcher);
 }
 
-/*
- * CURITY EDIT: Updated default server URL
- */
-const DEFAULT_SERVER_URL = 'http://mcp.demo.example';
+const DEFAULT_SERVER_URL = 'http://localhost:3000/mcp';
 const CALLBACK_PORT = 8090; // Use different port than auth server (3001)
 const CALLBACK_URL = `http://localhost:${CALLBACK_PORT}/callback`;
 
@@ -226,8 +223,8 @@ class InteractiveOAuthClient {
     console.log(`🔗 Attempting to connect to ${this.serverUrl}...`);
 
     /*
-     * CURITY EDIT: Updated scope
-    */
+     * CURITY EDIT: Updated scope and removed refresh_token
+     */
     const clientMetadata: OAuthClientMetadata = {
       client_name: 'Simple OAuth MCP Client',
       redirect_uris: [CALLBACK_URL],
@@ -404,7 +401,7 @@ class InteractiveOAuthClient {
  * Main entry point
  */
 async function main(): Promise<void> {
-  const serverUrl = DEFAULT_SERVER_URL;
+  const serverUrl = process.env.MCP_SERVER_URL || DEFAULT_SERVER_URL;
 
   console.log('🚀 Simple MCP OAuth Client');
   console.log(`Connecting to: ${serverUrl}`);
