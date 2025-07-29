@@ -61,6 +61,7 @@
       <type xmlns:auth="https://curity.se/ns/conf/profile/authentication">auth:authentication-service</type>
       <settings>
         <authentication-service xmlns="https://curity.se/ns/conf/profile/authentication">
+          <persisted-sso-session>true</persisted-sso-session>
           <authenticators>
             <authenticator>
               <id>email</id>
