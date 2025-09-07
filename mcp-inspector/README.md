@@ -1,6 +1,6 @@
 # Use the MCP Inspector
 
-The example backend deployment can also be run against the MCP inspector tool:
+The MCP inspector can be run as a client to the example backend deployment:
 
 ![MCP inspector](inspector.png)
 
