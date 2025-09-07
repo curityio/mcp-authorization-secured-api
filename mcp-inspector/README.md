@@ -6,7 +6,7 @@ The example backend deployment can also be run against the MCP inspector tool:
 
 ## Prepare the MCP Inspector
 
-Then, get the repo and install its dependencies:
+Clone the MCP inspector repo and install its dependencies:
 
 ```bash
 git clone https://github.com/modelcontextprotocol/inspector
