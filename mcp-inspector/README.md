@@ -39,7 +39,7 @@ saveClientInformation(clientInformation: OAuthClientInformation) {
 }
 ```
 
-## Run the Inspector
+## Run the MCP Inspector
 
 Run the following command to run the client:
 
