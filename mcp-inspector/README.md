@@ -72,5 +72,4 @@ Set these properties in the browser frontend:
 - Transport Type = Streamable HTTP
 - URL: `http://mcp.demo.example`
 
-Open the proxy URL in the browser and click the `Connect` button.\
-Then re-run the authentication flow.
+Then click the `Connect` button and re-run the authentication flow.
