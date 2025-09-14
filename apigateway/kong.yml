@@ -4,8 +4,8 @@ _transform: true
 services:
 
 #
-# All API requests use this API gateway entry point
-# The MCP server connection is secured by opaque access tokens that pass introspection
+# All MCP client API requests use this API gateway entry point
+# The MCP server connection is secured by opaque access tokens
 # The phantom token plugin returns a 401 that points the MCP client to resource metadata
 #
 - name: mcp-server
@@ -17,13 +17,17 @@ services:
     paths:
     - /
   plugins:
-    - name: phantom-token
-      config:
-        introspection_endpoint: http://idsvr:8443/oauth/v2/oauth-introspect
-        client_id: api-gateway-client
-        client_secret: Password1
-        token_cache_seconds: 900
-        resource_metadata_url: http://mcp.demo.example/.well-known/oauth-protected-resource
+  - name: cors
+    config:
+      origins:
+      - 'http://localhost:6274'
+  - name: phantom-token
+    config:
+      introspection_endpoint: http://idsvr:8443/oauth/v2/oauth-introspect
+      client_id: api-gateway-client
+      client_secret: Password1
+      token_cache_seconds: 900
+      resource_metadata_url: http://mcp.demo.example/.well-known/oauth-protected-resource
 
 #
 # The MCP server exposes OAuth protected resource metadata that points MCP clients to the authorization server
@@ -36,6 +40,11 @@ services:
     - mcp.demo.example
     paths:
     - /.well-known/oauth-protected-resource
+  plugins:
+  - name: cors
+    config:
+      origins:
+      - 'http://localhost:6274'
 
 #
 # MCP authorization requires a root level OAuth authorization server metadata endpoint
@@ -49,6 +58,11 @@ services:
     - login.demo.example
     paths:
     - /.well-known/oauth-authorization-server
+  plugins:
+  - name: cors
+    config:
+      origins:
+      - 'http://localhost:6274'
 
 #
 # The main stocks API route serves other types of API clients
@@ -62,12 +76,12 @@ services:
     paths:
     - /stocks
   plugins:
-    - name: phantom-token
-      config:
-        introspection_endpoint: http://idsvr:8443/oauth/v2/oauth-introspect
-        client_id: api-gateway-client
-        client_secret: Password1
-        token_cache_seconds: 900
+  - name: phantom-token
+    config:
+      introspection_endpoint: http://idsvr:8443/oauth/v2/oauth-introspect
+      client_id: api-gateway-client
+      client_secret: Password1
+      token_cache_seconds: 900
 
 #
 # The main authorization server endpoints
@@ -80,6 +94,11 @@ services:
     - login.demo.example
     paths:
     - /
+  plugins:
+  - name: cors
+    config:
+      origins:
+      - 'http://localhost:6274'
 
 #
 # The admin UI for the Curity Identity Server

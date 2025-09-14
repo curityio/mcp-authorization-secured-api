@@ -157,6 +157,12 @@ The user is informed about the level of data access that the AI agent requests.
 
 ![user-consent](images/user-consent.png)
 
+### Run the MCP Inspector Tool
+
+Once connected, you can try to integrate other clients, like the [MCP Inspector](mcp-inspector/README.md) tool:
+
+![MCP inspector](mcp-inspector/inspector.png)
+
 ### Secure Access Tokens
 
 The MCP client then receives the following form of token response:

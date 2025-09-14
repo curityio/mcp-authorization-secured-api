@@ -32,16 +32,7 @@ export class OAuthFilter {
     public constructor(configuration: Configuration) {
 
         this.configuration = configuration;
-
-        // During integration tests, this ensures that the API calls the JWKS URI at the start of every test run
-        let options: any = undefined;
-        if (process.env.NODE_ENV === 'development') {
-            options = {
-                cooldownDuration: 0,
-            };
-        }
-
-        this.remoteJwksSet = createRemoteJWKSet(<URL>new URL(configuration.jwksUri), options);
+        this.remoteJwksSet = createRemoteJWKSet(<URL>new URL(configuration.jwksUri));
         this.validateAccessToken = this.validateAccessToken.bind(this);
     }
 
