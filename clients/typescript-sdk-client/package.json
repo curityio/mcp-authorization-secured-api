@@ -38,12 +38,12 @@
     "start": "MCP_SERVER_URL='http://mcp.demo.example' tsx simpleOAuthClient.ts"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.17.0",
+    "@modelcontextprotocol/sdk": "^1.19.0",
     "undici": "^7.10.0"
   },
   "devDependencies": {
-    "@types/node": "^22.0.2",
-    "tsx": "^4.19.4"
+    "@types/node": "^22.18.8",
+    "tsx": "^4.20.5"
   },
   "resolutions": {
     "strip-ansi": "6.0.1"

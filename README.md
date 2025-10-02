@@ -78,64 +78,21 @@ export LICENSE_FILE_PATH=~/Desktop/license.json
 ./deploy.sh
 ```
 
-### Run the MCP Client
+### Run Clients
 
-Run any MCP client that implements the behavior from the MCP draft authorization specification.\
-You can use this repo's [Example MCP Client](mcp-client/README.md), which runs as a console application.\
-Use the following commands to run the client.
+See the following READMEs for further information on how to run supported clients:
 
-```bash
-cd mcp-client
-npm install
-npm start
-```
+- [TypeScript SDK Console Client](clients/typescript-sdk-client/README.md)
+- [MCP Inspector](clients/mcp-inspector/README.md)
 
-The MCP client integrates with the MCP server to run OAuth flows and make a secured connection.\
-The user can then run MCP tools to invoke API requests and access authorized resources.\
-The example API returns some hard-coded fictional stock prices.
+## Understand the Flow
 
-```text
-🚀 Simple MCP OAuth Client
-Connecting to: http://mcp.demo.example
+MCP clients that implement the MCP draft authorization specification can integrate with the MCP server.\
+The Curity Identity Server issues access tokens that restrict MCP clients to least-privilege access tokens.
 
-🔗 Attempting to connect to http://mcp.demo.example...
-🔐 Creating OAuth provider...
-🔐 OAuth provider created
-👤 Creating MCP client...
-👤 Client created
-🔐 Starting OAuth flow...
-🚢 Creating transport with OAuth provider...
-🚢 Transport created
-🔌 Attempting connection (this will trigger OAuth redirect)...
-📌 OAuth redirect handler called - opening browser
-Opening browser to: http://login.demo.example/oauth/v2/oauth-authorize?response_type=code&client_id=24ae8cd9-3d44-434e-9506-1342d76eea5c&code_challenge=u1IP4WbEWQQbS04foPIsNdjE28v_-8yQefhrqr9zE9M&code_challenge_method=S256&redirect_uri=http%3A%2F%2Flocalhost%3A8090%2Fcallback&scope=stocks%2Fread
-🌐 Opening browser for authorization: http://login.demo.example/oauth/v2/oauth-authorize?response_type=code&client_id=24ae8cd9-3d44-434e-9506-1342d76eea5c&code_challenge=u1IP4WbEWQQbS04foPIsNdjE28v_-8yQefhrqr9zE9M&code_challenge_method=S256&redirect_uri=http%3A%2F%2Flocalhost%3A8090%2Fcallback&scope=stocks%2Fread
-🔐 OAuth required - waiting for authorization...
-OAuth callback server started on http://localhost:8090
-📥 Received callback: /callback?iss=http%3A%2F%2Flogin.demo.example%2Foauth%2Fv2%2Foauth-anonymous&code=dodc5hVzHJ3kAKmHgnGRyiyNgkVIVyNx
-✅ Authorization code received: dodc5hVzHJ...
-🔐 Authorization code received: dodc5hVzHJ3kAKmHgnGRyiyNgkVIVyNx
-🔌 Reconnecting with authenticated transport...
-🚢 Creating transport with OAuth provider...
-🚢 Transport created
-🔌 Attempting connection (this will trigger OAuth redirect)...
-✅ Connected successfully
+### Client Behaviors
 
-🎯 Interactive MCP Client with OAuth
-Commands:
-  list - List available tools
-  call <tool_name> [args] - Call a tool
-  quit - Exit the client
-
-mcp> call fetch-stock-prices
-
-🔧 Tool 'fetch-stock-prices' result:
-[{"id":"COM1","name":Company 1","price":450.22},{"id":"COM2","name":"Company 2","price":250.62},{"id":"COM3","name":"Company 3","price":21.07}]
-```
-
-### MCP Client Flow
-
-The MCP client uses the following steps to get an access token and call the API:
+Clients use the following steps to get an access token and call the API:
 
 - Resource server metadata download.
 - Authorization server metadata download.
@@ -157,15 +114,9 @@ The user is informed about the level of data access that the AI agent requests.
 
 ![user-consent](images/user-consent.png)
 
-### Run the MCP Inspector Tool
+### Access Token Behaviors
 
-Once connected, you can try to integrate other clients, like the [MCP Inspector](mcp-inspector/README.md) tool:
-
-![MCP inspector](mcp-inspector/inspector.png)
-
-### Secure Access Tokens
-
-The MCP client then receives the following form of token response:
+MCP clients receive the following token response:
 
 ```json
 {

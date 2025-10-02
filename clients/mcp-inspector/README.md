@@ -2,10 +2,11 @@
 
 The MCP inspector can be run as a client to the example backend deployment:
 
-![MCP inspector](inspector.png)
+![MCP inspector](../images/inspector.png)
 
-## Prepare the MCP Inspector
+## Compatibility Edits
 
+At the time of writing there are some compatibility issues that require minor edits.\
 Clone the MCP inspector repo and install its dependencies:
 
 ```bash
@@ -14,7 +15,6 @@ cd inspector
 npm install
 ```
 
-There are currently a couple of incompatibilities which you can manually resolve.\
 Edit the `client/src/lib/auth.ts` source file and make edits to match the following code:
 
 ```typescript
@@ -72,4 +72,4 @@ Set these properties in the browser frontend:
 - Transport Type = Streamable HTTP
 - URL: `http://mcp.demo.example`
 
-Then click the `Connect` button and re-run the authentication flow.
+Then click the `Connect` button and run the authentication flow.
