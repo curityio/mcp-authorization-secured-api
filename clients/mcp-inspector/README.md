@@ -20,7 +20,7 @@ These match typical settings for a backend component that would act on behalf of
 ```typescript
 get clientMetadata(): OAuthClientMetadata {
     return {
-      redirect_uris: [this.redirectUrl, this.debugRedirectUrl],
+      redirect_uris: [this.redirectUrl],
       token_endpoint_auth_method: "client_secret_post",
       grant_types: ["authorization_code"],
       response_types: ["code"],
