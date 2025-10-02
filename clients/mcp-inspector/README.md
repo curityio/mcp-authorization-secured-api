@@ -1,4 +1,4 @@
-# Use the MCP Inspector
+# MCP Inspector OAuth Client
 
 The MCP inspector can be run as a client to the example backend deployment:
 

@@ -1,4 +1,4 @@
-# TypeScript SDK Example OAuth Client
+# TypeScript SDK OAuth Client
 
 This is a copy of the [TypeScript SDK Example MCP OAuth Client](https://github.com/modelcontextprotocol/typescript-sdk/blob/main/src/examples/client/simpleOAuthClient.ts) with minor changes.
 
