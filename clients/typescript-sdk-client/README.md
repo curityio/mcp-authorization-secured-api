@@ -17,17 +17,6 @@ const clientMetadata: OAuthClientMetadata = {
 };
 ```
 
-The following code was added to support capturing MCP, OAuth and API requests in an HTTP proxy tool.
-
-```typescript
-import { setGlobalDispatcher, ProxyAgent } from 'undici';
-
-if (process.env.http_proxy) {
-  const dispatcher = new ProxyAgent({uri: new URL(process.env.http_proxy).toString() });
-  setGlobalDispatcher(dispatcher);
-}
-```
-
 ## Usage
 
 The client is a simple console application which you run with the following commands:
@@ -82,6 +71,17 @@ mcp> call fetch-stock-prices
 ```
 
 ## View MCP Messages with an HTTP Proxy
+
+If you want to capture MCP, OAuth and API requests in an HTTP proxy tool, make the following edits:
+
+```typescript
+import { setGlobalDispatcher, ProxyAgent } from 'undici';
+
+if (process.env.http_proxy) {
+  const dispatcher = new ProxyAgent({uri: new URL(process.env.http_proxy).toString() });
+  setGlobalDispatcher(dispatcher);
+}
+```
 
 The following screenshot shows a streamable HTTP request when an MCP tool is called.
 

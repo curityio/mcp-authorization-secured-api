@@ -6,7 +6,6 @@ The MCP inspector can be run as a client to the example backend deployment:
 
 ## Compatibility Edits
 
-At the time of writing there are some compatibility issues that require minor edits.\
 Clone the MCP inspector repo and install its dependencies:
 
 ```bash
@@ -15,12 +14,13 @@ cd inspector
 npm install
 ```
 
-Edit the `client/src/lib/auth.ts` source file and make edits to match the following code:
+Edit the `client/src/lib/auth.ts` source file and make edits to match the following code.\
+These match typical settings for a backend component that would act on behalf of a web frontend.
 
 ```typescript
 get clientMetadata(): OAuthClientMetadata {
     return {
-      redirect_uris: [this.redirectUrl],
+      redirect_uris: [this.redirectUrl, this.debugRedirectUrl],
       token_endpoint_auth_method: "client_secret_post",
       grant_types: ["authorization_code"],
       response_types: ["code"],
@@ -28,14 +28,6 @@ get clientMetadata(): OAuthClientMetadata {
       client_uri: "http://localhost:6274",
       scope: 'stocks/read',
     };
-}
-
-saveClientInformation(clientInformation: OAuthClientInformation) {
-    saveClientInformationToSessionStorage({
-        serverUrl: this.serverUrl,
-        clientInformation: clientInformation,
-        isPreregistered: false,
-    });
 }
 ```
 
