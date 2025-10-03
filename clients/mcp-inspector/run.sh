@@ -37,12 +37,12 @@ if [ ! -d inspector ]; then
 
   if [ "$(uname -s)" == 'Darwin' ]; then
     sed -i '' "s/$AUTH_METHOD_FROM/$AUTH_METHOD_TO/" client/src/lib/auth.ts
-    sed -i '' "s/$CLIENT_URI_FROM/$CLIENT_URI_TO/"  client/src/lib/auth.ts
-    sed -i '' "s/$SCOPE_FROM/$SCOPE_TO/"            client/src/lib/auth.ts
+    sed -i '' "s/$CLIENT_URI_FROM/$CLIENT_URI_TO/"   client/src/lib/auth.ts
+    sed -i '' "s/$SCOPE_FROM/$SCOPE_TO/"             client/src/lib/auth.ts
   else
-    sed -i "s/$AUTH_METHOD_FROM/$AUTH_METHOD_TO/"   client/src/lib/auth.ts
-    sed -i '' "s/$CLIENT_URI_FROM/$CLIENT_URI_TO/"  client/src/lib/auth.ts
-    sed -i '' "s/$SCOPE_FROM/$SCOPE_TO/"            client/src/lib/auth.ts
+    sed -i "s/$AUTH_METHOD_FROM/$AUTH_METHOD_TO/"    client/src/lib/auth.ts
+    sed -i "s/$CLIENT_URI_FROM/$CLIENT_URI_TO/"      client/src/lib/auth.ts
+    sed -i "s/$SCOPE_FROM/$SCOPE_TO/"                client/src/lib/auth.ts
   fi
 
   #
