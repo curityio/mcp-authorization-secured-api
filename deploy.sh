@@ -17,6 +17,15 @@ if [ "$LICENSE_KEY" == '' ]; then
 fi
 
 #
+# Some MCP clients, like Claude, require HTTPS connections.
+# Therefore, create development SSL certificates for external URLs.
+#
+./apigateway/certs/create.sh
+if [ $? -ne 0 ]; then
+  exit 1
+fi
+
+#
 # Then run the deployment
 #
 docker compose down

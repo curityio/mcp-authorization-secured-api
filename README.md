@@ -24,8 +24,8 @@ The overall flow uses the following steps:
 2. The Curity Identity Server issues the MCP client a confidential (opaque) access token.
 3. The MCP client sends the opaque access token to the MCP server.
 4. The [phantom token plugin](https://github.com/curityio/nginx-lua-phantom-token-plugin) introspects the opaque access token and forwards a JWT access token to the MCP server.
-5. The MCP server validates the JWT access token and checks that it has an audience of `http://mcp.demo.example/`.
-6. Before calling the API the MCP server uses token exchange to change the token audience to`http://api.demo.example`.
+5. The MCP server validates the JWT access token and checks that it has an audience of `https://mcp.demo.example/`.
+6. Before calling the API the MCP server uses token exchange to change the token audience to`https://api.demo.example`.
 7. The MCP server sends the exchanged access token to the stocks API.
 8. The API validates the access token and uses its claims for authorization that protects business resources.
 
@@ -37,22 +37,16 @@ MCP clients connect to the MCP server using a Streamable HTTP transport.
 
 | Endpoint | URL | Description |
 | -------- | --- | ----------- |
-| MCP Server Entry Point | `http://mcp.demo.example` | Endpoint that receives all API requests from MCP clients. |
-| MCP Server Resource Metadata | `http://mcp.demo.example/.well-known/oauth-protected-resource` | Used by the MCP client to discover the MCP server's authorization server. |
-| Stocks API | `http://api.demo.example/stocks` | The API entry point for non MCP clients. |
-| Curity Identity Server OAuth Metadata | `http://login.demo.example/.well-known/oauth-authorization-server` | Used by the MCP client to discover the capabilities of the authorization server, e.g. authorization endpoint. |
-| Curity Identity Server Admin UI | `http://admin.demo.example/admin` | Administration interface of the Curity Identity Server. |
-| Curity Identity Server DCR | `http://login.demo.example/oauth/v2/oauth-registration` | Endpoint of the Curity Identity Server that enables the MCP client to automatically register, e.g. its redirect URI. |
-| Curity Identity Server Authorization Endpoint | `http://login.demo.example/oauth/v2/oauth-authorize` | Endpoint discovered by the MCP client for starting the OAuth flow. |
-| Curity Identity Server Token Endpoint | `http://login.demo.example/oauth/v2/oauth-token` | Endpoint from where the MCP client gets the access token at the end. |
-| Curity Identity Server Login Interfaces | `http://login.demo.example/authn/authenticate/` | The base URL for authentication related user interaction. |
+| MCP Server Entry Point | `https://mcp.demo.example` | Endpoint that receives all API requests from MCP clients. |
+| MCP Server Resource Metadata | `https://mcp.demo.example/.well-known/oauth-protected-resource` | Used by the MCP client to discover the MCP server's authorization server. |
+| Stocks API | `https://api.demo.example/stocks` | The API entry point for non MCP clients. |
+| Curity Identity Server OAuth Metadata | `https://login.demo.example/.well-known/oauth-authorization-server` | Used by the MCP client to discover the capabilities of the authorization server, e.g. authorization endpoint. |
+| Curity Identity Server Admin UI | `https://admin.demo.example/admin` | Administration interface of the Curity Identity Server. |
+| Curity Identity Server DCR | `https://login.demo.example/oauth/v2/oauth-registration` | Endpoint of the Curity Identity Server that enables the MCP client to automatically register, e.g. its redirect URI. |
+| Curity Identity Server Authorization Endpoint | `https://login.demo.example/oauth/v2/oauth-authorize` | Endpoint discovered by the MCP client for starting the OAuth flow. |
+| Curity Identity Server Token Endpoint | `https://login.demo.example/oauth/v2/oauth-token` | Endpoint from where the MCP client gets the access token at the end. |
+| Curity Identity Server Login Interfaces | `https://login.demo.example/authn/authenticate/` | The base URL for authentication related user interaction. |
 | Test Email Inbox | `http://mail.demo.example` | A mail server for testing purposes that lets you receive any emails that the Curity Identity Server sends. |
-
-To enable the use of these domains on your local computer, add the following entries to the `/etc/hosts` file.
-
-```text
-127.0.0.1 api.demo.example mcp.demo.example admin.demo.example login.demo.example mail.demo.example
-```
 
 The Curity Identity Server implements OAuth standards (DCR, code flow) to enable the authorization as defined for MCP.\
 You can log into the Admin UI with a username and password of `admin / Password1`.
@@ -76,6 +70,21 @@ Run the following commands to deploy all backend components and provide OAuth-se
 export LICENSE_FILE_PATH=~/Desktop/license.json
 ./build.sh
 ./deploy.sh
+```
+
+### Enable Local HTTPS URLs
+
+To enable the use of these domains on your local computer, add the following entries to the `/etc/hosts` file.
+
+```text
+127.0.0.1 api.demo.example mcp.demo.example admin.demo.example login.demo.example mail.demo.example
+```
+
+Also trust the OpenSSL issued root certificate authority that the deployment creates at the following location.\
+For example, on macOS add it to Keychain Access under System / Certificates:
+
+```text
+apigateway/certs/example.ca.crt
 ```
 
 ### Run Clients
@@ -145,9 +154,9 @@ The access token is only accepted at MCP entry points and not at other API endpo
   "exp": 1749650409,
   "nbf": 1749650109,
   "scope": "stocks/read",
-  "iss": "http://login.demo.example/oauth/v2/oauth-anonymous",
+  "iss": "https://login.demo.example/oauth/v2/oauth-anonymous",
   "sub": "john.doe@demo.example",
-  "aud": "http://mcp.demo.example/",
+  "aud": "https://mcp.demo.example/",
   "iat": 1749650109,
   "purpose": "access_token"
 }

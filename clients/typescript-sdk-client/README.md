@@ -2,28 +2,18 @@
 
 This is a copy of the [TypeScript SDK Example MCP OAuth Client](https://github.com/modelcontextprotocol/typescript-sdk/blob/main/src/examples/client/simpleOAuthClient.ts) with minor changes.
 
-## Compatibility Edits
-
-This repo's copy of the example client contains slightly edited code to set the initial scope:
-
-```typescript
-const clientMetadata: OAuthClientMetadata = {
-    client_name: 'Simple OAuth MCP Client',
-    redirect_uris: [CALLBACK_URL],
-    grant_types: ['authorization_code'],
-    response_types: ['code'],
-    token_endpoint_auth_method: 'client_secret_post',
-    scope: 'stocks/read'
-};
-```
-
 ## Usage
 
-The client is a simple console application which you run with the following commands:
+The TypeScript SDK client is a simple console application which you first prepare:
 
 ```bash
 cd mcp-client
 npm install
+```
+
+Then run the console app with the following commands:
+
+```bash
 npm start
 ```
 
@@ -33,9 +23,9 @@ The example API returns some hard-coded fictional stock prices.
 
 ```text
 🚀 Simple MCP OAuth Client
-Connecting to: http://mcp.demo.example
+Connecting to: https://mcp.demo.example
 
-🔗 Attempting to connect to http://mcp.demo.example...
+🔗 Attempting to connect to https://mcp.demo.example...
 🔐 Creating OAuth provider...
 🔐 OAuth provider created
 👤 Creating MCP client...
@@ -45,8 +35,8 @@ Connecting to: http://mcp.demo.example
 🚢 Transport created
 🔌 Attempting connection (this will trigger OAuth redirect)...
 📌 OAuth redirect handler called - opening browser
-Opening browser to: http://login.demo.example/oauth/v2/oauth-authorize?response_type=code&client_id=24ae8cd9-3d44-434e-9506-1342d76eea5c&code_challenge=u1IP4WbEWQQbS04foPIsNdjE28v_-8yQefhrqr9zE9M&code_challenge_method=S256&redirect_uri=http%3A%2F%2Flocalhost%3A8090%2Fcallback&scope=stocks%2Fread
-🌐 Opening browser for authorization: http://login.demo.example/oauth/v2/oauth-authorize?response_type=code&client_id=24ae8cd9-3d44-434e-9506-1342d76eea5c&code_challenge=u1IP4WbEWQQbS04foPIsNdjE28v_-8yQefhrqr9zE9M&code_challenge_method=S256&redirect_uri=http%3A%2F%2Flocalhost%3A8090%2Fcallback&scope=stocks%2Fread
+Opening browser to: https://login.demo.example/oauth/v2/oauth-authorize?response_type=code&client_id=24ae8cd9-3d44-434e-9506-1342d76eea5c&code_challenge=u1IP4WbEWQQbS04foPIsNdjE28v_-8yQefhrqr9zE9M&code_challenge_method=S256&redirect_uri=http%3A%2F%2Flocalhost%3A8090%2Fcallback&scope=stocks%2Fread
+🌐 Opening browser for authorization: https://login.demo.example/oauth/v2/oauth-authorize?response_type=code&client_id=24ae8cd9-3d44-434e-9506-1342d76eea5c&code_challenge=u1IP4WbEWQQbS04foPIsNdjE28v_-8yQefhrqr9zE9M&code_challenge_method=S256&redirect_uri=http%3A%2F%2Flocalhost%3A8090%2Fcallback&scope=stocks%2Fread
 🔐 OAuth required - waiting for authorization...
 OAuth callback server started on http://localhost:8090
 📥 Received callback: /callback?iss=http%3A%2F%2Flogin.demo.example%2Foauth%2Fv2%2Foauth-anonymous&code=dodc5hVzHJ3kAKmHgnGRyiyNgkVIVyNx
@@ -70,9 +60,22 @@ mcp> call fetch-stock-prices
 [{"id":"COM1","name":Company 1","price":450.22},{"id":"COM2","name":"Company 2","price":250.62},{"id":"COM3","name":"Company 3","price":21.07}]
 ```
 
-## View MCP Messages with an HTTP Proxy
+## Code Edits
 
-If you want to capture MCP, OAuth and API requests in an HTTP proxy tool, make the following edits:
+This repo's copy of the example client contains slightly edited code to set the initial scope:
+
+```typescript
+const clientMetadata: OAuthClientMetadata = {
+    client_name: 'Simple OAuth MCP Client',
+    redirect_uris: [CALLBACK_URL],
+    grant_types: ['authorization_code'],
+    response_types: ['code'],
+    token_endpoint_auth_method: 'client_secret_post',
+    scope: 'stocks/read'
+};
+```
+
+It also contains the following edits to capture MCP, OAuth and API requests in an HTTP proxy tool:
 
 ```typescript
 import { setGlobalDispatcher, ProxyAgent } from 'undici';
@@ -82,6 +85,8 @@ if (process.env.http_proxy) {
   setGlobalDispatcher(dispatcher);
 }
 ```
+
+## View MCP Messages with an HTTP Proxy
 
 The following screenshot shows a streamable HTTP request when an MCP tool is called.
 
@@ -100,7 +105,7 @@ def load(loader):
 Run the proxy with a command like this, which will open the browser at `http://localhost:8889`.
 
 ```bash
-mitmweb -p 8888 --web-port 8889 --script init.py
+mitmweb -p 8888 --web-port 8889 --ssl-insecure --script init.py
 ```
 
 Then configure the HTTP proxy against the local computer's network connection:
@@ -110,8 +115,6 @@ Then configure the HTTP proxy against the local computer's network connection:
 You can run the MCP client with the following commands to route messages via the HTTP proxy tool.
 
 ```bash
-cd mcp-client
 export http_proxy='http://127.0.0.1:8888'
-npm install
 npm start
 ```

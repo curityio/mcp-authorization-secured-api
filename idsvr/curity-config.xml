@@ -1,10 +1,10 @@
 <config xmlns="http://tail-f.com/ns/config/1.0">
   <environments xmlns="https://curity.se/ns/conf/base">
     <environment>
-      <base-url>http://login.demo.example</base-url>
+      <base-url>https://login.demo.example</base-url>
       <admin-service>
         <http>
-          <base-url>http://admin.demo.example</base-url>
+          <base-url>https://admin.demo.example</base-url>
           <web-ui>
           </web-ui>
           <restconf>

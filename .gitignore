@@ -2,3 +2,6 @@
 license.json
 node_modules
 dist
+inspector
+*.key
+*.crt

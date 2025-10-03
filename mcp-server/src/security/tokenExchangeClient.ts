@@ -34,7 +34,7 @@ export class TokenExchangeClient {
 
     public async exchangeAccessToken(accessToken: string): Promise<string> {
 
-        const upstreamApiAudience = 'http://api.demo.example';
+        const upstreamApiAudience = 'https://api.demo.example';
 
         let body = 'grant_type=urn:ietf:params:oauth:grant-type:token-exchange';
         body += `&client_id=${this.configuration.tokenExchageClientId}`;

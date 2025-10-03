@@ -4,42 +4,16 @@ The MCP inspector can be run as a client to the example backend deployment:
 
 ![MCP inspector](../images/inspector.png)
 
-## Compatibility Edits
-
-Clone the MCP inspector repo and install its dependencies:
-
-```bash
-git clone https://github.com/modelcontextprotocol/inspector
-cd inspector
-npm install
-```
-
-Edit the `client/src/lib/auth.ts` source file and make edits to match the following code.\
-These match typical settings for a backend component that would act on behalf of a web frontend.
-
-```typescript
-get clientMetadata(): OAuthClientMetadata {
-    return {
-      redirect_uris: [this.redirectUrl],
-      token_endpoint_auth_method: "client_secret_post",
-      grant_types: ["authorization_code"],
-      response_types: ["code"],
-      client_name: "MCP Inspector",
-      client_uri: "http://localhost:6274",
-      scope: 'stocks/read',
-    };
-}
-```
-
 ## Run the MCP Inspector
 
-Run the following command to run the client:
+Execute the following script to clone the code for the MCP inspector and run it.\
+The script applies some overrides which you can study:
 
 ```bash
-npm run dev
+./run.sh
 ```
 
-Wait for the MCP inspector and then open the MCP inspector URL in the browser:
+Wait for a few seconds and the MCP inspector opens in the browser
 
 ```text
 Starting MCP inspector in development mode...
@@ -62,6 +36,6 @@ Starting MCP inspector in development mode...
 Set these properties in the browser frontend:
 
 - Transport Type = Streamable HTTP
-- URL: `http://mcp.demo.example`
+- URL: `https://mcp.demo.example`
 
 Then click the `Connect` button and run the authentication flow.

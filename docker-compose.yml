@@ -6,13 +6,17 @@ services:
   api-gateway:
     image: kong-api-gateway:1.0
     ports:
-      - 80:3001
+      - 443:3001
     volumes:
       - ./apigateway/kong.yml:/usr/local/kong/declarative/kong.yml
+      - ./apigateway/certs/example.ssl.crt:/usr/local/share/certs/example.ssl.crt
+      - ./apigateway/certs/example.ssl.key:/usr/local/share/certs/example.ssl.key
     environment:
       KONG_DATABASE: 'off'
       KONG_DECLARATIVE_CONFIG: '/usr/local/kong/declarative/kong.yml'
-      KONG_PROXY_LISTEN: '0.0.0.0:3001'
+      KONG_PROXY_LISTEN: '0.0.0.0:3001 http2 ssl'
+      KONG_SSL_CERT: '/usr/local/share/certs/example.ssl.crt'
+      KONG_SSL_CERT_KEY: './usr/local/share/certs/example.ssl.key'
       KONG_LOG_LEVEL: 'info'
       KONG_PLUGINS: 'bundled,phantom-token'
       KONG_NGINX_HTTP_LUA_SHARED_DICT: 'phantom-token 10m'
@@ -27,13 +31,13 @@ services:
     hostname: mcp-server
     environment:
       PORT: '3000'
-      EXTERNAL_BASE_URL: 'http://mcp.demo.example'
-      AUTHORIZATION_SERVER_BASE_URL: 'http://login.demo.example'
+      EXTERNAL_BASE_URL: 'https://mcp.demo.example'
+      AUTHORIZATION_SERVER_BASE_URL: 'https://login.demo.example'
       STOCKS_API_BASE_URL: 'http://stocks-api:3000/'
       JWKS_URI: 'http://idsvr:8443/oauth/v2/oauth-anonymous/jwks'
       REQUIRED_JWT_ALGORITHM: 'PS256'
-      REQUIRED_JWT_ISSUER: 'http://login.demo.example/oauth/v2/oauth-anonymous'
-      REQUIRED_JWT_AUDIENCE: 'http://mcp.demo.example/'
+      REQUIRED_JWT_ISSUER: 'https://login.demo.example/oauth/v2/oauth-anonymous'
+      REQUIRED_JWT_AUDIENCE: 'https://mcp.demo.example/'
       TOKEN_EXCHANGE_CLIENT_ID: 'mcp-server'
       TOKEN_EXCHANGE_CLIENT_SECRET: 'Password1'
       TOKEN_ENDPOINT: 'http://idsvr:8443/oauth/v2/oauth-token'
@@ -48,8 +52,8 @@ services:
       PORT: '3000'
       JWKS_URI: 'http://idsvr:8443/oauth/v2/oauth-anonymous/jwks'
       REQUIRED_JWT_ALGORITHM: 'PS256'
-      REQUIRED_JWT_ISSUER: 'http://login.demo.example/oauth/v2/oauth-anonymous'
-      REQUIRED_JWT_AUDIENCE: 'http://api.demo.example'
+      REQUIRED_JWT_ISSUER: 'https://login.demo.example/oauth/v2/oauth-anonymous'
+      REQUIRED_JWT_AUDIENCE: 'https://api.demo.example'
   
   #
   # The Curity Identity Server implements security standards and issues access tokens to MCP clients used by AI agents

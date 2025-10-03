@@ -27,7 +27,7 @@ services:
       client_id: api-gateway-client
       client_secret: Password1
       token_cache_seconds: 900
-      resource_metadata_url: http://mcp.demo.example/.well-known/oauth-protected-resource
+      resource_metadata_url: https://mcp.demo.example/.well-known/oauth-protected-resource
 
 #
 # The MCP server exposes OAuth protected resource metadata that points MCP clients to the authorization server
