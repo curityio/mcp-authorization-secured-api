@@ -21,13 +21,13 @@ services:
     config:
       origins:
       - 'http://localhost:6274'
-  #- name: phantom-token
-  #  config:
-  #    introspection_endpoint: http://idsvr:8443/oauth/v2/oauth-introspect
-  #    client_id: api-gateway-client
-  #    client_secret: Password1
-  #    token_cache_seconds: 900
-  #    resource_metadata_url: https://mcp.demo.example/.well-known/oauth-protected-resource
+  - name: phantom-token
+    config:
+      introspection_endpoint: http://idsvr:8443/oauth/v2/oauth-introspect
+      client_id: api-gateway-client
+      client_secret: Password1
+      token_cache_seconds: 900
+      resource_metadata_url: https://mcp.demo.example/.well-known/oauth-protected-resource
 
 #
 # The MCP server exposes OAuth protected resource metadata that points MCP clients to the authorization server

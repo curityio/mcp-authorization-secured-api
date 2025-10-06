@@ -1,41 +1,29 @@
 # MCP Inspector OAuth Client
 
-The MCP inspector can be run as a client to the example backend deployment:
+The MCP inspector runs as a local web application.
 
-![MCP inspector](../../images/inspector.png)
+## Usage
 
-## Run the MCP Inspector
-
-Execute the following script to clone the code for the MCP inspector and run it.\
-The script applies some overrides which you can study:
+Execute the following script from the current folder.\
+The code clones the code for the MCP inspector and runs its web client:
 
 ```bash
 ./run.sh
 ```
 
-Wait for a few seconds and the MCP inspector opens in the browser
+## Client Behavior
 
-```text
-Starting MCP inspector in development mode...
-⚙️ Proxy server listening on localhost:6277
-🔑 Session token: eb476f416efa69a0c2c346b264079c9540d801592aa3c97916c0ddceb2e003ac
-   Use this token to authenticate requests or set DANGEROUSLY_OMIT_AUTH=true to disable auth
-
-  VITE v6.3.5  ready in 108 ms
-
-  ➜  Local:   http://localhost:6274/
-
-🚀 MCP Inspector is up and running at:
-   http://localhost:6274/?MCP_PROXY_AUTH_TOKEN=eb476f416efa69a0c2c346b264079c9540d801592aa3c97916c0ddceb2e003ac
-
-🌐 Opening browser...
-```
-
-## Connect to the MCP Server
-
-Set these properties in the browser frontend:
+Wait for a few seconds and the MCP inspector opens in the browser.\
+Configure the following properties in the browser frontend:
 
 - Transport Type = Streamable HTTP
 - URL: `https://mcp.demo.example`
 
-Then click the `Connect` button and run the authentication flow.
+Then click the `Connect` button and run the authentication flow.\
+The client triggers the OAuth flow from this repository's main [README](../../README.md).\
+The client then provides a web user interface and the user can invoke API operations as MCP tools:
+
+![MCP inspector](../../images/inspector.png)
+
+
+

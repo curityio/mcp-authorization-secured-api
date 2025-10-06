@@ -26,8 +26,8 @@ const configuration = new Configuration();
 /*
  * The API validates a JWT access token using security best practices on every request
  */
-//const oauthFilter = new OAuthFilter(configuration);
-//app.use('/', oauthFilter.validateAccessToken);
+const oauthFilter = new OAuthFilter(configuration);
+app.use('/', oauthFilter.validateAccessToken);
 
 
 /*
@@ -35,14 +35,14 @@ const configuration = new Configuration();
  */
 app.get('/', (request: Request, response: Response) => {
 
-    //console.log('API is returning secured information about stock prices ...');
-    //const claims = response.locals.claimsPrincipal as ClaimsPrincipal;
+    console.log('API is returning secured information about stock prices ...');
+    const claims = response.locals.claimsPrincipal as ClaimsPrincipal;
     
     /*
      * The API checks for its required scope for this endpoint.
      * The MCP client only has access to this area of data.
      */
-    //claims.enforceRequiredScope('stocks/read')
+    claims.enforceRequiredScope('stocks/read')
 
     /*
      * In this example, all stocks in this collection are returned to the AI agent.

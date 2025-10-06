@@ -3,5 +3,6 @@ license.json
 node_modules
 dist
 inspector
+typescript-sdk
 *.key
 *.crt

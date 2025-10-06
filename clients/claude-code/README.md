@@ -1,6 +1,7 @@
 # Claude Code
 
-To use Remote MCP Servers with Claude Code you need a [paid account](https://claude.com/pricing).\
+Claude Code runs as an interactive console application.\
+To use Claude Code you need a [paid account](https://claude.com/pricing).\
 For example, you could get started with a `Pro` individual account.
 
 ## Install Claude Code
@@ -11,22 +12,24 @@ Run the installation command:
 npm install -g @anthropic-ai/claude-code
 ```
 
-## Use Claude Code as an MCP Client
+## Usage
 
-Open a terminal in this folder and run Claude against the deployed MCP Server:
+Execute the following script from the current folder to run Claude Code in debug mode:
 
 ```bash
 ./run.sh
 ```
 
-The output will indicate the path to a log file.\
+The client triggers the OAuth flow from this repository's main [README](../../README.md).\
+You can then ask Claude a question related to stocks and it calls the MCP server:
+
+![claude code](../../images/claude-code.png)
+
+## Troubleshooting
+
+When Claude Code starts in debug mode it outputs the path to a log file.\
 Tail the log file in another terminal window in case you need to troubleshoot:
 
 ```bash
 tail -f ~/Library/Logs/claude-cli-nodejs/-Users-MYUSER-dev-claude/debug-logs/debug.txt
 ```
-
-Claude Code then runs the MCP authorization flow and gets connected.\
-You can then ask Claude a question related to stocks and it calls the MCP server:
-
-![claude code](../../images/claude-code.png)

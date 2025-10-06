@@ -1,25 +1,20 @@
 # TypeScript SDK OAuth Client
 
-This is a copy of the [TypeScript SDK Example MCP OAuth Client](https://github.com/modelcontextprotocol/typescript-sdk/blob/main/src/examples/client/simpleOAuthClient.ts) with minor changes.
+The TypeScript SDK example OAuth client runs as an interactive console application.
 
 ## Usage
 
-The TypeScript SDK client is a simple console application which you first prepare:
+Execute the following script to clone the code for the TypeScripy SDK and run its example OAuth client.\
+The client triggers the OAuth flow from this repository's main [README](../../README.md).
 
 ```bash
-cd mcp-client
-npm install
+./run.sh
 ```
 
-Then run the console app with the following commands:
+## Client Behavior
 
-```bash
-npm start
-```
-
-The MCP client integrates with the MCP server to run OAuth flows and make a secured connection.\
-The user can then run MCP tools to invoke API requests and access authorized resources.\
-The example API returns some hard-coded fictional stock prices.
+The client provides output during the OAuth flow.\
+The client then provides an interactive CLI and the user can invoke API operations as MCP tools:
 
 ```text
 🚀 Simple MCP OAuth Client
@@ -60,61 +55,3 @@ mcp> call fetch-stock-prices
 [{"id":"COM1","name":Company 1","price":450.22},{"id":"COM2","name":"Company 2","price":250.62},{"id":"COM3","name":"Company 3","price":21.07}]
 ```
 
-## Code Edits
-
-This repo's copy of the example client contains slightly edited code to set the initial scope:
-
-```typescript
-const clientMetadata: OAuthClientMetadata = {
-    client_name: 'Simple OAuth MCP Client',
-    redirect_uris: [CALLBACK_URL],
-    grant_types: ['authorization_code'],
-    response_types: ['code'],
-    token_endpoint_auth_method: 'client_secret_post',
-    scope: 'stocks/read'
-};
-```
-
-It also contains the following edits to capture MCP, OAuth and API requests in an HTTP proxy tool:
-
-```typescript
-import { setGlobalDispatcher, ProxyAgent } from 'undici';
-
-if (process.env.http_proxy) {
-  const dispatcher = new ProxyAgent({uri: new URL(process.env.http_proxy).toString() });
-  setGlobalDispatcher(dispatcher);
-}
-```
-
-## View MCP Messages with an HTTP Proxy
-
-The following screenshot shows a streamable HTTP request when an MCP tool is called.
-
-![HTTP Proxy Capture](../../images/http-proxy-capture.png)
-
-You first need to install an HTTP proxy tool like [mitmproxy](https://mitmproxy.org/).\
-Save the following small script as `init.py` to limit traffic to the code example's URLs:
-
-```python
-from mitmproxy import ctx
-
-def load(loader):
-    ctx.options.view_filter = "~d demo.example"
-```
-
-Run the proxy with a command like this, which will open the browser at `http://localhost:8889`.
-
-```bash
-mitmweb -p 8888 --web-port 8889 --ssl-insecure --script init.py
-```
-
-Then configure the HTTP proxy against the local computer's network connection:
-
-![HTTP Proxy Configure](../../images/http-proxy-configure.png)
-
-You can run the MCP client with the following commands to route messages via the HTTP proxy tool.
-
-```bash
-export http_proxy='http://127.0.0.1:8888'
-npm start
-```

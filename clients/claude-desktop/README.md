@@ -1,6 +1,7 @@
 # Claude Desktop
 
-To use Remote MCP Servers with Claude Desktop you need a [paid account](https://claude.com/pricing).\
+Claude Desktop runs as a local console application.\
+To use Claude Desktop you need a [paid account](https://claude.com/pricing).\
 For example, you could get started with a `Pro` individual account.
 
 ## Configure Claude Desktop
@@ -23,10 +24,10 @@ Then restart Claude Desktop:
 }
 ```
 
-## Use Claude Desktop
+## Usage
 
 You can then just ask Claude Desktop a natural language question.\
-It runs the OAuth flow and then presents results:
+The client triggers the OAuth flow from this repository's main [README](../../README.md).\
 
 ![claude desktop](../../images/claude-desktop.png)
 

@@ -26,7 +26,8 @@ if [ ! -d inspector ]; then
   npm install
 
   #
-  # Make some automated code updates to match the example deployment's OAuth settings
+  # Set the initial scope, which is a behavior that the MCP authorization specification does not yet define
+  # Also operate as a secure client and use the local redirect URI
   #
   AUTH_METHOD_FROM="token_endpoint_auth_method: \"none\"" 
   AUTH_METHOD_TO="token_endpoint_auth_method: \"client_secret_post\""
