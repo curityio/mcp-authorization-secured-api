@@ -7,17 +7,26 @@ function result(context) {
 
   var accessTokenData = context.getDefaultAccessTokenData();
 
-  // Support for resource identifier and audience restricted access tokens
+  // Logic for resource identifier and audience restricted access tokens
   var resource = context.getRequest().getFormParameter("resource");
-
   if (resource) {
-    // Allow if the requested resource value is part of the client's configured audiences
+    
+    // Set access token data if the requested resource value is part of the client's configured audiences
     if (context.client.audiencesAsString.split(" ").indexOf(resource) != -1) {
+      
       accessTokenData.aud = [resource];
+      if (!accessTokenData.scope) {
+        accessTokenData.scope = "stocks/read";
+      }
+  
     }
-    // Allow if the requested resource value is configured in client properties (DCR clients)
+    // Set access token data if the requested resource value is configured in client properties (DCR clients)
     else if (context.client.properties.audiences.indexOf(resource) != -1) {
+      
       accessTokenData.aud = [resource];
+      if (!accessTokenData.scope) {
+        accessTokenData.scope = "stocks/read";
+      }
     }
     // Reject the request if the client is unauthorized to the resource.
     else {

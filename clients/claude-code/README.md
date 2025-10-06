@@ -33,3 +33,27 @@ Tail the log file in another terminal window in case you need to troubleshoot:
 ```bash
 tail -f ~/Library/Logs/claude-cli-nodejs/-Users-MYUSER-dev-claude/debug-logs/debug.txt
 ```
+
+## NOTES
+
+This is the DCR request.\
+
+```
+
+
+```json
+{
+    "client_name": "Claude Code (curity_demo)",
+    "grant_types": [
+        "authorization_code",
+        "refresh_token"
+    ],
+    "redirect_uris": [
+        "http://localhost:64997/callback"
+    ],
+    "response_types": [
+        "code"
+    ],
+    "token_endpoint_auth_method": "none"
+}
+```

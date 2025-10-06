@@ -31,6 +31,7 @@ services:
 
 #
 # The MCP server exposes OAuth protected resource metadata that points MCP clients to the authorization server
+# This endpoint is not secured so we use a different route for it
 #
 - name: mcp-server-resource-metadata
   url: http://mcp-server:3000/.well-known/oauth-protected-resource
@@ -40,24 +41,6 @@ services:
     - mcp.demo.example
     paths:
     - /.well-known/oauth-protected-resource
-  plugins:
-  - name: cors
-    config:
-      origins:
-      - 'http://localhost:6274'
-
-#
-# MCP authorization requires a root level OAuth authorization server metadata endpoint
-# - https://github.com/modelcontextprotocol/typescript-sdk/issues/545
-#
-- name: authorization-server-metadata-reroute
-  url: http://idsvr:8443/.well-known/oauth-authorization-server/oauth/v2/oauth-anonymous
-  routes:
-  - name: authorization-server-metadata-reroute
-    hosts:
-    - login.demo.example
-    paths:
-    - /.well-known/oauth-authorization-server
   plugins:
   - name: cors
     config:
@@ -84,7 +67,53 @@ services:
       token_cache_seconds: 900
 
 #
-# The main authorization server endpoints
+# MCP authorization requires a root level OAuth authorization server metadata endpoint
+# - https://github.com/modelcontextprotocol/typescript-sdk/issues/545
+#
+- name: authorization-server-metadata-reroute
+  url: http://idsvr:8443/.well-known/oauth-authorization-server/oauth/v2/oauth-anonymous
+  routes:
+  - name: authorization-server-metadata-reroute
+    hosts:
+    - login.demo.example
+    paths:
+    - /.well-known/oauth-authorization-server
+  plugins:
+  - name: cors
+    config:
+      origins:
+      - 'http://localhost:6274'
+
+#
+# Some MCP clients sends a DCR request parameter of "token_endpoint_auth_method": "none"
+# This is not compatible with the Curity Identity Server's policy
+# Therefore, use Kong's request transformer plugin to overwrite it with Curity's default value
+#
+- name: authorization-server-registration
+  url: http://idsvr:8443/oauth/v2/oauth-registration
+  routes:
+  - name: authorization-server-registration
+    hosts:
+    - login.demo.example
+    paths:
+    - /oauth/v2/oauth-registration
+  plugins:
+  - name: cors
+    config:
+      origins:
+      - 'http://localhost:6274'
+  - name: request-transformer
+    enabled: yes
+    config:
+      remove:
+        body:
+        - token_endpoint_auth_method:none
+      add:
+        body:
+        - token_endpoint_auth_method:client_secret_basic
+
+#
+# All other authorization server endpoints
 #
 - name: authorization-server
   url: http://idsvr:8443

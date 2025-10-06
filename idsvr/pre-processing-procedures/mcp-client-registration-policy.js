@@ -3,25 +3,20 @@
  * @returns {*}
  */
 function result(context) {
-  var request = context.getRequest();
-  var httpMethod = request.getMethod();
   var attributes = {};
 
-  if (httpMethod === "POST") {
-    var body = request.getParsedBodyAsJson();
-    if (body && body.scope) {
-      if (body.scope.split(" ").indexOf("stocks/read") !== -1) {
-        
-        // Apply the security policy for MCP clients that access stock data
-        attributes.require_proof_key = true;
-        attributes.access_token_ttl = 900;
-        attributes.refresh_token_ttl = 0;
+  // Apply the security policy for MCP clients that access stock data
+  attributes.require_proof_key = true;
+  attributes.access_token_ttl = 900;
+  attributes.refresh_token_ttl = 0;
 
-        // Add a custom property that specifies the audiences of this DCR client
-        attributes.audiences = ["https://mcp.demo.example/"];
-      }
-    }
-  }
+  // Currently the MCP authorization specification does not define how the initial scope is set.
+  // Therefore, some MCP clients do not send a scope in their DCR request so we use the fixed scope defined for DCR in the token profile.
+  // This data gets returned in the DCR response and the client should send it during token requests.
+  attributes.scope = "stocks/read"
+
+  // Add a custom property that specifies the audiences of this DCR client
+  attributes.audiences = ["https://mcp.demo.example/"];
 
   return attributes;
 }

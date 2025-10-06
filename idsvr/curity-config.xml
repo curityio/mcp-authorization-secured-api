@@ -415,7 +415,7 @@
           <endpoint-kind>oauth-token</endpoint-kind>
           <token-endpoint-procedures>
             <flow>oauth-token-authorization-code</flow>
-            <procedure>set-access-token-audience</procedure>
+            <procedure>set-access-token-data</procedure>
           </token-endpoint-procedures>
           <token-endpoint-procedures>
             <flow>oauth-token-oauth-token-exchange</flow>

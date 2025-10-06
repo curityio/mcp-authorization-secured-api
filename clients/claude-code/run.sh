@@ -13,6 +13,8 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 # Trust the development root certificate
 #
 export NODE_EXTRA_CA_CERTS=$(readlink -f '../../apigateway/certs/example.ca.crt')
+#export HTTPS_PROXY=http://127.0.0.1:8888
+#export NODE_TLS_REJECT_UNAUTHORIZED=0
 
 #
 # Connect Claude to the MCP server

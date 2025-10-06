@@ -24,18 +24,6 @@ if [ ! -d typescript-sdk ]; then
   #
   cd typescript-sdk
   npm install
-
-  #
-  # Set the initial scope, which is a behavior that the MCP authorization specification does not yet define
-  #
-  SCOPE_FROM="scope: 'mcp:tools'"
-  SCOPE_TO="scope: 'stocks\/read'"
-  
-  if [ "$(uname -s)" == 'Darwin' ]; then
-    sed -i '' "s/$SCOPE_FROM/$SCOPE_TO/" src/examples/client/simpleOAuthClient.ts
-  else
-    sed -i "s/$SCOPE_FROM/$SCOPE_TO/"    src/examples/client/simpleOAuthClient.ts
-  fi
   cd ..
 fi
 

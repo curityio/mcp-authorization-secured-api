@@ -15,9 +15,9 @@ Then restart Claude Desktop:
   "mcpServers": {
     "curity-demo": {
       "command": "npx",
-      "args": ["mcp-remote", "https://mcp.demo.example"],
+      "args": ["mcp-remote", "https://mcp.demo.example", "--debug"],
       "env": {
-        "NODE_EXTRA_CA_CERTS": "/Users/MYUSER/dev/mcp-authorization-secured-api/example.ca.crt"
+        "NODE_EXTRA_CA_CERTS": "/Users/MYUSER/dev/mcp-authorization-secured-api/apigateway/certs/example.ca.crt"
       }
     }
   }
@@ -27,7 +27,7 @@ Then restart Claude Desktop:
 ## Usage
 
 You can then just ask Claude Desktop a natural language question.\
-The client triggers the OAuth flow from this repository's main [README](../../README.md).\
+The client triggers the OAuth flow from this repository's main [README](../../README.md).
 
 ![claude desktop](../../images/claude-desktop.png)
 
