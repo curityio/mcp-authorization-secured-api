@@ -90,7 +90,7 @@ if (process.env.http_proxy) {
 
 The following screenshot shows a streamable HTTP request when an MCP tool is called.
 
-![HTTP Proxy Capture](../images/http-proxy-capture.png)
+![HTTP Proxy Capture](../../images/http-proxy-capture.png)
 
 You first need to install an HTTP proxy tool like [mitmproxy](https://mitmproxy.org/).\
 Save the following small script as `init.py` to limit traffic to the code example's URLs:
@@ -110,7 +110,7 @@ mitmweb -p 8888 --web-port 8889 --ssl-insecure --script init.py
 
 Then configure the HTTP proxy against the local computer's network connection:
 
-![HTTP Proxy Configure](../images/http-proxy-configure.png)
+![HTTP Proxy Configure](../../images/http-proxy-configure.png)
 
 You can run the MCP client with the following commands to route messages via the HTTP proxy tool.
 

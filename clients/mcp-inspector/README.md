@@ -2,7 +2,7 @@
 
 The MCP inspector can be run as a client to the example backend deployment:
 
-![MCP inspector](../images/inspector.png)
+![MCP inspector](../../images/inspector.png)
 
 ## Run the MCP Inspector
 

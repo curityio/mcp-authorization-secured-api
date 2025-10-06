@@ -46,7 +46,7 @@ MCP clients connect to the MCP server using a Streamable HTTP transport.
 | Curity Identity Server Authorization Endpoint | `https://login.demo.example/oauth/v2/oauth-authorize` | Endpoint discovered by the MCP client for starting the OAuth flow. |
 | Curity Identity Server Token Endpoint | `https://login.demo.example/oauth/v2/oauth-token` | Endpoint from where the MCP client gets the access token at the end. |
 | Curity Identity Server Login Interfaces | `https://login.demo.example/authn/authenticate/` | The base URL for authentication related user interaction. |
-| Test Email Inbox | `http://mail.demo.example` | A mail server for testing purposes that lets you receive any emails that the Curity Identity Server sends. |
+| Test Email Inbox | `https://mail.demo.example` | A mail server for testing purposes that lets you receive any emails that the Curity Identity Server sends. |
 
 The Curity Identity Server implements OAuth standards (DCR, code flow) to enable the authorization as defined for MCP.\
 You can log into the Admin UI with a username and password of `admin / Password1`.
@@ -84,7 +84,7 @@ Also trust the OpenSSL issued root certificate authority that the deployment cre
 For example, on macOS add it to Keychain Access under System / Certificates:
 
 ```text
-apigateway/certs/example.ca.crt
+~/Desktop/example.ca.crt
 ```
 
 ### Run Clients
@@ -93,6 +93,8 @@ See the following READMEs for further information on how to run supported client
 
 - [TypeScript SDK Console Client](clients/typescript-sdk-client/README.md)
 - [MCP Inspector](clients/mcp-inspector/README.md)
+- [Claude Code](clients/claude-code/README.md)
+- [Claude Desktop](clients/claude-desktop/README.md)
 
 ## Understand the Flow
 
@@ -116,12 +118,12 @@ You can simulate that by entering one of the emails and typing a one-time passwo
 - `john.doe@demo.example`
 - `jane.test@demo.example`
 
-![user-authentication](images/user-authentication.png)
+<img src="images/user-authentication.png" alt="User Consent" style="width:50%" />
 
 Users must then consent to granting the MCP client access to API data.\
 The user is informed about the level of data access that the AI agent requests.
 
-![user-consent](images/user-consent.png)
+<img src="images/user-consent.png" alt="User Consent" style="width:50%" />
 
 ### Access Token Behaviors
 

@@ -75,7 +75,7 @@ export class McpServerApplication {
 
         // Add middleware to validate the JWT access token on MCP requests from the client
         // The MCP server enforces audience restrictions and prevents the use of unauthorized access tokens
-        this.expressApp.use('/', this.oauthFilter.validateAccessToken);
+        //this.expressApp.use('/', this.oauthFilter.validateAccessToken);
 
         // Create MCP routes
         this.expressApp.post('/', this.post);
@@ -207,9 +207,10 @@ export class McpServerApplication {
 
         try {
             
-            const receivedAccessToken = extra.authInfo?.token || '';
-            const oauthClient = new TokenExchangeClient(this.configuration, this.errorHandler);
-            const exchangedAccessToken = await oauthClient.exchangeAccessToken(receivedAccessToken);
+            //const receivedAccessToken = extra.authInfo?.token || '';
+            //const oauthClient = new TokenExchangeClient(this.configuration, this.errorHandler);
+            //const exchangedAccessToken = await oauthClient.exchangeAccessToken(receivedAccessToken);
+            const exchangedAccessToken = '';
         
             const apiClient = new StocksApiClient(this.configuration, this.errorHandler);
             const data = await apiClient.getStocks(exchangedAccessToken);

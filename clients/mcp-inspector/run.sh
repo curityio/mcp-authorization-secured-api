@@ -1,8 +1,8 @@
 #!/bin/bash
 
-#########################################################
-# Create development HTTPS certificates for external URLs
-#########################################################
+########################################
+# Run the MCP inspector as an MCP client
+########################################
 
 #
 # Ensure that we are in the folder containing this script
@@ -54,8 +54,12 @@ if [ ! -d inspector ]; then
 fi
 
 #
-# Run the MCP inspector client and tell it to trust the development SSL certificate
+# Trust the development certificate
+#
+export NODE_EXTRA_CA_CERTS=~/Desktop/example.ca.crt
+
+#
+# Run the MCP inspector client
 #
 cd inspector
-export NODE_EXTRA_CA_CERTS=$(readlink -f '../../../apigateway/certs/example.ca.crt')
 node client/bin/start.js
