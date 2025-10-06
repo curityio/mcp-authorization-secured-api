@@ -54,9 +54,9 @@ if [ ! -d inspector ]; then
 fi
 
 #
-# Trust the development certificate
+# Trust the development root certificate
 #
-export NODE_EXTRA_CA_CERTS=~/Desktop/example.ca.crt
+export NODE_EXTRA_CA_CERTS=$(readlink -f '../../apigateway/certs/example.ca.crt')
 
 #
 # Run the MCP inspector client

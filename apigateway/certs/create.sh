@@ -89,11 +89,6 @@ if [ $? -ne 0 ]; then
 fi
 
 #
-# Copy the root CA to trust to the desktop
-#
-cp example.ca.crt ~/Desktop/
-
-#
 # Clean up
 #
 rm *.csr 2>/dev/null
