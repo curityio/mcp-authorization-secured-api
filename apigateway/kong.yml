@@ -85,9 +85,8 @@ services:
       - 'http://localhost:6274'
 
 #
-# Some MCP clients sends a DCR request parameter of "token_endpoint_auth_method": "none"
-# This is not compatible with the Curity Identity Server's policy
-# Therefore, use Kong's request transformer plugin to overwrite it with Curity's default value
+# The settings token_endpoint_auth_method=none and client_uri are incompatible with the Curity Identity Server
+# Therefore, use Kong's request transformer plugin to update incoming requests
 #
 - name: authorization-server-registration
   url: http://idsvr:8443/oauth/v2/oauth-registration
@@ -108,6 +107,7 @@ services:
       remove:
         body:
         - token_endpoint_auth_method:none
+        - client_uri
       add:
         body:
         - token_endpoint_auth_method:client_secret_basic
