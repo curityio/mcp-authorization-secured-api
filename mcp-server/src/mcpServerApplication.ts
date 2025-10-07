@@ -68,6 +68,7 @@ export class McpServerApplication {
 
         // Create the Express app
         this.expressApp = express();
+        this.expressApp.set('etag', false)
         this.expressApp.use(express.json());
 
         // Expose protected resource metadata
@@ -171,14 +172,17 @@ export class McpServerApplication {
 
     /*
      * The MCP server returns its resource information and points clients to its authorization server
-    * The TypeScript SDK's example client currently requires a resource identifier that ends with a trailing backslash
+     * Some example clients require a resource identifier that ends with a trailing backslash
+     * Return the scopes_supported that some MCP clients use in their scope selection strategy
+     * - https://modelcontextprotocol.io/specification/draft/basic/authorization#scope-selection-strategy
      */
     private getResourceMetadata(request: Request, response: Response) {
 
         const metadata = {
             resource: `${this.configuration.externalBaseUrl}/`,
-            resource_name: "MCP Server",
+            resource_name: 'MCP Server',
             authorization_servers: [this.configuration.authorizationServerBaseUrl],
+            scopes_supported: [this.configuration.requiredScope],
         };
 
         response.setHeader('content-type', 'application/json');

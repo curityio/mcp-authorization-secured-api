@@ -51,8 +51,8 @@ Therefore, a better option would be for the MCP inspector to send requests from 
 
 ## Dynamic Client Creation
 
-The MCP inspector sends the following DCR request details, with an empty scope value.\
-Note that the MCP authorization specification does not define how clients get the initial scope.\
+The MCP inspector sends the following DCR request details.\
+It uses the scope from discovery responses.
 
 ```json
 {
@@ -119,7 +119,7 @@ Each distinct user gets a different client secret with which to retrieve access 
 ## Login and Token Flow
 
 The client sends the following form of front channel request, without a scope parameter.\
-Note that the MCP authorization does not yet define how the client retrieves scopes.
+It uses the scope from discovery responses.
 
 ```text
 https://login.demo.example/oauth/v2/oauth-authorize?

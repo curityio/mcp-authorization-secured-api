@@ -47,11 +47,14 @@ export class StocksApiClient {
                 return await response.text() as any;
             }
 
+            // Return the resource metadata URL and scope that the MCP client should use in its scope selection strategy
+            // - https://modelcontextprotocol.io/specification/draft/basic/authorization#scope-selection-strategy
             let wwwAuthenticate: string | null = '';
-            if (response.status === 401) {
-                
-                const suffix = this.errorHandler.getResourceMetadataUrl();
-                wwwAuthenticate = response.headers.get('WWW-Authenticate') + `, ${suffix}`;
+            if (response.status === 401 || response.status === 403) {
+
+                const metadataUrl = this.errorHandler.getResourceMetadataUrl();
+                const scope = this.configuration.requiredScope;
+                wwwAuthenticate = response.headers.get('WWW-Authenticate') + `, ${metadataUrl}, scope=${scope}`;
             }
 
             const responseError = await this.getResponseError(response);

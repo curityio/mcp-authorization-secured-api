@@ -48,7 +48,7 @@ However, you can [Debug HTTP Requests](../DEBUGGING.md) by logging API gateway m
 
 Claude Desktop acts as an MCP client and sends DCR request details of the following form.\
 The [MCP Remote](https://github.com/geelen/mcp-remote) library makes the underlying request.\
-Note that the MCP authorization specification does not define how clients get the initial scope.\
+It does not yet use the scope received in discovery responses.
 
 ```json
 {
@@ -113,7 +113,7 @@ Each distinct user gets a different client secret with which to retrieve access 
 ## Login and Token Flow
 
 The client sends the following form of front channel request, without a scope parameter.\
-Note that the MCP authorization does not yet define how the client retrieves scopes.
+It does not yet use the scope received in the DCR response or discovery responses.
 
 ```text
 https://login.demo.example/oauth/v2/oauth-authorize

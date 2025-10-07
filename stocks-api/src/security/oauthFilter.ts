@@ -70,7 +70,11 @@ export class OAuthFilter {
             throw new ApiError(401, 'invalid_token', 'Missing, invalid or expired access token', extra);
         }
 
-        response.locals.claimsPrincipal = new ClaimsPrincipal(result.payload);
+
+        const claims = new ClaimsPrincipal(this.configuration, result.payload);
+        claims.enforceRequiredScope();
+
+        response.locals.claimsPrincipal = new ClaimsPrincipal(this.configuration, result.payload);
         next();
     }
 

@@ -24,6 +24,7 @@ export class Configuration {
     public requiredJwtAlgorithm: string;
     public requiredIssuer: string;
     public requiredAudience: string;
+    public requiredScope: string;
 
     public constructor() {
 
@@ -32,6 +33,7 @@ export class Configuration {
         this.requiredJwtAlgorithm = this.getValue('REQUIRED_JWT_ALGORITHM');
         this.requiredIssuer = this.getValue('REQUIRED_JWT_ISSUER');
         this.requiredAudience = this.getValue('REQUIRED_JWT_AUDIENCE');
+        this.requiredScope = this.getValue('REQUIRED_SCOPE');
     }
 
     private getValue(name: string): string {

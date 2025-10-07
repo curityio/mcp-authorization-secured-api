@@ -47,7 +47,7 @@ export NODE_TLS_REJECT_UNAUTHORIZED=0
 ## Dynamic Client Creation
 
 Claude Code acts as an MCP client and sends the following DCR request details.\
-Note that the MCP authorization specification does not define how clients get the initial scope.\
+It does not yet use the scope received in discovery responses.
 
 ```json
 {
@@ -111,7 +111,7 @@ Each distinct user gets a different client secret with which to retrieve access 
 ## Login and Token Flow
 
 The client sends the following form of front channel request, without a scope parameter.\
-Note that the MCP authorization does not yet define how the client retrieves scopes.
+It does not yet use the scope received in the DCR response or discovery responses.
 
 ```text
 https://login.demo.example/oauth/v2/oauth-authorize

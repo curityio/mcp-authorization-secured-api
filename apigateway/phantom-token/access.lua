@@ -52,9 +52,6 @@ local function initialize_configuration(config)
     if config.token_cache_seconds == nil or config.token_cache_seconds <= 0 then
         config.token_cache_seconds = 300
     end
-    if config.scope == nil then
-        config.scope = ''
-    end
     if config.verify_ssl == nil then
         config.verify_ssl = true
     end
@@ -83,7 +80,7 @@ end
 --
 -- Return a generic invalid token message and optionally return resource server metadata
 --
-local function unauthorized_error_response(resource_metadata_url)
+local function unauthorized_error_response(config)
     
     local method = ngx.req.get_method():upper()
     if method ~= 'HEAD' then
@@ -95,8 +92,11 @@ local function unauthorized_error_response(resource_metadata_url)
         local message = 'Missing, invalid or expired access token'
 
         local wwwAuthenticate = 'Bearer error="' .. code .. '", error_description="' .. message .. '"'
-        if resource_metadata_url ~= nil then
-            wwwAuthenticate = wwwAuthenticate .. ', resource_metadata="' .. resource_metadata_url .. '"'
+        if config.resource_metadata_url ~= nil then
+            wwwAuthenticate = wwwAuthenticate .. ', resource_metadata="' .. config.resource_metadata_url .. '"'
+        end
+        if config.scope ~= nil then
+            wwwAuthenticate = wwwAuthenticate .. ', scope="' .. config.scope .. '"'
         end
         ngx.header['WWW-Authenticate'] = wwwAuthenticate
         
@@ -160,42 +160,6 @@ local function introspect_access_token(access_token, config)
 end
 
 --
--- Optionally check scopes configured for a location
---
-local function verify_scope(jwt_text, required_scope)
-    
-    if required_scope == nil then
-        return true
-    end
-
-    local data = jwt:load_jwt(jwt_text, nil)
-    if not data.valid then
-        local details = 'Unable to parse JWT access token'
-        if data.reason then
-            details = details .. ': ' .. data.reason
-        end
-        ngx.log(ngx.WARN, details)
-        return false
-    end
-
-    if not data.payload.scope then
-        return false
-    end
-
-    local required_scope_parts = string.gmatch(required_scope, "%S+")
-    local actual_scope_parts   = iterator_to_array(string.gmatch(data.payload.scope, "%S+"))
-
-    for required_value in required_scope_parts do
-        if not array_has_value(actual_scope_parts, required_value) then
-            ngx.log(ngx.WARN, 'The required scope ' .. required_value .. ' was not found in the received access token')
-            return false
-        end
-    end
-
-    return true
-end
-
---
 -- Get the token from the cache or introspect it
 --
 local function verify_access_token(access_token, config)
@@ -227,13 +191,6 @@ local function verify_access_token(access_token, config)
             -- The expiry value is a number of seconds from the current time
             -- https://github.com/openresty/lua-nginx-module#ngxshareddictset
             dict:set(access_token, result.jwt, time_to_live)
-        end
-    end
-
-    -- If configured, verify the scope on every request in a zero-trust manner
-    if result.status == 200 then
-        if not verify_scope(result.jwt, config.scope) then
-            result = { status = 403 }
         end
     end
 
@@ -272,14 +229,14 @@ function _M.run(config)
 
         if result.status ~= 200 then
             ngx.log(ngx.WARN, 'Received a ' .. result.status .. ' introspection response due to the access token being invalid or expired')
-            unauthorized_error_response(config.resource_metadata_url)
+            unauthorized_error_response(config)
         end
 
         ngx.req.set_header('Authorization', 'Bearer ' .. result.jwt)
     else
 
         ngx.log(ngx.WARN, 'No valid access token was found in the HTTP Authorization header')
-        unauthorized_error_response(config.resource_metadata_url)
+        unauthorized_error_response(config)
     end
 end
 

@@ -82,8 +82,7 @@ export NODE_TLS_REJECT_UNAUTHORIZED=0
 ## Dynamic Client Creation
 
 The example client sends the following DCR request details.\
-Note that the MCP authorization specification does not define how clients get the initial scope.\
-The example client uses an empty scope to start an MCP tools session.
+It uses a fixed scope configured in the client.
 
 ```json
 {
@@ -98,7 +97,7 @@ The example client uses an empty scope to start an MCP tools session.
     "response_types": [
         "code"
     ],
-    "scope": "",
+    "scope": "stocks/read",
     "token_endpoint_auth_method": "client_secret_post"
 }
 ```
@@ -146,13 +145,14 @@ Each distinct user gets a different client secret with which to retrieve access 
 
 ## Login and Token Flow
 
-The client sends the following form of front channel request without a scope.\
-Note that the MCP authorization does not yet define how the client retrieves scopes.
+The client sends the following form of front channel request.\
+It uses a fixed scope configured in the client.
 
 ```text
 https://login.demo.example/oauth/v2/oauth-authorize
     ?response_type=code
     &client_id=cedbde28-20ba-45a7-9577-41aed933e857
+    &scope=stocks/read
     &code_challenge=fD8XZMNGVLuhvociL-NsKLoj3xk_kRPyclGgzsOD9HA
     &code_challenge_method=S256
     &redirect_uri=http://localhost/8090/callback

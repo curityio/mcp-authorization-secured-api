@@ -38,6 +38,7 @@ services:
       REQUIRED_JWT_ALGORITHM: 'PS256'
       REQUIRED_JWT_ISSUER: 'https://login.demo.example/oauth/v2/oauth-anonymous'
       REQUIRED_JWT_AUDIENCE: 'https://mcp.demo.example/'
+      REQUIRED_SCOPE: 'stocks/read'
       TOKEN_EXCHANGE_CLIENT_ID: 'mcp-server'
       TOKEN_EXCHANGE_CLIENT_SECRET: 'Password1'
       TOKEN_ENDPOINT: 'http://idsvr:8443/oauth/v2/oauth-token'
@@ -54,6 +55,7 @@ services:
       REQUIRED_JWT_ALGORITHM: 'PS256'
       REQUIRED_JWT_ISSUER: 'https://login.demo.example/oauth/v2/oauth-anonymous'
       REQUIRED_JWT_AUDIENCE: 'https://api.demo.example'
+      REQUIRED_SCOPE: 'stocks/read'
   
   #
   # The Curity Identity Server implements security standards and issues access tokens to MCP clients used by AI agents

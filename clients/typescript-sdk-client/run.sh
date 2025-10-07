@@ -26,10 +26,12 @@ if [ ! -d typescript-sdk ]; then
   npm install
 
   #
-  # Remove the example's hard-coded and non-interoperable scope
+  # Work around the client using a hard coded and interoperable scope named 'mcp:tools'.
+  # There is an open issue to get scopes from metadata.
+  # - https://github.com/modelcontextprotocol/typescript-sdk/issues/978
   #
   SCOPE_FROM="scope: 'mcp:tools'"
-  SCOPE_TO="scope: ''"
+  SCOPE_TO="scope: 'stocks\/read'"
   
   if [ "$(uname -s)" == 'Darwin' ]; then
     sed -i '' "s/$SCOPE_FROM/$SCOPE_TO/" src/examples/client/simpleOAuthClient.ts

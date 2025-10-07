@@ -28,6 +28,7 @@ services:
       client_secret: Password1
       token_cache_seconds: 900
       resource_metadata_url: https://mcp.demo.example/.well-known/oauth-protected-resource
+      scope: stocks/read
 
 #
 # The MCP server exposes OAuth protected resource metadata that points MCP clients to the authorization server
