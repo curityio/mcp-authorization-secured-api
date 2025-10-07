@@ -4,7 +4,7 @@ The TypeScript SDK example OAuth client runs as an interactive console applicati
 
 ## Usage
 
-Execute the following script to clone the code for the TypeScripy SDK and run its example OAuth client.\
+Execute the following script to clone the code for the TypeScript SDK and run its example OAuth client.\
 The client triggers the OAuth flow from this repository's main [README](../../README.md).
 
 ```bash
@@ -82,8 +82,8 @@ export NODE_TLS_REJECT_UNAUTHORIZED=0
 ## Dynamic Client Creation
 
 The example client sends the following DCR request details.\
-Note that the MCP authorization specification does not say how to specify the default scope.\
-The client therefore uses a hard coded scope to start an MCP tools session.
+Note that the MCP authorization specification does not define how clients get the initial scope.\
+The example client uses a hard coded `mcp:tools` scope to start an MCP tools session.
 
 ```json
 {
@@ -103,9 +103,7 @@ The client therefore uses a hard coded scope to start an MCP tools session.
 }
 ```
 
-Note that the MCP authorization specification does not specify a default scope.\
-The client therefore does not send a scope parameter.\
-However, the Curity Identity Server grants the client access to a low-privilege scope:
+The Curity Identity Server's example configuration grants the client access to request a low-privilege scope:
 
 ```json
 {
@@ -143,15 +141,13 @@ However, the Curity Identity Server grants the client access to a low-privilege 
 }
 ```
 
-The client also indicates that it is a public client with `token_endpoint_auth_method=none`.\
-The Curity Identity Server overrides this and returns a client secret.\
+The Curity Identity Server returns a client secret for the dynamic client.\
 Each distinct user gets a different client secret with which to retrieve access tokens.
 
 ## Login and Token Flow
 
-The client sends the following form of front channel request.\
-Note that the client does not send a scope, since the MCP authorization does not yet define how that works.\
-Note that this includes only the `mcp:tools` scope:
+The client sends the following form of front channel request with an `mcp:tools` scope.\
+Note that the MCP authorization does not yet define how the client retrieves scopes.
 
 ```text
 https://login.demo.example/oauth/v2/oauth-authorize
@@ -164,7 +160,7 @@ https://login.demo.example/oauth/v2/oauth-authorize
     &resource=https://mcp.demo.example/
 ```
 
-The client then sends the following data in a back channel request.\
+The client then sends the following data in a back channel request, to get an access token.\
 The request includes the `client_id` and `client_secret` in a Basic Authorization header:
 
 ```text

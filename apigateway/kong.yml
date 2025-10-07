@@ -101,16 +101,6 @@ services:
     config:
       origins:
       - 'http://localhost:6274'
-  - name: request-transformer
-    enabled: yes
-    config:
-      remove:
-        body:
-        - token_endpoint_auth_method:none
-        - client_uri
-      add:
-        body:
-        - token_endpoint_auth_method:client_secret_basic
 
 #
 # All other authorization server endpoints

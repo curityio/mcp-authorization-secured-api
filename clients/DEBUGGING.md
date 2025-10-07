@@ -1,7 +1,7 @@
 # Debugging MCP Connections
 
 To debug MCP and OAuth messages, an HTTP proxy tool like [mitmproxy](https://mitmproxy.org/) can be very useful.\
-The proxy can capture both browser and non-browser requests.
+The proxy can capture all details of both browser and non-browser requests and visualize them.
 
 ![HTTP Proxy Capture](../images/http-proxy-capture.png)
 
@@ -25,17 +25,18 @@ mitmweb -p 8888 --web-port 8889 --ssl-insecure --script init.py
 
 ## Capture API Gateway Requests
 
-Another option is to 
+If you can't get an HTTP proxy to work, another option is to log API gateway details.\
+You can add the following built-in plugin configuration to one or more routes in the `kong.yml` file.
 
 ```yaml
 plugins:
 - name: file-log
     config:
       path: /dev/stdout
-  - name: pre-function
-    config:
-      access:
-      - kong.log.set_serialize_value("request.body", kong.request.get_raw_body())
-      body_filter:
-      - kong.log.set_serialize_value("response.body", kong.response.get_raw_body())
+- name: pre-function
+  config:
+    access:
+    - kong.log.set_serialize_value("request.body", kong.request.get_raw_body())
+    body_filter:
+    - kong.log.set_serialize_value("response.body", kong.response.get_raw_body())
 ```

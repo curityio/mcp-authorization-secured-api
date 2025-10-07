@@ -1,7 +1,6 @@
 # Claude Code
 
-Claude Code runs as an interactive console application.\
-To use Claude Code you need a [paid account](https://claude.com/pricing).\
+Claude Code runs as an interactive console application and you need a [paid account](https://claude.com/pricing).\
 For example, you could get started with a `Pro` individual account.
 
 ## Install Claude Code
@@ -21,6 +20,7 @@ Execute the following script from the current folder to run Claude Code in debug
 ```
 
 The client triggers the OAuth flow from this repository's main [README](../../README.md).\
+Run `/mcp` to switch to MCP mode and trigger authentication.\
 You can then ask Claude a question related to stocks and it calls the MCP server:
 
 ![claude code](../../images/claude-code.png)
@@ -46,7 +46,8 @@ export NODE_TLS_REJECT_UNAUTHORIZED=0
 
 ## Dynamic Client Creation
 
-Claude Code acts as an MCP client and sends the following DCR request details:
+Claude Code acts as an MCP client and sends the following DCR request details.\
+Note that the MCP authorization specification does not define how clients get the initial scope.\
 
 ```json
 {
@@ -65,9 +66,7 @@ Claude Code acts as an MCP client and sends the following DCR request details:
 }
 ```
 
-Note that the MCP authorization specification does not specify a default scope.\
-The client therefore does not send a scope parameter.\
-However, the Curity Identity Server grants the client access to a low-privilege scope:
+The Curity Identity Server's example configuration grants the client access to request a low-privilege scope:
 
 ```json
 {
@@ -111,8 +110,8 @@ Each distinct user gets a different client secret with which to retrieve access 
 
 ## Login and Token Flow
 
-The client sends the following form of front channel request.\
-Note that the client does not send a scope, since the MCP authorization does not yet define how that works:
+The client sends the following form of front channel request, without a scope parameter.\
+Note that the MCP authorization does not yet define how the client retrieves scopes.
 
 ```text
 https://login.demo.example/oauth/v2/oauth-authorize

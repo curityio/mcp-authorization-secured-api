@@ -1,7 +1,6 @@
 # Claude Desktop
 
-Claude Desktop runs as a local console application.\
-To use Claude Desktop you need a [paid account](https://claude.com/pricing).\
+Claude Desktop runs as an interactive console application and you need a [paid account](https://claude.com/pricing).\
 For example, you could get started with a `Pro` individual account.
 
 ## Configure Claude Desktop
@@ -45,12 +44,13 @@ However, you can [Debug HTTP Requests](../DEBUGGING.md) by logging API gateway m
 ## Dynamic Client Creation
 
 Claude Desktop acts as an MCP client and sends DCR request details of the following form.\
-The [MCP Remote](https://github.com/geelen/mcp-remote) library makes the underlying request:
+The [MCP Remote](https://github.com/geelen/mcp-remote) library makes the underlying request.\
+Note that the MCP authorization specification does not define how clients get the initial scope.\
 
 ```json
 {
     "client_name": "MCP CLI Proxy",
-    "client_uri": "https://github.com/modelcontextprotocol/mcp-cli"
+    "client_uri": "https://github.com/modelcontextprotocol/mcp-cli",
     "grant_types": [
         "authorization_code",
         "refresh_token"
@@ -65,9 +65,7 @@ The [MCP Remote](https://github.com/geelen/mcp-remote) library makes the underly
 }
 ```
 
-Note that the MCP authorization specification does not specify a default scope.\
-The client therefore does not send a scope parameter.\
-However, the Curity Identity Server grants the client access to a low-privilege scope:
+The Curity Identity Server's example configuration grants the client access to request a low-privilege scope:
 
 ```json
 {
@@ -111,8 +109,8 @@ Each distinct user gets a different client secret with which to retrieve access 
 
 ## Login and Token Flow
 
-The client sends the following form of front channel request.\
-Note that the client does not send a scope, since the MCP authorization does not yet define how that works:
+The client sends the following form of front channel request, without a scope parameter.\
+Note that the MCP authorization does not yet define how the client retrieves scopes.
 
 ```text
 https://login.demo.example/oauth/v2/oauth-authorize

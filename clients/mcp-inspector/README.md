@@ -27,7 +27,7 @@ The client then provides a web user interface and the user can invoke API operat
 
 ## CORS
 
-The MCP inspector calls the deployed endpoints directly from the browser.\
+The MCP inspector calls the example deployment's endpoints directly from the browser.\
 Therefore, the example deployment's API gateway must use a CORS plugin to grant access to the web client:
 
 ```yaml
@@ -46,12 +46,13 @@ Therefore, the example deployment's API gateway must use a CORS plugin to grant 
       - 'http://localhost:6274'
 ```      
 
-Often though, backends will not grant CORS access to web clients.\
-Therefore, it would be better if the MCP inspector instead used backend requests.
+Usually though, backends will not grant CORS access to unknown web clients.\
+Therefore, a better option would be for the MCP inspector to send requests from its backend.
 
 ## Dynamic Client Creation
 
-The example client sends the following DCR request details:
+The MCP inspector sends the following DCR request details, with an empty scope value.\
+Note that the MCP authorization specification does not define how clients get the initial scope.\
 
 ```json
 {
@@ -73,12 +74,7 @@ The example client sends the following DCR request details:
 }
 ```
 
-Note that the MCP authorization specification does not specify a default scope.\
-The client therefore uses an empty scope to start an MCP tools session.
-
-Note that the MCP authorization specification does not specify a default scope.\
-The client therefore does not send a scope parameter.\
-However, the Curity Identity Server grants the client access to a low-privilege scope:
+The Curity Identity Server's example configuration grants the client access to request a low-privilege scope:
 
 ```json
 {
@@ -122,9 +118,8 @@ Each distinct user gets a different client secret with which to retrieve access 
 
 ## Login and Token Flow
 
-The client sends the following form of front channel request.\
-Note that the client does not send a scope, since the MCP authorization does not yet define how that works.\
-Note that this does not include a scope parameter:
+The client sends the following form of front channel request, without a scope parameter.\
+Note that the MCP authorization does not yet define how the client retrieves scopes.
 
 ```text
 https://login.demo.example/oauth/v2/oauth-authorize?
