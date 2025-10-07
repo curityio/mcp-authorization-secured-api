@@ -24,3 +24,9 @@ claude mcp add --transport http curity_demo https://mcp.demo.example
 # Run Claude in debug mode
 #
 claude --debug
+
+#
+# Currently, the MCP Remote library that Claude uses does not supply a scope
+# There is an open issue to support the new MCP scope selection strategy
+# - https://github.com/geelen/mcp-remote/issues/162
+#

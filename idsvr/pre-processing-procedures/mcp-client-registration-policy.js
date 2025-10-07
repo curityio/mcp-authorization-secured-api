@@ -10,8 +10,7 @@ function result(context) {
   attributes.access_token_ttl = 900;
   attributes.refresh_token_ttl = 0;
 
-  // Currently the MCP authorization specification does not define how the initial scope is set.
-  // Therefore, some MCP clients do not send a scope in their DCR request so we use the fixed scope defined for DCR in the token profile.
+  // Some MCP clients do not send a scope in their DCR request so we use the fixed scope defined for DCR in the token profile.
   // This data gets returned in the DCR response and the client should send it during token requests.
   attributes.scope = "stocks/read"
 
