@@ -27,7 +27,7 @@ if [ ! -d typescript-sdk ]; then
 
   #
   # Work around the client using a hard coded and interoperable scope named 'mcp:tools'.
-  # There is an open issue to get scopes from metadata.
+  # There is an open issue to support the new MCP scope selection strategy
   # - https://github.com/modelcontextprotocol/typescript-sdk/issues/978
   #
   SCOPE_FROM="scope: 'mcp:tools'"
