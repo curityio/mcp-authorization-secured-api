@@ -1,6 +1,7 @@
 # Debugging MCP Connections
 
-To debug MCP and OAuth messages, an HTTP proxy tool like [mitmproxy](https://mitmproxy.org/) can be very useful:
+To debug MCP and OAuth messages, an HTTP proxy tool like [mitmproxy](https://mitmproxy.org/) can be very useful.\
+The proxy can capture both browser and non-browser requests.
 
 ![HTTP Proxy Capture](../images/http-proxy-capture.png)
 

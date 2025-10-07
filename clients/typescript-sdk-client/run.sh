@@ -30,8 +30,8 @@ fi
 #
 # Trust the development root certificate
 #
-export NODE_EXTRA_CA_CERTS=$(readlink -f '../../apigateway/certs/example.ca.crt')
-echo $NODE_EXTRA_CA_CERTS
+#export NODE_EXTRA_CA_CERTS=$(readlink -f '../../apigateway/certs/example.ca.crt')
+export NODE_TLS_REJECT_UNAUTHORIZED=0
 
 #
 # Run the MCP inspector client

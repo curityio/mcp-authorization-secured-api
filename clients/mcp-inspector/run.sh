@@ -49,7 +49,7 @@ fi
 #
 # Trust the development root certificate
 #
-export NODE_EXTRA_CA_CERTS=$(readlink -f '../../apigateway/certs/example.ca.crt')
+#export NODE_EXTRA_CA_CERTS=$(readlink -f '../../apigateway/certs/example.ca.crt')
 
 #
 # Run the MCP inspector client
