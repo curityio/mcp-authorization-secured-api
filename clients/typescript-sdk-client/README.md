@@ -83,7 +83,7 @@ export NODE_TLS_REJECT_UNAUTHORIZED=0
 
 The example client sends the following DCR request details.\
 Note that the MCP authorization specification does not define how clients get the initial scope.\
-The example client uses a hard coded `mcp:tools` scope to start an MCP tools session.
+The example client uses an empty scope to start an MCP tools session.
 
 ```json
 {
@@ -98,7 +98,7 @@ The example client uses a hard coded `mcp:tools` scope to start an MCP tools ses
     "response_types": [
         "code"
     ],
-    "scope": "mcp:tools",
+    "scope": "",
     "token_endpoint_auth_method": "client_secret_post"
 }
 ```
@@ -146,7 +146,7 @@ Each distinct user gets a different client secret with which to retrieve access 
 
 ## Login and Token Flow
 
-The client sends the following form of front channel request with an `mcp:tools` scope.\
+The client sends the following form of front channel request without a scope.\
 Note that the MCP authorization does not yet define how the client retrieves scopes.
 
 ```text
@@ -156,7 +156,6 @@ https://login.demo.example/oauth/v2/oauth-authorize
     &code_challenge=fD8XZMNGVLuhvociL-NsKLoj3xk_kRPyclGgzsOD9HA
     &code_challenge_method=S256
     &redirect_uri=http://localhost/8090/callback
-    &scope=mcp:tools
     &resource=https://mcp.demo.example/
 ```
 
