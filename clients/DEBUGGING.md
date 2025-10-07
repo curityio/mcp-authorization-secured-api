@@ -22,3 +22,20 @@ Then run a command such as the following and open the browser at `http://localho
 ```bash
 mitmweb -p 8888 --web-port 8889 --ssl-insecure --script init.py
 ```
+
+## Capture API Gateway Requests
+
+Another option is to 
+
+```yaml
+plugins:
+- name: file-log
+    config:
+      path: /dev/stdout
+  - name: pre-function
+    config:
+      access:
+      - kong.log.set_serialize_value("request.body", kong.request.get_raw_body())
+      body_filter:
+      - kong.log.set_serialize_value("response.body", kong.response.get_raw_body())
+```

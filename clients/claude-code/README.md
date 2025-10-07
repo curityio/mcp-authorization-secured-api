@@ -114,7 +114,7 @@ Each distinct user gets a different client secret with which to retrieve access 
 The client sends the following form of front channel request.\
 Note that the client does not send a scope, since the MCP authorization does not yet define how that works:
 
-```http
+```text
 https://login.demo.example/oauth/v2/oauth-authorize
     ?response_type=code
     &client_id=e986c867-aba8-494c-8681-ebaf5c1266c2

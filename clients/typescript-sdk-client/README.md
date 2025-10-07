@@ -113,7 +113,7 @@ However, the Curity Identity Server grants the client access to a low-privilege 
     "audiences": [
         "https://mcp.demo.example/"
     ],
-    "client_id": "faf93937-d700-427c-8034-7d3fc111ce48",
+    "client_id": "cedbde28-20ba-45a7-9577-41aed933e857",
     "client_id_issued_at": 1759825945,
     "client_name": "Simple OAuth MCP Client",
     "client_secret": "w_7sTPp97WHsKyfXMsF4OnzSzFvuc9RCrmryzvWcXRY",
@@ -147,34 +147,31 @@ The client also indicates that it is a public client with `token_endpoint_auth_m
 The Curity Identity Server overrides this and returns a client secret.\
 Each distinct user gets a different client secret with which to retrieve access tokens.
 
-## Dynamic Client Creation
-
 ## Login and Token Flow
 
 The client sends the following form of front channel request.\
-Note that the client does not send a scope, since the MCP authorization does not yet define how that works:
+Note that the client does not send a scope, since the MCP authorization does not yet define how that works.\
+Note that this includes only the `mcp:tools` scope:
 
-```http
+```text
 https://login.demo.example/oauth/v2/oauth-authorize
     ?response_type=code
-    &client_id=e986c867-aba8-494c-8681-ebaf5c1266c2
-    &code_challenge=smTSjLwxtHVdi8_jRkJkeygwYEKPBcJ-PEeNWr_LrUI
+    &client_id=cedbde28-20ba-45a7-9577-41aed933e857
+    &code_challenge=fD8XZMNGVLuhvociL-NsKLoj3xk_kRPyclGgzsOD9HA
     &code_challenge_method=S256
-    &redirect_uri=http://localhost:65343/callback
-    &state=iGtjhJO4i-0Bxxb6q1A4lkcx6antjlXRRhPzTan81Dg
+    &redirect_uri=http://localhost/8090/callback
+    &scope=mcp:tools
     &resource=https://mcp.demo.example/
 ```
 
-The client then sends the following form of back channel request:
+The client then sends the following data in a back channel request.\
+The request includes the `client_id` and `client_secret` in a Basic Authorization header:
 
 ```text
-
 grant_type:    authorization_code
-code:          ekgBhvoQAByoT5520ZRQhLtGa2KU9tTd
-code_verifier: 4F.adBoQzg1s3pFCaOA00Dv4bb6B0D4sll9glHPHo4M
-redirect_uri:  http://localhost:65343/callback
-client_id:     e986c867-aba8-494c-8681-ebaf5c1266c2
-client_secret: QIwqlrB9JX6H4WjSLCZhzRoGA5105yjGIKmEF-BGdZg
+code:          xElqmPit20HGLWwrNTWmrf98SjL3FIdm
+code_verifier: I7XfoSKW5rw7fFfDUTKtnltticnJouE5oyJMqzMAeaX
+redirect_uri:  http://localhost:8090/callback
 resource:      https://mcp.demo.example/
 ```
 

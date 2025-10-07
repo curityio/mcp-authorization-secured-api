@@ -26,19 +26,6 @@ if [ ! -d inspector ]; then
   npm install
 
   #
-  # Fix an issue where the client_uri is hard coded, so that it uses the local redirect URI
-  # https://github.com/modelcontextprotocol/inspector/issues/710
-  #
-  CLIENT_URI_FROM="client_uri: \"https:\/\/github.com\/modelcontextprotocol\/inspector\""
-  CLIENT_URI_TO="client_uri: \"http:\/\/localhost:6274\""
-
-  if [ "$(uname -s)" == 'Darwin' ]; then
-    sed -i '' "s/$CLIENT_URI_FROM/$CLIENT_URI_TO/"   client/src/lib/auth.ts
-  else
-    sed -i "s/$CLIENT_URI_FROM/$CLIENT_URI_TO/"      client/src/lib/auth.ts
-  fi
-
-  #
   # Build the updated code
   #
   cd client
@@ -49,7 +36,7 @@ fi
 #
 # Trust the development root certificate
 #
-#export NODE_EXTRA_CA_CERTS=$(readlink -f '../../apigateway/certs/example.ca.crt')
+export NODE_EXTRA_CA_CERTS=$(readlink -f '../../apigateway/certs/example.ca.crt')
 
 #
 # Run the MCP inspector client

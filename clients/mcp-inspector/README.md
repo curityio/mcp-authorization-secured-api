@@ -25,7 +25,31 @@ The client then provides a web user interface and the user can invoke API operat
 
 ![MCP inspector](../../images/inspector.png)
 
-## DCR Request
+## CORS
+
+The MCP inspector calls the deployed endpoints directly from the browser.\
+Therefore, the example deployment's API gateway must use a CORS plugin to grant access to the web client:
+
+```yaml
+- name: mcp-server-resource-metadata
+  url: http://mcp-server:3000/.well-known/oauth-protected-resource
+  routes:
+  - name: mcp-server-resource-metadata-route
+    hosts:
+    - mcp.demo.example
+    paths:
+    - /.well-known/oauth-protected-resource
+  plugins:
+  - name: cors
+    config:
+      origins:
+      - 'http://localhost:6274'
+```      
+
+Often though, backends will not grant CORS access to web clients.\
+Therefore, it would be better if the MCP inspector instead used backend requests.
+
+## Dynamic Client Creation
 
 The example client sends the following DCR request details:
 
@@ -52,31 +76,85 @@ The example client sends the following DCR request details:
 Note that the MCP authorization specification does not specify a default scope.\
 The client therefore uses an empty scope to start an MCP tools session.
 
+Note that the MCP authorization specification does not specify a default scope.\
+The client therefore does not send a scope parameter.\
+However, the Curity Identity Server grants the client access to a low-privilege scope:
+
+```json
+{
+    "access_token_ttl": 900,
+    "audiences": [
+        "https://mcp.demo.example/"
+    ],
+    "client_id": "cedbde28-20ba-45a7-9577-41aed933e857",
+    "client_id_issued_at": 1759825945,
+    "client_name": "Simple OAuth MCP Client",
+    "client_secret": "w_7sTPp97WHsKyfXMsF4OnzSzFvuc9RCrmryzvWcXRY",
+    "client_secret_expires_at": 0,
+    "default_acr_values": [
+        "urn:se:curity:authentication:email:email"
+    ],
+    "grant_types": [
+        "authorization_code"
+    ],
+    "post_logout_redirect_uris": [],
+    "redirect_uris": [
+        "http://localhost:8090/callback"
+    ],
+    "require_proof_key": true,
+    "requires_consent": true,
+    "response_types": [
+        "code"
+    ],
+    "scope": "stocks/read",
+    "subject_type": "public",
+    "token_endpoint_auth_method": "client_secret_basic",
+    "token_endpoint_auth_methods": [
+        "client_secret_basic",
+        "client_secret_post"
+    ]
+}
+```
+
 The client also indicates that it is a public client with `token_endpoint_auth_method=none`.\
 The Curity Identity Server overrides this and returns a client secret.\
 Each distinct user gets a different client secret with which to retrieve access tokens.
 
-## CORS
+## Login and Token Flow
 
-The MCP inspector calls the deployed endpoints directly from the browser.\
-Therefore, the example deployment's API gateway must use a CORS plugin to grant access to the web client:
+The client sends the following form of front channel request.\
+Note that the client does not send a scope, since the MCP authorization does not yet define how that works.\
+Note that this does not include a scope parameter:
 
-```yaml
-- name: mcp-server-resource-metadata
-  url: http://mcp-server:3000/.well-known/oauth-protected-resource
-  routes:
-  - name: mcp-server-resource-metadata-route
-    hosts:
-    - mcp.demo.example
-    paths:
-    - /.well-known/oauth-protected-resource
-  plugins:
-  - name: cors
-    config:
-      origins:
-      - 'http://localhost:6274'
-```      
+```text
+https://login.demo.example/oauth/v2/oauth-authorize?
+    response_type=code&
+    client_id=0f6bf182-bb0c-4a6c-a775-6ef3b239501a&
+    code_challenge=aM4KX66YNNphYvRBvdfRK_hiM_VD-XxRFd8mioeAwW8
+    &code_challenge_method=S256
+    &redirect_uri=http%3A%2F%2Flocalhost%3A6274%2Foauth%2Fcallback
+    &state=7bbb86503ec9e4dd0b085aa4bc9bee34998a1d74ae12538101532c83472c72c0
+    &resource=https%3A%2F%2Fmcp.demo.example%2F
+```
 
-Often though, backends will not grant CORS access to web clients.\
-Therefore, it would be better if the MCP inspector instead used backend requests.\
-The web client could then manage its client credential in a more secure way.
+The client then sends the following data in a back channel request.\
+The request includes the `client_id` and `client_secret` in a Basic Authorization header:
+
+```text
+grant_type:    authorization_code
+code:          Whj7fi4SEF97JveZGK4SJqwN53mXTl5D
+code_verifier: d-mJkRHOfoBPR6gTa534YUzSH0Y38n3YMYoW4NIzRce
+redirect_uri:  http://localhost:6274/oauth/callback
+resource:      https://mcp.demo.example/
+```
+
+The Curity Identity Server then issues an access token with the low-privilege scope:
+
+```json
+{
+    "access_token": "_0XBPWQQ_5d049ae7-01d7-4f48-bc6b-8cc833d249e9",
+    "expires_in": 900,
+    "scope": "stocks/read",
+    "token_type": "bearer"
+}
+```
