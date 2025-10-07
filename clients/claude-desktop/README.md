@@ -30,6 +30,9 @@ The client triggers the OAuth flow from this repository's main [README](../../RE
 
 ![claude desktop](../../images/claude-desktop.png)
 
+After login, Claude Desktop stores its dynamic client information and tokens.\
+You can view details in the `~/.mcp-auth` folder or delete the folder to reset Claude's state.
+
 ## Troubleshoot
 
 If you need to troubleshoot, see the file for the MCP server in the logs folder:
