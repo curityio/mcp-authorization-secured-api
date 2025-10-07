@@ -25,5 +25,4 @@ The client then provides a web user interface and the user can invoke API operat
 
 ![MCP inspector](../../images/inspector.png)
 
-
-
+## 

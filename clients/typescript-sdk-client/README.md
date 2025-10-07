@@ -55,3 +55,44 @@ mcp> call fetch-stock-prices
 [{"id":"COM1","name":Company 1","price":450.22},{"id":"COM2","name":"Company 2","price":250.62},{"id":"COM3","name":"Company 3","price":21.07}]
 ```
 
+## Capture HTTP Requests
+
+To [Debug HTTP Requests](../DEBUGGING.md) you can add the following to the TypeScript SDK's `package.json` dependencies.\
+Then run `npm install`:
+
+```text
+"undici": "^7.10.0"
+```
+
+Then add the following details to the top of `src/examples/client/simpleOAuthClient.ts`.\
+Re-run the client to capture all of its OAuth-related HTTP requests:
+
+```javascript
+import { setGlobalDispatcher, ProxyAgent } from 'undici';
+const dispatcher = new ProxyAgent({uri: new URL('http://127.0.0.1:8888').toString() });
+setGlobalDispatcher(dispatcher);
+```
+
+## DCR Request
+
+The example client sends the following DCR request details.\
+Note that the MCP authorization specification does not specify a default scope.\
+The client therefore uses a hard coded scope to start an MCP tools session.
+
+```json
+{
+    "client_name": "Simple OAuth MCP Client",
+    "grant_types": [
+        "authorization_code",
+        "refresh_token"
+    ],
+    "redirect_uris": [
+        "http://localhost:8090/callback"
+    ],
+    "response_types": [
+        "code"
+    ],
+    "scope": "mcp:tools",
+    "token_endpoint_auth_method": "client_secret_post"
+}
+```
