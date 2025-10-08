@@ -6,7 +6,8 @@ For example, you could get started with a `Pro` individual account.
 ## Configure Claude Desktop
 
 In Claude Desktop, select `Settings / Developer` and then the `Edit Config` option.\
-Provide the following settings and then restart Claude Desktop:
+Provide the following settings and then restart Claude Desktop.\
+A static scope is configured, which we can remove once the mcp-remote library implements the [Scope Selection Strategy](https://modelcontextprotocol.io/specification/draft/basic/authorization#scope-selection-strategy).
 
 ```json
 {
@@ -15,7 +16,7 @@ Provide the following settings and then restart Claude Desktop:
       "command": "npx",
       "args": ["mcp-remote", "https://mcp.demo.example", "--static-oauth-client-metadata", "{ \"client_name\": \"Claude (curity-demo)\", \"scope\": \"stocks/read\" }"],
       "env": {
-		"NODE_EXTRA_CA_CERTS": "/Users/gary.archer/dev/mcp-authorization-secured-api/apigateway/certs/example.ca.crt"
+		"NODE_EXTRA_CA_CERTS": "/Users/MYUSER/dev/mcp-authorization-secured-api/apigateway/certs/example.ca.crt"
       }
     }
   }

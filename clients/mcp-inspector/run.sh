@@ -39,7 +39,9 @@ fi
 export NODE_EXTRA_CA_CERTS=$(readlink -f '../../apigateway/certs/example.ca.crt')
 
 #
-# Run the MCP inspector client
+# Run the MCP inspector client, which sets its initial scope from the scopes_supported metadata response value
+# 
+# - https://modelcontextprotocol.io/specification/draft/basic/authorization#scope-selection-strategy
 #
 cd inspector
 node client/bin/start.js
