@@ -65,6 +65,7 @@ It does not yet use the scope received in discovery responses.
     "response_types": [
         "code"
     ],
+    "scope": "stocks/read",
     "token_endpoint_auth_method": "none"
 }
 ```
@@ -120,6 +121,7 @@ It does not yet use the scope received in the DCR response or discovery response
 https://login.demo.example/oauth/v2/oauth-authorize
     ?response_type=code
     &client_id=e986c867-aba8-494c-8681-ebaf5c1266c2
+    &scope=stocks/read
     &code_challenge=smTSjLwxtHVdi8_jRkJkeygwYEKPBcJ-PEeNWr_LrUI
     &code_challenge_method=S256
     &redirect_uri=http://localhost:65343/callback
@@ -132,6 +134,7 @@ The client then sends the following form of back channel request:
 ```text
 
 grant_type:    authorization_code
+scope:         stocks/read
 code:          ekgBhvoQAByoT5520ZRQhLtGa2KU9tTd
 code_verifier: 4F.adBoQzg1s3pFCaOA00Dv4bb6B0D4sll9glHPHo4M
 redirect_uri:  http://localhost:65343/callback
