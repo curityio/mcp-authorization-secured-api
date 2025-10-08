@@ -6,17 +6,16 @@ For example, you could get started with a `Pro` individual account.
 ## Configure Claude Desktop
 
 In Claude Desktop, select `Settings / Developer` and then the `Edit Config` option.\
-Provide the URL to the MCP server and the full path to the development root certificate.\
-Then restart Claude Desktop:
+Provide the following settings and then restart Claude Desktop:
 
 ```json
 {
   "mcpServers": {
     "curity-demo": {
       "command": "npx",
-      "args": ["mcp-remote", "https://mcp.demo.example", "--debug"],
+      "args": ["mcp-remote", "https://mcp.demo.example", "--static-oauth-client-metadata", "{ \"client_name\": \"Claude (curity-demo)\", \"scope\": \"stocks/read\" }"],
       "env": {
-        "NODE_EXTRA_CA_CERTS": "/Users/MYUSER/dev/mcp-authorization-secured-api/apigateway/certs/example.ca.crt"
+		"NODE_EXTRA_CA_CERTS": "/Users/gary.archer/dev/mcp-authorization-secured-api/apigateway/certs/example.ca.crt"
       }
     }
   }
@@ -39,20 +38,14 @@ If you need to troubleshoot, see the file for the MCP server in the logs folder:
 
 ![claude desktop troubleshoot](../../images/claude-desktop-troubleshoot.png)
 
-## HTTP Request Capture Setup
-
-The Node.js options do not seem to be supported by Claude Desktop.\
-However, you can [Debug HTTP Requests](../DEBUGGING.md) by logging API gateway messages.
-
 ## Dynamic Client Creation
 
 Claude Desktop acts as an MCP client and sends DCR request details of the following form.\
-The [MCP Remote](https://github.com/geelen/mcp-remote) library makes the underlying request.\
-It does not yet use the scope received in discovery responses.
+The [MCP Remote](https://github.com/geelen/mcp-remote) library makes the underlying request.
 
 ```json
 {
-    "client_name": "MCP CLI Proxy",
+    "client_name": "Claude Desktop",
     "client_uri": "https://github.com/modelcontextprotocol/mcp-cli",
     "grant_types": [
         "authorization_code",
@@ -64,11 +57,12 @@ It does not yet use the scope received in discovery responses.
     "response_types": [
         "code"
     ],
+    "scope": "stocks/read",
     "token_endpoint_auth_method": "none"
 }
 ```
 
-The Curity Identity Server's example configuration grants the client access to request a low-privilege scope:
+The Curity Identity Server's example configuration grants the client access to the low-privilege scope:
 
 ```json
 {
@@ -78,7 +72,7 @@ The Curity Identity Server's example configuration grants the client access to r
     ],
     "client_id": "15d64f90-5df1-4ab8-ae48-af0aa2e6d562",
     "client_id_issued_at": 1759825565,
-    "client_name": "MCP CLI Proxy",
+    "client_name": "Claude Desktop",
     "client_secret": "lYo5fRR4mMn9bTxIbigv9ZCn1lT6BEKuHA3zZpOxR0s",
     "client_secret_expires_at": 0,
     "default_acr_values": [
@@ -112,13 +106,13 @@ Each distinct user gets a different client secret with which to retrieve access 
 
 ## Login and Token Flow
 
-The client sends the following form of front channel request, without a scope parameter.\
-It does not yet use the scope received in the DCR response or discovery responses.
+The client sends the following form of front channel request:
 
 ```text
 https://login.demo.example/oauth/v2/oauth-authorize
     ?response_type=code
     &client_id=15d64f90-5df1-4ab8-ae48-af0aa2e6d562
+    &scope=stocks/read
     &code_challenge=smTSjLwxtHVdi8_jRkJkeygwYEKPBcJ-PEeNWr_LrUI
     &code_challenge_method=S256
     &redirect_uri=http://localhost:53069/callback
@@ -136,6 +130,7 @@ code_verifier: 4F.adBoQzg1s3pFCaOA00Dv4bb6B0D4sll9glHPHo4M
 redirect_uri:  http://localhost:53069/callback
 client_id:     15d64f90-5df1-4ab8-ae48-af0aa2e6d562
 client_secret: lYo5fRR4mMn9bTxIbigv9ZCn1lT6BEKuHA3zZpOxR0s-BGdZg
+scope:         stocks/read
 resource:      https://mcp.demo.example/
 ```
 

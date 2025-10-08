@@ -66,7 +66,7 @@ services:
     volumes:
       - ./idsvr/curity-config.xml:/opt/idsvr/etc/init/curity-config.xml
       - ./idsvr/pre-processing-procedures/mcp-client-registration-policy.js:/opt/idsvr/etc/init/pre-processing-procedures/mcp-client-registration-policy.js
-      - ./idsvr/token-procedures/set-access-token-data.js:/opt/idsvr/etc/init/token-procedures/oauth-token-authorization-code/set-access-token-data.js
+      - ./idsvr/token-procedures/set-access-token-audience.js:/opt/idsvr/etc/init/token-procedures/oauth-token-authorization-code/set-access-token-audience.js
       - ./idsvr/token-procedures/set-token-exchange-audience.js:/opt/idsvr/etc/init/token-procedures/oauth-token-oauth-token-exchange/set-token-exchange-audience.js
     environment:
       ADMIN: 'true'

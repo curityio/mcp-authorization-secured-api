@@ -51,8 +51,7 @@ Therefore, a better option would be for the MCP inspector to send requests from 
 
 ## Dynamic Client Creation
 
-The MCP inspector sends the following DCR request details.\
-It uses the scope from discovery responses.
+The MCP inspector sends the following DCR request details. and uses the scope from discovery responses:
 
 ```json
 {
@@ -69,7 +68,7 @@ It uses the scope from discovery responses.
     "response_types": [
         "code"
     ],
-    "scope": "",
+    "scope": "stocks/read",
     "token_endpoint_auth_method": "none"
 }
 ```
@@ -122,10 +121,11 @@ The client sends the following form of front channel request, without a scope pa
 It uses the scope from discovery responses.
 
 ```text
-https://login.demo.example/oauth/v2/oauth-authorize?
-    response_type=code&
-    client_id=0f6bf182-bb0c-4a6c-a775-6ef3b239501a&
-    code_challenge=aM4KX66YNNphYvRBvdfRK_hiM_VD-XxRFd8mioeAwW8
+https://login.demo.example/oauth/v2/oauth-authorize
+    ?response_type=code
+    &client_id=0f6bf182-bb0c-4a6c-a775-6ef3b239501a
+    &scope=stocks/read
+    &code_challenge=aM4KX66YNNphYvRBvdfRK_hiM_VD-XxRFd8mioeAwW8
     &code_challenge_method=S256
     &redirect_uri=http%3A%2F%2Flocalhost%3A6274%2Foauth%2Fcallback
     &state=7bbb86503ec9e4dd0b085aa4bc9bee34998a1d74ae12538101532c83472c72c0
@@ -137,6 +137,7 @@ The request includes the `client_id` and `client_secret` in a Basic Authorizatio
 
 ```text
 grant_type:    authorization_code
+scope:         stocks/read
 code:          Whj7fi4SEF97JveZGK4SJqwN53mXTl5D
 code_verifier: d-mJkRHOfoBPR6gTa534YUzSH0Y38n3YMYoW4NIzRce
 redirect_uri:  http://localhost:6274/oauth/callback

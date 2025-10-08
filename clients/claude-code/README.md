@@ -20,10 +20,13 @@ Execute the following script from the current folder to run Claude Code in debug
 ```
 
 The client triggers the OAuth flow from this repository's main [README](../../README.md).\
-Run `/mcp` to switch to MCP mode and trigger authentication.\
+Run the `/mcp` CLI command to switch to MCP mode and trigger authentication.\
 You can then ask Claude a question related to stocks and it calls the MCP server:
 
 ![claude code](../../images/claude-code.png)
+
+After login, Claude Desktop stores its dynamic client information and tokens.\
+You can view details in the `~/.mcp-auth` folder or delete the folder to reset Claude's state.
 
 ## Troubleshooting
 
@@ -51,7 +54,7 @@ It does not yet use the scope received in discovery responses.
 
 ```json
 {
-    "client_name": "Claude Code (curity_demo)",
+    "client_name": "Claude (curity_demo)",
     "grant_types": [
         "authorization_code",
         "refresh_token"
@@ -76,7 +79,7 @@ The Curity Identity Server's example configuration grants the client access to r
     ],
     "client_id": "e986c867-aba8-494c-8681-ebaf5c1266c2",
     "client_id_issued_at": 1759825565,
-    "client_name": "Claude Code (curity_demo)",
+    "client_name": "Claude (curity_demo)",
     "client_secret": "QIwqlrB9JX6H4WjSLCZhzRoGA5105yjGIKmEF-BGdZg",
     "client_secret_expires_at": 0,
     "default_acr_values": [

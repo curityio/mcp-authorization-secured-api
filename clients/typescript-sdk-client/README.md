@@ -167,6 +167,7 @@ grant_type:    authorization_code
 code:          xElqmPit20HGLWwrNTWmrf98SjL3FIdm
 code_verifier: I7XfoSKW5rw7fFfDUTKtnltticnJouE5oyJMqzMAeaX
 redirect_uri:  http://localhost:8090/callback
+scope:         stocks/read
 resource:      https://mcp.demo.example/
 ```
 

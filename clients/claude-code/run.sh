@@ -15,18 +15,6 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 export NODE_EXTRA_CA_CERTS=$(readlink -f '../../apigateway/certs/example.ca.crt')
 
 #
-# Connect Claude to the MCP server
+# Run Claude in debug mode and point to the the deployed MCP server
 #
-claude mcp remove curity_demo 2>/dev/null
-claude mcp add --transport http curity_demo https://mcp.demo.example
-
-#
-# Run Claude in debug mode
-#
-claude --debug
-
-#
-# Currently, the MCP Remote library that Claude uses does not supply a scope
-# There is an open issue to support the new MCP scope selection strategy
-# - https://github.com/geelen/mcp-remote/issues/162
-#
+claude --debug --mcp-config mcp-config.json
