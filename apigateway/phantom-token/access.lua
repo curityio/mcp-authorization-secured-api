@@ -223,10 +223,6 @@ function _M.run(config)
             error_response(ngx.HTTP_INTERNAL_SERVER_ERROR, 'server_error', 'Problem encountered authorizing the HTTP request')
         end
 
-        if result.status == 403 then
-            error_response(ngx.HTTP_FORBIDDEN, 'forbidden', 'The token does not contain the required scope')
-        end
-
         if result.status ~= 200 then
             ngx.log(ngx.WARN, 'Received a ' .. result.status .. ' introspection response due to the access token being invalid or expired')
             unauthorized_error_response(config)
