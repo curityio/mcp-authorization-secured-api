@@ -45,3 +45,8 @@ If you need to troubleshoot, see the file for the MCP server in the logs folder:
 ## Capture OAuth and MCP Requests
 
 The [OAuth and MCP Requests](../OAUTH-MCP-MESSAGES.md) summary summarizes the OAuth and MCP messages.
+
+## Developing MCP Clients
+
+If you want to develop your own AI agent that runs MCP clients, you can also use the MCP Remote library.\
+Follow the same approach as Claude to integrate MCP clients from contributor.

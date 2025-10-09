@@ -58,3 +58,9 @@ mcp> call fetch-stock-prices
 ## Capture OAuth and MCP Requests
 
 The [OAuth and MCP Requests](../OAUTH-MCP-MESSAGES.md) summary summarizes the OAuth and MCP messages.
+
+## Developing MCP Clients
+
+If you want to develop your own MCP clients you can use the TypeScript SDK library.\
+Implement your own client based on this example client.\
+After running the example, find that client at `src/examples/client/simpleOAuthClient.ts` in the `typescript-sdk` folder.

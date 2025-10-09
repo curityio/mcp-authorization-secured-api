@@ -64,3 +64,8 @@ tail -f ~/Library/Logs/claude-cli-nodejs/-Users-MYUSER-dev-claude/debug-logs/deb
 
 It can be easier to trace HTTP messages with Claude Code than with Claude Desktop.\
 The [OAuth and MCP Requests](../OAUTH-MCP-MESSAGES.md) summary summarizes the OAuth and MCP messages.
+
+## Developing MCP Clients
+
+If you want to develop your own AI agent that runs MCP clients, you can also use the MCP Remote library.\
+Follow the same approach as Claude to integrate MCP clients from contributor.
