@@ -26,7 +26,7 @@ if [ ! -d typescript-sdk ]; then
   npm install
 
   #
-  # Work around the client using a hard coded and interoperable scope named 'mcp:tools'.
+  # Work around the client using a hard coded / incorrect scope named 'mcp:tools'.
   # There is an open issue to support the new MCP scope selection strategy
   # - https://github.com/modelcontextprotocol/typescript-sdk/issues/978
   #

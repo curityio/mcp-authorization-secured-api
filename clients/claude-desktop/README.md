@@ -6,7 +6,8 @@ For example, you could get started with a `Pro` individual account.
 ## Configure Claude Desktop
 
 In Claude Desktop, select `Settings / Developer` and then the `Edit Config` option.\
-Provide the following settings and then restart Claude Desktop.
+Provide a configuration file with the following settings and then restart Claude Desktop.\
+Make sure you use the correct certificate file path for your computer:
 
 ```json
 {

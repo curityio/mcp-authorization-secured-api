@@ -23,6 +23,33 @@ Then run a command such as the following and open the browser at `http://localho
 mitmweb -p 8888 --web-port 8889 --ssl-insecure --script init.py
 ```
 
+## Configure Node.js Request Tracing
+
+By default. clients use a  `NODE_EXTRA_CA_CERTS` environment variable for the development certificate.\
+For some clients, simple environment variables may be sufficient to capture traces in mitmproxy.\
+Edit the `./run.sh` script, remove the `NODE_EXTRA_CA_CERTS` environment variable and add these ones:
+
+```bash
+export HTTPS_PROXY=http://127.0.0.1:8888
+export NODE_TLS_REJECT_UNAUTHORIZED=0
+```
+
+For others you may need to take further additional steps.\
+For example, in the TypeScript SDK client you can add the following to the TypeScript SDK's `package.json` dependencies.\
+Then run `npm install`:
+
+```text
+"undici": "^7.10.0"
+```
+
+Then add the following details to the top of `src/examples/client/simpleOAuthClient.ts`:
+
+```javascript
+import { setGlobalDispatcher, ProxyAgent } from 'undici';
+const dispatcher = new ProxyAgent({uri: new URL('http://127.0.0.1:8888').toString() });
+setGlobalDispatcher(dispatcher);
+```
+
 ## Capture API Gateway Requests
 
 If you can't get an HTTP proxy to work, another option is to log API gateway details.\
@@ -150,4 +177,29 @@ The end result is that the MCP client operates with API privileges that you full
     "scope": "stocks/read",
     "token_type": "bearer"
 }
+```
+
+## View MCP Server-Side Events
+
+You can then view MCP messages sent between the MCP client and the MCP server.\
+The following example response shows the form of MCP tool response that the MCP client receives.
+
+```text
+HTTP/1.1 200 OK
+Content-Type: text/event-stream
+Transfer-Encoding: chunked
+Connection: keep-alive
+X-Powered-By: Express
+Cache-Control: no-cache
+Date: Thu, 09 Oct 2025 08:21:46 GMT
+Server: kong/3.9.1
+vary: Origin
+Access-Control-Allow-Origin: http://localhost:6274
+X-Kong-Upstream-Latency: 33
+X-Kong-Proxy-Latency: 0
+Via: 1.1 kong/3.9.1
+X-Kong-Request-Id: 770a5510264c74559380e51450b41f79
+
+event: message
+data: {"result":{"content":[{"type":"text","text":"[{\"id\":\"COM1\",\"name\":\"Company 1\",\"price\":450.22},{\"id\":\"COM2\",\"name\":\"Company 2\",\"price\":250.62},{\"id\":\"COM3\",\"name\":\"Company 3\",\"price\":21.07}]"}]},"jsonrpc":"2.0","id":2}
 ```

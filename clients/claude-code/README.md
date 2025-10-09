@@ -13,7 +13,8 @@ npm install -g @anthropic-ai/claude-code
 
 ## Configure Claude Code
 
-This folder includes a configuration with the following settings:
+This folder includes a configuration with settings of the following form.\
+Make sure you edit the file to use the correct certificate file path for your computer:
 
 ```json
 {

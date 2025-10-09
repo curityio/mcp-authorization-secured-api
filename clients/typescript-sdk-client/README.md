@@ -55,28 +55,6 @@ mcp> call fetch-stock-prices
 [{"id":"COM1","name":Company 1","price":450.22},{"id":"COM2","name":"Company 2","price":250.62},{"id":"COM3","name":"Company 3","price":21.07}]
 ```
 
-## Trace HTTP Requests
-
-To [Debug HTTP Requests](../DEBUGGING.md) you can add the following to the TypeScript SDK's `package.json` dependencies.\
-Then run `npm install`:
-
-```text
-"undici": "^7.10.0"
-```
-
-Then add the following details to the top of `src/examples/client/simpleOAuthClient.ts`:
-
-```javascript
-import { setGlobalDispatcher, ProxyAgent } from 'undici';
-const dispatcher = new ProxyAgent({uri: new URL('http://127.0.0.1:8888').toString() });
-setGlobalDispatcher(dispatcher);
-```
-
-Then edit the `./run.sh` script and replace the `NODE_EXTRA_CA_CERTS` environment variable with this one.\
-Then re-run the client to capture all of its OAuth-related HTTP requests:
-
-```text
-export NODE_TLS_REJECT_UNAUTHORIZED=0
-```
+## Capture OAuth and MCP Requests
 
 The [OAuth and MCP Requests](../OAUTH-MCP-MESSAGES.md) summary summarizes the OAuth and MCP messages.
