@@ -62,13 +62,5 @@ tail -f ~/Library/Logs/claude-cli-nodejs/-Users-MYUSER-dev-claude/debug-logs/deb
 
 ## Capture OAuth and MCP Requests
 
-It is easier to trace HTTP messages with Claude Code than with Claude Desktop.\
-To capture Claude Code messages with the `mitmproxy` tool, edit the `run.sh` script.\
-Remove the `NODE_EXTRA_CA_CERTS` environment variable and add these ones:
-
-```bash
-export HTTPS_PROXY=http://127.0.0.1:8888
-export NODE_TLS_REJECT_UNAUTHORIZED=0
-```
-
+It can be easier to trace HTTP messages with Claude Code than with Claude Desktop.\
 The [OAuth and MCP Requests](../OAUTH-MCP-MESSAGES.md) summary summarizes the OAuth and MCP messages.

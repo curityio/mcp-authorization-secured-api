@@ -68,11 +68,11 @@ plugins:
     - kong.log.set_serialize_value("response.body", kong.response.get_raw_body())
 ```
 
-## OAuth Messages
+## OAuth and MCP Messages
 
 Once you have a setup to capture messages you can see the details of the OAuth flow.
 
-## Dynamic Client Creation
+### Dynamic Client Creation
 
 The MCP client sends a DCR request of the following form:
 
@@ -137,7 +137,7 @@ Some clients indicates that they are a public client with `token_endpoint_auth_m
 The Curity Identity Server overrides this and returns a client secret.\
 Each distinct user gets a different client secret with which to retrieve access tokens.
 
-## Login and Token Flow
+### Login and Token Flow
 
 The client sends the following form of front channel request:
 
@@ -179,7 +179,7 @@ The end result is that the MCP client operates with API privileges that you full
 }
 ```
 
-## View MCP Server-Side Events
+### View MCP Server-Side Events
 
 You can then view MCP messages sent between the MCP client and the MCP server.\
 The following example response shows the form of MCP tool response that the MCP client receives.
