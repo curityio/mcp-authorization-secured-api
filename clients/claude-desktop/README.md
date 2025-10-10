@@ -101,7 +101,7 @@ A static client in the Curity Identity Server could use the following settings:
                 <client>
                   <id>claude-client</id>
                   <secret>my-client-secret</secret>
-                  <redirect-uris>https://claude.demo.example/api/mcp/auth_callback</redirect-uris>
+                  <redirect-uris>https://claude.ai/api/mcp/auth_callback</redirect-uris>
                   <audience>claude-client</audience>
                   <audience>https://mcp.demo.example/</audience>
                   <scope>address</scope>
