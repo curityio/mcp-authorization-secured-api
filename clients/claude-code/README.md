@@ -63,4 +63,4 @@ tail -f ~/Library/Logs/claude-cli-nodejs/-Users-MYUSER-dev-claude/debug-logs/deb
 ## Capture OAuth and MCP Requests
 
 It can be easier to trace HTTP messages with Claude Code than with Claude Desktop.\
-The [OAuth and MCP Requests](../OAUTH-MCP-MESSAGES.md) summary summarizes the OAuth and MCP messages.
+The [OAuth and MCP Requests](../OAUTH-MCP-MESSAGES.md) summary explains OAuth and MCP messages.
