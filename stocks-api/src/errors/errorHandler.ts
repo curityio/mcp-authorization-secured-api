@@ -16,17 +16,13 @@
 
 import {NextFunction, Request, Response} from 'express';
 import {ApiError} from './apiError.js';
-import {Configuration} from '../configuration.js';
 
 /*
  * Basic error handling and logging
  */
 export class ErrorHandler {
 
-    private readonly configuration: Configuration;
-
-    public constructor(configuration: Configuration) {
-        this.configuration = configuration;
+    public constructor() {
         this.onUnhandledException = this.onUnhandledException.bind(this);
     }
 
@@ -52,22 +48,14 @@ export class ErrorHandler {
     private writeErrorResponse(error: ApiError, response: Response): void {
 
         this.logError(error);
-        if (error.status === 401) {
-            this.writeAuthenticateHeader(error, response);
+        if (error.status === 401 || error.status === 403) {
+            response.setHeader(
+                'WWW-Authenticate',
+                `Bearer error="${error.code}", error_description="${error.message}"`);
         }
 
         response.setHeader('Content-Type', 'application/json');
         response.status(error.status).send(JSON.stringify(error.toClientObject()));
-    }
-
-    /*
-     * Write standard OAuth error response headers
-     */
-    private writeAuthenticateHeader(error: ApiError, response: Response): void {
-
-        response.setHeader(
-            'WWW-Authenticate',
-            `Bearer error="${error.code}", error_description="${error.message}"`);
     }
 
     /*

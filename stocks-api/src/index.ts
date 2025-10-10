@@ -18,9 +18,10 @@ import express, {Request, Response} from 'express';
 import {OAuthFilter} from "./security/oauthFilter.js";
 import {Configuration} from "./configuration.js";
 import {ErrorHandler} from "./errors/errorHandler.js";
-import {ClaimsPrincipal} from "./security/claimsPrincipal.js";
 
 const app = express();
+app.set('etag', false)
+
 const configuration = new Configuration();
 
 /*
@@ -35,20 +36,17 @@ app.use('/', oauthFilter.validateAccessToken);
  */
 app.get('/', (request: Request, response: Response) => {
 
-    console.log('API is returning secured information about stock prices ...');
-    const claims = response.locals.claimsPrincipal as ClaimsPrincipal;
-    
     /*
-     * The API checks for its required scope for this endpoint.
-     * The MCP client only has access to this area of data.
+     * A real API could do extra authorization using claims associated to the access token's scope
      */
-    claims.enforceRequiredScope('stocks/read')
-
+    // const claims = response.locals.claimsPrincipal as ClaimsPrincipal;
+    
     /*
      * In this example, all stocks in this collection are returned to the AI agent.
      * A real API could use additional claims associated to the scope, like role, department, country etc.
      * These claims could filter access to particular stocks that the user is allowed to access.
      */
+    console.log('API is returning secured information about stock prices ...');
     const stocks = [
         {
             "id": "COM1",
@@ -71,7 +69,7 @@ app.get('/', (request: Request, response: Response) => {
     response.status(200).send(JSON.stringify(stocks));
 });
 
-const errorHander = new ErrorHandler(configuration);
+const errorHander = new ErrorHandler();
 app.use(errorHander.onUnhandledException)
 
 app.listen(configuration.port, () => {

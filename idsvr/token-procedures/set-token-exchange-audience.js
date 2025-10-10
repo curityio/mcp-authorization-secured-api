@@ -8,7 +8,7 @@ function result(context) {
   
   // Allow the MCP server to use token exchange to update its token audience to the API audience
   var newAudience = context.request.getFormParameter('audience');
-  if (tokenData.aud === 'http://mcp.demo.example/' && newAudience === 'http://api.demo.example') {
+  if (tokenData.aud === 'https://mcp.demo.example/' && newAudience === 'https://api.demo.example') {
     tokenData.aud = [newAudience];
   }
 

@@ -24,8 +24,8 @@ The overall flow uses the following steps:
 2. The Curity Identity Server issues the MCP client a confidential (opaque) access token.
 3. The MCP client sends the opaque access token to the MCP server.
 4. The [phantom token plugin](https://github.com/curityio/nginx-lua-phantom-token-plugin) introspects the opaque access token and forwards a JWT access token to the MCP server.
-5. The MCP server validates the JWT access token and checks that it has an audience of `http://mcp.demo.example/`.
-6. Before calling the API the MCP server uses token exchange to change the token audience to`http://api.demo.example`.
+5. The MCP server validates the JWT access token and checks that it has an audience of `https://mcp.demo.example/`.
+6. Before calling the API the MCP server uses token exchange to change the token audience to`https://api.demo.example`.
 7. The MCP server sends the exchanged access token to the stocks API.
 8. The API validates the access token and uses its claims for authorization that protects business resources.
 
@@ -37,22 +37,16 @@ MCP clients connect to the MCP server using a Streamable HTTP transport.
 
 | Endpoint | URL | Description |
 | -------- | --- | ----------- |
-| MCP Server Entry Point | `http://mcp.demo.example` | Endpoint that receives all API requests from MCP clients. |
-| MCP Server Resource Metadata | `http://mcp.demo.example/.well-known/oauth-protected-resource` | Used by the MCP client to discover the MCP server's authorization server. |
-| Stocks API | `http://api.demo.example/stocks` | The API entry point for non MCP clients. |
-| Curity Identity Server OAuth Metadata | `http://login.demo.example/.well-known/oauth-authorization-server` | Used by the MCP client to discover the capabilities of the authorization server, e.g. authorization endpoint. |
-| Curity Identity Server Admin UI | `http://admin.demo.example/admin` | Administration interface of the Curity Identity Server. |
-| Curity Identity Server DCR | `http://login.demo.example/oauth/v2/oauth-registration` | Endpoint of the Curity Identity Server that enables the MCP client to automatically register, e.g. its redirect URI. |
-| Curity Identity Server Authorization Endpoint | `http://login.demo.example/oauth/v2/oauth-authorize` | Endpoint discovered by the MCP client for starting the OAuth flow. |
-| Curity Identity Server Token Endpoint | `http://login.demo.example/oauth/v2/oauth-token` | Endpoint from where the MCP client gets the access token at the end. |
-| Curity Identity Server Login Interfaces | `http://login.demo.example/authn/authenticate/` | The base URL for authentication related user interaction. |
-| Test Email Inbox | `http://mail.demo.example` | A mail server for testing purposes that lets you receive any emails that the Curity Identity Server sends. |
-
-To enable the use of these domains on your local computer, add the following entries to the `/etc/hosts` file.
-
-```text
-127.0.0.1 api.demo.example mcp.demo.example admin.demo.example login.demo.example mail.demo.example
-```
+| MCP Server Entry Point | `https://mcp.demo.example` | Endpoint that receives all API requests from MCP clients. |
+| MCP Server Resource Metadata | `https://mcp.demo.example/.well-known/oauth-protected-resource` | Used by the MCP client to discover the MCP server's authorization server. |
+| Stocks API | `https://api.demo.example/stocks` | The API entry point for non MCP clients. |
+| Curity Identity Server OAuth Metadata | `https://login.demo.example/.well-known/oauth-authorization-server` | Used by the MCP client to discover the capabilities of the authorization server, e.g. authorization endpoint. |
+| Curity Identity Server Admin UI | `https://admin.demo.example/admin` | Administration interface of the Curity Identity Server. |
+| Curity Identity Server DCR | `https://login.demo.example/oauth/v2/oauth-registration` | Endpoint of the Curity Identity Server that enables the MCP client to automatically register, e.g. its redirect URI. |
+| Curity Identity Server Authorization Endpoint | `https://login.demo.example/oauth/v2/oauth-authorize` | Endpoint discovered by the MCP client for starting the OAuth flow. |
+| Curity Identity Server Token Endpoint | `https://login.demo.example/oauth/v2/oauth-token` | Endpoint from where the MCP client gets the access token at the end. |
+| Curity Identity Server Login Interfaces | `https://login.demo.example/authn/authenticate/` | The base URL for authentication related user interaction. |
+| Test Email Inbox | `https://mail.demo.example` | A mail server for testing purposes that lets you receive any emails that the Curity Identity Server sends. |
 
 The Curity Identity Server implements OAuth standards (DCR, code flow) to enable the authorization as defined for MCP.\
 You can log into the Admin UI with a username and password of `admin / Password1`.
@@ -78,64 +72,38 @@ export LICENSE_FILE_PATH=~/Desktop/license.json
 ./deploy.sh
 ```
 
-### Run the MCP Client
+### Enable Local HTTPS URLs
 
-Run any MCP client that implements the behavior from the MCP draft authorization specification.\
-You can use this repo's [Example MCP Client](mcp-client/README.md), which runs as a console application.\
-Use the following commands to run the client.
-
-```bash
-cd mcp-client
-npm install
-npm start
-```
-
-The MCP client integrates with the MCP server to run OAuth flows and make a secured connection.\
-The user can then run MCP tools to invoke API requests and access authorized resources.\
-The example API returns some hard-coded fictional stock prices.
+To enable the use of these domains on your local computer, add the following entries to the `/etc/hosts` file.
 
 ```text
-🚀 Simple MCP OAuth Client
-Connecting to: http://mcp.demo.example
-
-🔗 Attempting to connect to http://mcp.demo.example...
-🔐 Creating OAuth provider...
-🔐 OAuth provider created
-👤 Creating MCP client...
-👤 Client created
-🔐 Starting OAuth flow...
-🚢 Creating transport with OAuth provider...
-🚢 Transport created
-🔌 Attempting connection (this will trigger OAuth redirect)...
-📌 OAuth redirect handler called - opening browser
-Opening browser to: http://login.demo.example/oauth/v2/oauth-authorize?response_type=code&client_id=24ae8cd9-3d44-434e-9506-1342d76eea5c&code_challenge=u1IP4WbEWQQbS04foPIsNdjE28v_-8yQefhrqr9zE9M&code_challenge_method=S256&redirect_uri=http%3A%2F%2Flocalhost%3A8090%2Fcallback&scope=stocks%2Fread
-🌐 Opening browser for authorization: http://login.demo.example/oauth/v2/oauth-authorize?response_type=code&client_id=24ae8cd9-3d44-434e-9506-1342d76eea5c&code_challenge=u1IP4WbEWQQbS04foPIsNdjE28v_-8yQefhrqr9zE9M&code_challenge_method=S256&redirect_uri=http%3A%2F%2Flocalhost%3A8090%2Fcallback&scope=stocks%2Fread
-🔐 OAuth required - waiting for authorization...
-OAuth callback server started on http://localhost:8090
-📥 Received callback: /callback?iss=http%3A%2F%2Flogin.demo.example%2Foauth%2Fv2%2Foauth-anonymous&code=dodc5hVzHJ3kAKmHgnGRyiyNgkVIVyNx
-✅ Authorization code received: dodc5hVzHJ...
-🔐 Authorization code received: dodc5hVzHJ3kAKmHgnGRyiyNgkVIVyNx
-🔌 Reconnecting with authenticated transport...
-🚢 Creating transport with OAuth provider...
-🚢 Transport created
-🔌 Attempting connection (this will trigger OAuth redirect)...
-✅ Connected successfully
-
-🎯 Interactive MCP Client with OAuth
-Commands:
-  list - List available tools
-  call <tool_name> [args] - Call a tool
-  quit - Exit the client
-
-mcp> call fetch-stock-prices
-
-🔧 Tool 'fetch-stock-prices' result:
-[{"id":"COM1","name":Company 1","price":450.22},{"id":"COM2","name":"Company 2","price":250.62},{"id":"COM3","name":"Company 3","price":21.07}]
+127.0.0.1 api.demo.example mcp.demo.example admin.demo.example login.demo.example mail.demo.example
 ```
 
-### MCP Client Flow
+Also trust the OpenSSL issued root certificate authority that the deployment creates at the following location.\
+For example, on macOS add it to Keychain Access under System / Certificates:
 
-The MCP client uses the following steps to get an access token and call the API:
+```text
+apigateway/certs/example.ca.crt
+```
+
+### Run Clients
+
+See the following READMEs for further information on how to run supported clients:
+
+- [TypeScript SDK Console Client](clients/typescript-sdk-client/README.md)
+- [MCP Inspector](clients/mcp-inspector/README.md)
+- [Claude Code](clients/claude-code/README.md)
+- [Claude Desktop](clients/claude-desktop/README.md)
+
+## Understand the Flow
+
+MCP clients that implement the MCP draft authorization specification can integrate with the MCP server.\
+The Curity Identity Server issues access tokens that restrict MCP clients to least-privilege access tokens.
+
+### Client Behaviors
+
+Clients use the following steps to get an access token and call the API:
 
 - Resource server metadata download.
 - Authorization server metadata download.
@@ -150,22 +118,16 @@ You can simulate that by entering one of the emails and typing a one-time passwo
 - `john.doe@demo.example`
 - `jane.test@demo.example`
 
-![user-authentication](images/user-authentication.png)
+<img src="images/user-authentication.png" alt="User Consent" style="width:50%" />
 
 Users must then consent to granting the MCP client access to API data.\
 The user is informed about the level of data access that the AI agent requests.
 
-![user-consent](images/user-consent.png)
+<img src="images/user-consent.png" alt="User Consent" style="width:50%" />
 
-### Run the MCP Inspector Tool
+### Access Token Behaviors
 
-Once connected, you can try to integrate other clients, like the [MCP Inspector](mcp-inspector/README.md) tool:
-
-![MCP inspector](mcp-inspector/inspector.png)
-
-### Secure Access Tokens
-
-The MCP client then receives the following form of token response:
+MCP clients receive the following token response:
 
 ```json
 {
@@ -194,9 +156,9 @@ The access token is only accepted at MCP entry points and not at other API endpo
   "exp": 1749650409,
   "nbf": 1749650109,
   "scope": "stocks/read",
-  "iss": "http://login.demo.example/oauth/v2/oauth-anonymous",
+  "iss": "https://login.demo.example/oauth/v2/oauth-anonymous",
   "sub": "john.doe@demo.example",
-  "aud": "http://mcp.demo.example/",
+  "aud": "https://mcp.demo.example/",
   "iat": 1749650109,
   "purpose": "access_token"
 }

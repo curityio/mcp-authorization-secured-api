@@ -61,23 +61,17 @@ export class ErrorHandler {
     private writeExpressErrorResponse(error: McpServerError, response: Response): void {
 
         this.logError(error);
-        if (error.status === 401) {
-            this.writeAuthenticateHeader(error, response);
+        if (error.status === 401 || error.status === 403) {
+            
+            const metadataUrl = this.getResourceMetadataUrl();
+            const scope = this.configuration.requiredScope;
+            response.setHeader(
+                'WWW-Authenticate',
+                `Bearer error="${error.code}", error_description="${error.message}", ${metadataUrl}, scope="${scope}"`);
         }
 
         response.setHeader('Content-Type', 'application/json');
         response.status(error.status).send(JSON.stringify(error.toClientObject()));
-    }
-
-    /*
-     * Write the WWW-Authenticate header for 401 responses
-     */
-    private writeAuthenticateHeader(error: McpServerError, response: Response): void {
-
-        const suffix = this.getResourceMetadataUrl();
-        response.setHeader(
-            'WWW-Authenticate',
-            `Bearer error="${error.code}", error_description="${error.message}", ${suffix}"`);
     }
 
     /*
