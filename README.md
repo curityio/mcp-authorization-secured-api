@@ -84,7 +84,7 @@ Also trust the OpenSSL issued root certificate authority that the deployment cre
 For example, on macOS add it to Keychain Access under System / Certificates:
 
 ```text
-~/Desktop/example.ca.crt
+apigateway/certs/example.ca.crt
 ```
 
 ### Run Clients

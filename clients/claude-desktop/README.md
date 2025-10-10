@@ -33,7 +33,7 @@ The client triggers the OAuth flow from this repository's main [README](../../RE
 
 ![claude desktop](../../images/claude-desktop.png)
 
-After login, Claude Desktop stores its dynamic client information and tokens.\
+After login, Claude stores its dynamic client information and tokens.\
 You can view details in the `~/.mcp-auth` folder or delete the folder to reset Claude's state.
 
 ## Troubleshoot
@@ -45,8 +45,3 @@ If you need to troubleshoot, see the file for the MCP server in the logs folder:
 ## Capture OAuth and MCP Requests
 
 The [OAuth and MCP Requests](../OAUTH-MCP-MESSAGES.md) summary summarizes the OAuth and MCP messages.
-
-## Developing MCP Clients
-
-If you want to develop your own AI agent that runs MCP clients, you can also use the MCP Remote library.\
-Follow the same approach as Claude to integrate MCP clients from contributor.

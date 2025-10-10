@@ -42,7 +42,7 @@ Execute the following script from the current folder to run Claude Code in debug
 ```
 
 Run the `/mcp` CLI command to switch to MCP mode and trigger authentication when prompted.\
-After login, Claude Desktop stores its dynamic client information and tokens.\
+After login, Claude stores its dynamic client information and tokens.\
 You can view details in the `~/.mcp-auth` folder or delete the folder to reset Claude's state.\
 You can then ask Claude a question related to stocks and it calls the MCP server:
 
@@ -64,8 +64,3 @@ tail -f ~/Library/Logs/claude-cli-nodejs/-Users-MYUSER-dev-claude/debug-logs/deb
 
 It can be easier to trace HTTP messages with Claude Code than with Claude Desktop.\
 The [OAuth and MCP Requests](../OAUTH-MCP-MESSAGES.md) summary summarizes the OAuth and MCP messages.
-
-## Developing MCP Clients
-
-If you want to develop your own AI agent that runs MCP clients, you can also use the MCP Remote library.\
-Follow the same approach as Claude to integrate MCP clients from contributor.
