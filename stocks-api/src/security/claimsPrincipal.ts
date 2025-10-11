@@ -27,7 +27,7 @@ export class ClaimsPrincipal {
     private readonly scope: string;
     public readonly sub: string;
 
-    public constructor(configuration: Configuration,claims: JWTPayload) {
+    public constructor(configuration: Configuration, claims: JWTPayload) {
 
         this.configuration = configuration;
         this.scope = this.getClaim(claims, 'scope');

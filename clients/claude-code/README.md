@@ -21,7 +21,7 @@ Make sure you edit the file to use the correct certificate file path for your co
   "mcpServers": {
     "curity-demo": {
       "command": "npx",
-      "args": ["mcp-remote", "https://mcp.demo.example", "--static-oauth-client-metadata", "{ \"client_name\": \"Claude (curity-demo)\", \"scope\": \"stocks/read\" }"],
+      "args": ["mcp-remote", "https://mcp.demo.example", "--auth-timeout", "300", "--static-oauth-client-metadata", "{ \"client_name\": \"Claude (curity-demo)\", \"scope\": \"stocks/read\" }"],
       "env": {
 		"NODE_EXTRA_CA_CERTS": "/Users/MYUSER/dev/mcp-authorization-secured-api/apigateway/certs/example.ca.crt"
       }

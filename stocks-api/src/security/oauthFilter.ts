@@ -73,8 +73,8 @@ export class OAuthFilter {
 
         const claims = new ClaimsPrincipal(this.configuration, result.payload);
         claims.enforceRequiredScope();
-
         response.locals.claimsPrincipal = new ClaimsPrincipal(this.configuration, result.payload);
+
         next();
     }
 
