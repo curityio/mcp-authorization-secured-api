@@ -19,6 +19,9 @@ function result(context) {
 
         // Add a custom property that specifies the audiences of this DCR client
         attributes.audiences = ["https://mcp.demo.example/"];
+        
+        // We set the client name property and display it during email authentication
+        attributes.name = body.client_name;
       }
     }
   }

@@ -68,6 +68,8 @@ services:
       - ./idsvr/pre-processing-procedures/mcp-client-registration-policy.js:/opt/idsvr/etc/init/pre-processing-procedures/mcp-client-registration-policy.js
       - ./idsvr/token-procedures/set-access-token-audience.js:/opt/idsvr/etc/init/token-procedures/oauth-token-authorization-code/set-access-token-audience.js
       - ./idsvr/token-procedures/set-token-exchange-audience.js:/opt/idsvr/etc/init/token-procedures/oauth-token-oauth-token-exchange/set-token-exchange-audience.js
+      - ./idsvr/customizations/enter-username.vm:/opt/idsvr/usr/share/templates/overrides/authenticator/email/enter-username/index.vm
+      - ./idsvr/customizations/enter-username.properties:/opt/idsvr/usr/share/messages/overrides/en/authenticator/email/enter-username.properties
     environment:
       ADMIN: 'true'
       LICENSE_KEY: "${LICENSE_KEY}"
