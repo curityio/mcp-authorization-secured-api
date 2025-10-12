@@ -49,7 +49,7 @@
 
         <h1 class="center">#message("authenticator.email.enter-username.view.username")</h1>
 
-        <p>${_requestingOAuthClient.properties.name} is requesting email verification</p>
+        <p>${_requestingOAuthClient.properties.name} #message("authenticator.email.enter-username.view.requesting")</p>
         
         <div class="form-field">
             <label for="userName" class="$!_errorClass">#message("authenticator.email.enter-username.view.username-label")</label>
