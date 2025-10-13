@@ -4,6 +4,25 @@ _transform: true
 services:
 
 #
+# The main stocks API route serves other types of API clients
+#
+- name: stocks-api
+  url: http://stocks-api:3000/
+  routes:
+  - name: stocks-api-route
+    hosts:
+    - api.demo.example
+    paths:
+    - /stocks
+  plugins:
+  - name: phantom-token
+    config:
+      introspection_endpoint: http://idsvr:8443/oauth/v2/oauth-introspect
+      client_id: api-gateway-client
+      client_secret: Password1
+      token_cache_seconds: 900
+
+#
 # All MCP client API requests use this API gateway entry point
 # The MCP server connection is secured by opaque access tokens
 # The phantom token plugin returns a 401 that points the MCP client to resource metadata
@@ -47,25 +66,6 @@ services:
     config:
       origins:
       - 'http://localhost:6274'
-
-#
-# The main stocks API route serves other types of API clients
-#
-- name: stocks-api
-  url: http://stocks-api:3000/
-  routes:
-  - name: stocks-api-route
-    hosts:
-    - api.demo.example
-    paths:
-    - /stocks
-  plugins:
-  - name: phantom-token
-    config:
-      introspection_endpoint: http://idsvr:8443/oauth/v2/oauth-introspect
-      client_id: api-gateway-client
-      client_secret: Password1
-      token_cache_seconds: 900
 
 #
 # MCP authorization requires a root level OAuth authorization server metadata endpoint
