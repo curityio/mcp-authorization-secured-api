@@ -89,6 +89,11 @@ if [ $? -ne 0 ]; then
 fi
 
 #
+# Make sure deployed crypto files for the developer deployment have sufficient permissions
+#
+chmod 644 $SSL_CERT_FILE_PREFIX.key
+
+#
 # Clean up
 #
 rm *.csr 2>/dev/null
