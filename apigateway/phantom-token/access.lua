@@ -60,7 +60,7 @@ local function initialize_configuration(config)
 end
 
 --
--- Return errors due to invalid tokens or introspection technical problems
+-- Return server errors
 --
 local function error_response(status, code, message)
 
@@ -77,35 +77,6 @@ local function error_response(status, code, message)
     ngx.exit(status)
 end
 
---
--- Return a generic invalid token message and optionally return resource server metadata
---
-local function unauthorized_error_response(config)
-    
-    local method = ngx.req.get_method():upper()
-    if method ~= 'HEAD' then
-    
-        ngx.status = ngx.HTTP_UNAUTHORIZED
-        ngx.header['content-type'] = 'application/json'
-
-        local code = 'invalid_token'
-        local message = 'Missing, invalid or expired access token'
-
-        local wwwAuthenticate = 'Bearer error="' .. code .. '", error_description="' .. message .. '"'
-        if config.resource_metadata_url ~= nil then
-            wwwAuthenticate = wwwAuthenticate .. ', resource_metadata="' .. config.resource_metadata_url .. '"'
-        end
-        if config.scope ~= nil then
-            wwwAuthenticate = wwwAuthenticate .. ', scope="' .. config.scope .. '"'
-        end
-        ngx.header['WWW-Authenticate'] = wwwAuthenticate
-        
-        local jsonData = '{"code":"' .. code .. '","message":"' .. message .. '"}'
-        ngx.say(jsonData)
-    end
-    
-    ngx.exit(ngx.HTTP_UNAUTHORIZED)
-end
 
 local function server_error_response(config)
     error_response(ngx.HTTP_INTERNAL_SERVER_ERROR, 'server_error', 'Problem encountered processing the request')
@@ -202,7 +173,6 @@ end
 --
 function _M.run(config)
 
-    -- Start by validating configuration
     if initialize_configuration(config) == false then 
         server_error_response(config)
         return
@@ -219,20 +189,22 @@ function _M.run(config)
         local access_token = string.gsub(access_token_untrimmed, "%s+", "")
         local result = verify_access_token(access_token, config)
     
+        -- Return technical error responses
         if result.status == 500 then
             error_response(ngx.HTTP_INTERNAL_SERVER_ERROR, 'server_error', 'Problem encountered authorizing the HTTP request')
         end
 
-        if result.status ~= 200 then
-            ngx.log(ngx.WARN, 'Received a ' .. result.status .. ' introspection response due to the access token being invalid or expired')
-            unauthorized_error_response(config)
+        -- Success responses forward a JWT to the target API
+        if result.status == 200 then
+            ngx.req.set_header('Authorization', 'Bearer ' .. result.jwt)
         end
 
-        ngx.req.set_header('Authorization', 'Bearer ' .. result.jwt)
-    else
-
-        ngx.log(ngx.WARN, 'No valid access token was found in the HTTP Authorization header')
-        unauthorized_error_response(config)
+        -- For invalid token errors, allow the target API to return a full 401 response with www-authenticate details
+        -- Removing the header prevents a caller from sending a JWT access token through to the target API
+        if result.status ~= 200 then
+            ngx.req.clear_header('Authorization')
+        end
+        
     end
 end
 

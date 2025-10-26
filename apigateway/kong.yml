@@ -25,7 +25,6 @@ services:
 #
 # All MCP client API requests use this API gateway entry point
 # The MCP server connection is secured by opaque access tokens
-# The phantom token plugin returns a 401 that points the MCP client to resource metadata
 #
 - name: mcp-server
   url: http://mcp-server:3000/
@@ -46,8 +45,6 @@ services:
       client_id: api-gateway-client
       client_secret: Password1
       token_cache_seconds: 900
-      resource_metadata_url: https://mcp.demo.example/.well-known/oauth-protected-resource
-      scope: stocks/read
 
 #
 # The MCP server exposes OAuth protected resource metadata that points MCP clients to the authorization server
