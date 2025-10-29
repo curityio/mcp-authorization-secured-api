@@ -166,7 +166,11 @@
             </scope>
             <scope>
               <id>stocks/read</id>
-              <description>Read only information about financial stocks and their current prices</description>
+              <description>Read-only access to financial stocks</description>
+              <claims>region</claims>
+              <claims>role</claims>
+              <claims>client_type</claims>
+              <claims>stocks/read</claims>
             </scope>
           </scopes>
           <claims>
@@ -179,6 +183,13 @@
               <name>birthdate</name>
               <description>OpenID Connect birthdate claim</description>
               <value-provided-by>account-manager-claims-provider</value-provided-by>
+            </claim>
+            <claim>
+              <name>client_type</name>
+              <no-source/>
+              <transformation>
+                <value-transformation-procedure>ZnVuY3Rpb24gZ2VuZXJhdGUoKSB7CiAgcmV0dXJuICJtY3AiCn0=</value-transformation-procedure>
+              </transformation>
             </claim>
             <claim>
               <name>email</name>
@@ -251,6 +262,29 @@
               <value-provided-by>account-manager-claims-provider</value-provided-by>
             </claim>
             <claim>
+              <name>region</name>
+              <description>Your region</description>
+              <no-source/>
+              <transformation>
+                <value-transformation-procedure>ZnVuY3Rpb24gZ2VuZXJhdGUoKSB7CiAgcmV0dXJuICJVU0EiCn0=</value-transformation-procedure>
+              </transformation>
+            </claim>
+            <claim>
+              <name>role</name>
+              <no-source/>
+              <transformation>
+                <value-transformation-procedure>ZnVuY3Rpb24gZ2VuZXJhdGUoKSB7CiAgcmV0dXJuICJhZG1pbiIKfQ==</value-transformation-procedure>
+              </transformation>
+            </claim>
+            <claim>
+              <name>stocks/read</name>
+              <description>Read-only access to financial stocks</description>
+              <no-source/>
+              <transformation>
+                <value-transformation-procedure>ZnVuY3Rpb24gZ2VuZXJhdGUoKSB7CiAgcmV0dXJuICJhZG1pbiIKfQ==</value-transformation-procedure>
+              </transformation>
+            </claim>
+            <claim>
               <name>updated_at</name>
               <description>OpenID Connect updated_at claim</description>
               <value-provided-by>account-manager-claims-provider</value-provided-by>
@@ -276,6 +310,12 @@
             <claims-mappers>
               <claims-mapper>
                 <id>default</id>
+                <access_token>
+                  <claim>client_type</claim>
+                  <claim>region</claim>
+                  <claim>role</claim>
+                  <claim>stocks/read</claim>
+                </access_token>
                 <id_token>
                   <claim>address</claim>
                   <claim>birthdate</claim>
