@@ -34,34 +34,11 @@
 #define($_body)
 
 ##
-## This example scripting demonstrates a way to override the default sequence of consent items
-## It first gets presented items in the preferred sequence and then gets hidden items
+## This example presents only a subset of claims for user consent
 ##
-#set ($presentedItems = ['stocks/read', 'sub', 'region'])
-#set ($sortedConsentEntries = [])
-
-#foreach ($item in $presentedItems)
-  #foreach ($entry in $_consentEntries.entrySet())
-    #if ($entry.key.contains($item))
-      #set ($x = $sortedConsentEntries.add($entry))
-      #break
-    #end
-  #end
-#end
-
-#foreach ($entry in $_consentEntries.entrySet())
-  #set ($found = false)
-  #foreach ($item in $presentedItems)
-    #if ($entry.key.contains($item))
-      #set ($found = true)
-      #break
-    #end
-  #end
-  #if ($found == false)
-    #set ($x = $sortedConsentEntries.add($entry))
-    #break
-  #end
-#end
+#set ( $scopeName = 'stocks/read' )
+#set ( $scopeDescription = 'Read only access to financial stocks' )
+#set ( $presentedClaims = ['sub', 'region'] )
 
 <form method="post" action="$!_target" class="consent-form center">
     <input type="hidden" name="state" value="$_tr.encodeHtmlAttribute($!_state)" />
@@ -95,21 +72,35 @@
                     is-active
                 #end
             ">
+                
+                ##
+                ## This example adds details about the client's scope before the rendered claims
+                ##
+                <li>
+                    <label class="block full-width relative">
+                      <input type="checkbox" name="$scopeName" id="$scopeName" checked disabled>
+                      <label class="consent-entries-list-checkbox"></label>
+                      <span class="consent-entries-list-name">$_tr.encodeHtml($scopeName)</span>
+                      <span class="consent-entries-list-value required">*</span>
+                      &mdash;
+                      <span class="consent-entries-list-description">$scopeDescription</span>
+                    </label>
+                </li>
 
-                #foreach ($entry in $sortedConsentEntries)
+                #foreach ($entry in $_consentEntries.entrySet())
 
                     ##
                     ## This example scripting shows a way to present a subset of consent values to the user
                     ## This allows informational claims like the client type to be hidden but still issued to access tokens
                     ##
                     #set ($visible = false)
-                    #foreach ($item in $presentedItems)
+                    #foreach ($item in $presentedClaims)
                         #if ($entry.key.contains($item))
                             #set ($visible = true)
                             #break
                         #end
                     #end
-                    
+
                     #if ($visible == true)
                     <li>
                     #else
