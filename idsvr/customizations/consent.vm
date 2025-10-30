@@ -34,11 +34,11 @@
 #define($_body)
 
 ##
-## This example presents only a subset of claims for user consent
+## This bespoke consent presentation renders scopes before claims and only presents a subset of claims to the user
 ##
 #set ( $scopeName = 'stocks/read' )
-#set ( $scopeDescription = 'Read only access to financial stocks' )
 #set ( $presentedClaims = ['sub', 'region'] )
+#define ( $scopeDescription ) #message("views.oauth.consent.stocks-read-description") #end
 
 <form method="post" action="$!_target" class="consent-form center">
     <input type="hidden" name="state" value="$_tr.encodeHtmlAttribute($!_state)" />
@@ -74,7 +74,7 @@
             ">
                 
                 ##
-                ## This example adds details about the client's scope before the rendered claims
+                ## This bespoke consent presentation renders details about the client's scope before the claim details
                 ##
                 <li>
                     <label class="block full-width relative">
@@ -90,8 +90,8 @@
                 #foreach ($entry in $_consentEntries.entrySet())
 
                     ##
-                    ## This example scripting shows a way to present a subset of consent values to the user
-                    ## This allows informational claims like the client type to be hidden but still issued to access tokens
+                    ## This bespoke consent presentation presents a subset of consent values to the user
+                    ## This hides informational claims like the client_type but they are still issued to access tokens
                     ##
                     #set ($visible = false)
                     #foreach ($item in $presentedClaims)
