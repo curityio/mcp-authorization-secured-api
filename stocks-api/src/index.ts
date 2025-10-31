@@ -18,6 +18,7 @@ import express, {Request, Response} from 'express';
 import {OAuthFilter} from "./security/oauthFilter.js";
 import {Configuration} from "./configuration.js";
 import {ErrorHandler} from "./errors/errorHandler.js";
+import {ClaimsPrincipal} from './security/claimsPrincipal.js';
 
 const app = express();
 app.set('etag', false)
@@ -33,40 +34,54 @@ app.use('/', oauthFilter.validateAccessToken);
 
 /*
  * The API's business logic then runs and has access to a claims principal formed from the JWT access token's payload
+ * The API's authorization receives AI context in claims
  */
 app.get('/', (request: Request, response: Response) => {
 
-    /*
-     * A real API could do extra authorization using claims associated to the access token's scope
-     */
-    // const claims = response.locals.claimsPrincipal as ClaimsPrincipal;
-    
-    /*
-     * In this example, all stocks in this collection are returned to the AI agent.
-     * A real API could use additional claims associated to the scope, like role, department, country etc.
-     * These claims could filter access to particular stocks that the user is allowed to access.
-     */
+    // The example API uses hard coded stocks
     console.log('API is returning secured information about stock prices ...');
     const stocks = [
         {
             "id": "COM1",
+            "region": "USA",
             "name": "Company 1",
             "price": 450.22,
         },
         {
             "id": "COM2",
+            "region": "Europe",
             "name": "Company 2",
             "price": 250.62,
         },
         {
             "id": "COM3",
+            "region": "Europe",
             "name": "Company 3",
             "price": 21.07,
         },
+        {
+            "id": "COM4",
+            "region": "USA",
+            "name": "Company 4",
+            "price": 180.75,
+        },
     ];
 
+    // Get claims
+    const claims = response.locals.claimsPrincipal as ClaimsPrincipal;
+    
+    if (claims.clientType == 'mcp') {
+        // The API could restrict allowed operations for MCP clients
+    }
+
+    if (claims.clientAssuranceLevel <= 1) {
+        // The API could deny access to high sensitivity data unless the MCP client used strong authentication
+    }
+
+    // Return authorized data based on the user's region
+    const data = stocks.filter((s) => s.region === claims.region) || [];
     response.setHeader('content-type', 'application/json');
-    response.status(200).send(JSON.stringify(stocks));
+    response.status(200).send(JSON.stringify(data));
 });
 
 const errorHander = new ErrorHandler();

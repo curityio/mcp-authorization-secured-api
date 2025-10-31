@@ -168,7 +168,7 @@
               <id>stocks/read</id>
               <description>Read-only access to financial stocks</description>
               <claims>region</claims>
-              <claims>role</claims>
+              <claims>client_assurance_level</claims>
               <claims>client_type</claims>
             </scope>
           </scopes>
@@ -184,10 +184,17 @@
               <value-provided-by>account-manager-claims-provider</value-provided-by>
             </claim>
             <claim>
-              <name>client_type</name>
-              <no-source/>
+              <name>client_assurance_level</name>
+              <value-provided-by>script-claims-provider</value-provided-by>
               <transformation>
-                <value-transformation-procedure>ZnVuY3Rpb24gZ2VuZXJhdGUoKSB7CiAgcmV0dXJuICJtY3AiCn0=</value-transformation-procedure>
+                <input-attribute-names>client_assurance_level</input-attribute-names>
+              </transformation>
+            </claim>
+            <claim>
+              <name>client_type</name>
+              <value-provided-by>script-claims-provider</value-provided-by>
+              <transformation>
+                <input-attribute-names>client_type</input-attribute-names>
               </transformation>
             </claim>
             <claim>
@@ -263,16 +270,9 @@
             <claim>
               <name>region</name>
               <description>Your region</description>
-              <no-source/>
+              <value-provided-by>script-claims-provider</value-provided-by>
               <transformation>
-                <value-transformation-procedure>ZnVuY3Rpb24gZ2VuZXJhdGUoKSB7CiAgcmV0dXJuICJVU0EiCn0=</value-transformation-procedure>
-              </transformation>
-            </claim>
-            <claim>
-              <name>role</name>
-              <no-source/>
-              <transformation>
-                <value-transformation-procedure>ZnVuY3Rpb24gZ2VuZXJhdGUoKSB7CiAgcmV0dXJuICJhZG1pbiIKfQ==</value-transformation-procedure>
+                <input-attribute-names>region</input-attribute-names>
               </transformation>
             </claim>
             <claim>
@@ -298,13 +298,22 @@
                 </account-manager>
               </account-manager-claims-provider>
             </claims-value-provider>
+            <claims-value-provider>
+              <id>script-claims-provider</id>
+              <script-claims-provider xmlns="https://curity.se/ns/ext-conf/script-claims-provider">
+                <data-source>
+                  <data-source>default-datasource</data-source>
+                </data-source>
+                <procedure>script-claims-provider-proc</procedure>
+              </script-claims-provider>
+            </claims-value-provider>
             <claims-mappers>
               <claims-mapper>
                 <id>default</id>
                 <access_token>
                   <claim>client_type</claim>
+                  <claim>client_assurance_level</claim>
                   <claim>region</claim>
-                  <claim>role</claim>
                 </access_token>
                 <id_token>
                   <claim>address</claim>
@@ -474,6 +483,7 @@
       <data-source>
         <id>default-datasource</id>
         <jdbc xmlns="https://curity.se/ns/ext-conf/jdbc">
+          <attribute-query>SELECT attributes from accounts WHERE accounts.username = :subject</attribute-query>
           <connection-string>data:text/plain;aes,v:S.SU9VaWlmSGFrNU44ZkNLTQ==.cElMDBz7M4knt70AosfcUg==.9LlUG8aUsXol_wNkkl5uNBJ3eD3sp3GiNc5XrVEThbJC2nVlF8AjzfzWIysF7aj2.WH54DcWNXa1HFGYdaZyOb9oF26qNxDZ82hRAyre3Mn0=</connection-string>
           <standard-credentials-mode>
           </standard-credentials-mode>

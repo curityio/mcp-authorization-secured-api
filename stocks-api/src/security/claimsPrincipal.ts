@@ -25,13 +25,17 @@ export class ClaimsPrincipal {
 
     private readonly configuration: Configuration;
     private readonly scope: string;
-    public readonly sub: string;
+    public readonly region: string;
+    public readonly clientType: string;
+    public readonly clientAssuranceLevel: number;
 
     public constructor(configuration: Configuration, claims: JWTPayload) {
 
         this.configuration = configuration;
         this.scope = this.getClaim(claims, 'scope');
-        this.sub = this.getClaim(claims, 'sub');
+        this.region = this.getClaim(claims, 'region') || '';
+        this.clientType = this.getClaim(claims, 'client_type') || '';
+        this.clientAssuranceLevel = this.getClaim(claims, 'client_assurance_level') || 0;
     }
 
     public enforceRequiredScope() {

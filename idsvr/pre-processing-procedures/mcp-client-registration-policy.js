@@ -20,10 +20,15 @@ function result(context) {
         // Add a custom property that specifies the audiences of this DCR client
         attributes.audiences = ["https://mcp.demo.example/"];
         
-        // Set some custom properties for the received client to use in login flows
+        // Record a property for the name to show in the login screen
         attributes.name = body.client_name;
-        attributes.client_type = 'mcp';
+
+        // Give the client a template area that uses a bespoke consent screen
         attributes.template_area = 'mcp-client';
+        
+        // Add custom properties delivered as AI content to APIs
+        attributes.client_type = 'mcp';
+        attributes.client_assurance_level = 1;
       }
     }
   }
