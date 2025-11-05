@@ -64,12 +64,22 @@ services:
     image: curity.azurecr.io/curity/idsvr:latest
     hostname: idsvr
     volumes:
+      # Current configuration
       - ./idsvr/curity-config.xml:/opt/idsvr/etc/init/curity-config.xml
+      
+      # JavaScript custom security logic
       - ./idsvr/pre-processing-procedures/mcp-client-registration-policy.js:/opt/idsvr/etc/init/pre-processing-procedures/mcp-client-registration-policy.js
       - ./idsvr/token-procedures/set-access-token-audience.js:/opt/idsvr/etc/init/token-procedures/oauth-token-authorization-code/set-access-token-audience.js
       - ./idsvr/token-procedures/set-token-exchange-audience.js:/opt/idsvr/etc/init/token-procedures/oauth-token-oauth-token-exchange/set-token-exchange-audience.js
-      - ./idsvr/customizations/enter-username.vm:/opt/idsvr/usr/share/templates/overrides/authenticator/email/enter-username/index.vm
-      - ./idsvr/customizations/enter-username.properties:/opt/idsvr/usr/share/messages/overrides/en/authenticator/email/enter-username.properties
+      - ./idsvr/claims-provider-procedures/script-claims-provider-proc.js:/opt/idsvr/etc/init/claims-provider-procedures/script-claims-provider-proc.js
+      
+      # Customizations to email user authentication
+      - ./idsvr/form-customizations/enter-username.vm:/opt/idsvr/usr/share/templates/overrides/authenticator/email/enter-username/index.vm
+      - ./idsvr/form-customizations/enter-username.properties:/opt/idsvr/usr/share/messages/overrides/en/authenticator/email/enter-username.properties
+      
+      # Customizations to the user consent screen
+      - ./idsvr/form-customizations/consent.vm:/opt/idsvr/usr/share/templates/template-areas/mcp-client/views/oauth/consent.vm
+      - ./idsvr/form-customizations/oauth-messages:/opt/idsvr/usr/share/messages/template-areas/mcp-client/en/views/oauth/messages
     environment:
       ADMIN: 'true'
       LICENSE_KEY: "${LICENSE_KEY}"
