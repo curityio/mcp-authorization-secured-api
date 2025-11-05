@@ -199,8 +199,14 @@ function _M.run(config)
             ngx.req.set_header('Authorization', 'Bearer ' .. result.jwt)
         end
 
-        -- For invalid token errors, allow the target API to return a full 401 response with www-authenticate details
-        -- Removing the header prevents a caller from sending a JWT access token through to the target API
+        -- For invalid token errors, there are multiple ways to return the MCP authorization www-authenticate response
+        -- The plugin could return resource_metadata and scope fields in an unauthorized_error_response:
+        -- https://github.com/curityio/nginx-lua-phantom-token-plugin/blob/main/plugin/access.lua#L89
+        
+        --
+        -- However, the MCP server also needs to handle race conditions where tokens expire
+        -- This example passes requests through to the target API so that the API implements the www-authenticate logic
+        -- The clear header logic prevents a stolen JWT being passed through to APIs
         if result.status ~= 200 then
             ngx.req.clear_header('Authorization')
         end

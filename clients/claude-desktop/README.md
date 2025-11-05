@@ -19,7 +19,7 @@ Make sure you use the correct certificate file path for your computer:
   "mcpServers": {
     "curity-demo": {
       "command": "npx",
-      "args": ["mcp-remote", "--auth-timeout", "300", "https://mcp.demo.example", "--static-oauth-client-metadata", "{ \"client_name\": \"Claude (curity-demo)\", \"scope\": \"stocks/read\" }"],
+      "args": ["mcp-remote", "https://mcp.demo.example", "--static-oauth-client-metadata", "{ \"client_name\": \"Claude (curity-demo)\", \"scope\": \"stocks/read\" }"],
       "env": {
 		"NODE_EXTRA_CA_CERTS": "/Users/MYUSER/dev/mcp-authorization-secured-api/apigateway/certs/example.ca.crt"
       }
@@ -80,13 +80,13 @@ The following settings improve the security of OAuth flows:
 - The Claude backend uses a protected client secret that is never revealed to the browser.
 - Claude receives the authorization code on a secure redirect URI, to prevent access from other websites.
 
-## Static Clients
+## Preconfigured Clients
 
-Depending on your Claude plan, you may be able to use a static client:
+Depending on your Claude plan, you may be able to use a preconfigured fixed client:
 
 <img src="../../images/claude-web.png" alt="Claude Web" style="width:50%" />
 
-A static client in the Curity Identity Server could use the following settings:
+A preconfigured client in the Curity Identity Server could use the following settings:
 
 ```xml
 <config xmlns="http://tail-f.com/ns/config/1.0">
@@ -130,5 +130,5 @@ A static client in the Curity Identity Server could use the following settings:
 
 In some enterprise use cases that may provide more convenient options:
 
-- An enterprise administrator might be able to register a single static client for all employees.
-- The administrator might then simplify the deployment by disabling the use of dynamic clients.
+- An enterprise administrator might be able to pre-register a single client for all employees.
+- The administrator might then simplify the deployment by removing the use of dynamic client registration.

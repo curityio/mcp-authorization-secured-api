@@ -89,9 +89,9 @@ if [ $? -ne 0 ]; then
 fi
 
 #
-# Make sure deployed crypto files for the developer deployment have sufficient permissions
+# Make sure container user identifies can read the developer deployment's crypto files
 #
-chmod 644 $SSL_CERT_FILE_PREFIX.key
+chmod 444 $SSL_CERT_FILE_PREFIX.key
 
 #
 # Clean up

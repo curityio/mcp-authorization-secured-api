@@ -37,8 +37,7 @@ export class OAuthFilter {
     }
 
     /*
-     * Validate a JWT and return claims for authorization
-     * Ensure that the JWT is valid for use at this API by validating its audience and scope
+     * Validate a JWT according to best practices and then prepare claims for authorization
      */
     public async validateAccessToken(request: Request, response: Response, next: NextFunction): Promise<void> {
 
@@ -74,8 +73,8 @@ export class OAuthFilter {
 
         const claims = new ClaimsPrincipal(this.configuration, result.payload);
         claims.enforceRequiredScope();
-        response.locals.claimsPrincipal = new ClaimsPrincipal(this.configuration, result.payload);
 
+        response.locals.claimsPrincipal = new ClaimsPrincipal(this.configuration, result.payload);
         next();
     }
 
