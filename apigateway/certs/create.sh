@@ -89,6 +89,11 @@ if [ $? -ne 0 ]; then
 fi
 
 #
+# Make sure container user identifies can read the developer deployment's crypto files
+#
+chmod 444 $SSL_CERT_FILE_PREFIX.key
+
+#
 # Clean up
 #
 rm *.csr 2>/dev/null

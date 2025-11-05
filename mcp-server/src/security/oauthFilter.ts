@@ -37,7 +37,8 @@ export class OAuthFilter {
     }
 
     /*
-     * Validate a JWT according to best practices and then prepare claims for authorization
+     * Validate a JWT and return claims for authorization
+     * Ensure that the JWT is valid for use at this MCP server by validating its audience and scope
      */
     public async validateAccessToken(request: Request, response: Response, next: NextFunction): Promise<void> {
 
@@ -70,7 +71,10 @@ export class OAuthFilter {
             throw new McpServerError(401, 'invalid_token', 'Missing, invalid or expired access token', extra);
         }
 
-        response.locals.claimsPrincipal = new ClaimsPrincipal(result.payload);
+        const claims = new ClaimsPrincipal(this.configuration, result.payload);
+        claims.enforceRequiredScope();
+        response.locals.claimsPrincipal = claims;
+
         next();
     }
 

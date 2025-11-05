@@ -47,8 +47,6 @@ export class McpServerApplication {
 
         // Ensure that the 'this' parameter is available in async callbacks when using JavaScript classes with methods
         this.post = this.post.bind(this);
-        this.get = this.get.bind(this);
-        this.delete = this.delete.bind(this);
         this.getResourceMetadata = this.getResourceMetadata.bind(this);
         this.fetchStockPricesFromApi = this.fetchStockPricesFromApi.bind(this);
 
@@ -80,8 +78,6 @@ export class McpServerApplication {
 
         // Create MCP routes
         this.expressApp.post('/', this.post);
-        this.expressApp.get('/', this.get);
-        this.expressApp.delete('/', this.delete);
 
         // Also add an error handler middleware
         this.expressApp.use(this.errorHandler.onUnhandledException)
@@ -108,12 +104,12 @@ export class McpServerApplication {
 
             const transport = new StreamableHTTPServerTransport({
                 sessionIdGenerator: undefined,
+                enableJsonResponse: true,
             });
 
             // For a stateless connection, the close event fires after every HTTP response from the MCP server
             response.on('close', () => {
                 transport.close();
-                this.mcpServer.close();
             });
 
             await this.mcpServer.connect(transport);
@@ -121,53 +117,20 @@ export class McpServerApplication {
 
         } catch (error: any) {
 
-            const data = {
-                jsonrpc: '2.0',
-                error: {
-                    code: ErrorCode.InternalError,
-                    message: 'Internal server error.'
-                },
-                id: null,
-            };
+            if (!response.headersSent) {
             
-            response.status(500).send(JSON.stringify(data));
+                const data = {
+                    jsonrpc: '2.0',
+                    error: {
+                        code: ErrorCode.InternalError,
+                        message: 'Internal server error.'
+                    },
+                    id: null,
+                };
+                
+                response.status(500).send(JSON.stringify(data));
+            }
         }
-    }
-
-    /*
-     * Stateless GET handling from the TypeScript SDK
-     * - https://github.com/modelcontextprotocol/typescript-sdk
-     */
-    public async get(request: Request, response: Response): Promise<void> {
-
-        const data = {
-            jsonrpc: '2.0',
-            error: {
-                code: ErrorCode.ConnectionClosed,
-                message: 'Method not allowed.'
-            },
-            id: null,
-        };
-        
-        response.writeHead(405).end(JSON.stringify(data));
-    }
-
-    /*
-     * Stateless DELETE handling from the TypeScript SDK
-     * - https://github.com/modelcontextprotocol/typescript-sdk
-     */
-    public async delete(request: Request, response: Response): Promise<void> {
-
-        const data = {
-            jsonrpc: '2.0',
-            error: {
-                code: ErrorCode.ConnectionClosed,
-                message: 'Method not allowed.'
-            },
-            id: null,
-        };
-        
-        response.writeHead(405).end(JSON.stringify(data));
     }
 
     /*

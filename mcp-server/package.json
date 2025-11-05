@@ -14,14 +14,15 @@
         "build": "rm -rf dist && tsc"
     },
     "dependencies": {
-        "@modelcontextprotocol/sdk": "^1.19.0",
+        "@modelcontextprotocol/sdk": "^1.21.0",
         "express": "^5.1.0",
         "jose": "^6.1.0"
     },
     "devDependencies": {
+        "@cfworker/json-schema": "^4.1.1",
         "@types/express": "^5.0.1",
         "@types/node": "^22.18.8",
-        "tsx": "^4.20.5",
-        "typescript": "^5.9.2"
+        "tsx": "^4.20.6",
+        "typescript": "^5.9.3"
     }
 }

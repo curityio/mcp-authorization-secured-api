@@ -57,7 +57,7 @@ mcp> call fetch-stock-prices
 
 ## Capture OAuth and MCP Requests
 
-The [OAuth and MCP Requests](../OAUTH-MCP-MESSAGES.md) summary summarizes the OAuth and MCP messages.
+The [OAuth and MCP Requests](../OAUTH-MCP-MESSAGES.md) summary explains the OAuth and MCP messages.
 
 ## Developing MCP Clients
 

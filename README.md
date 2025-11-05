@@ -6,14 +6,14 @@ This repository contains a code example to illustrate how organizations can expo
 
 The example includes the following components:
 
-* Example MCP client
-* Stocks API that simulates an existing API
-* MCP server that proxies requests to the API
-* Authorization server (the Curity Identity Server) that issues access tokens
-* API gateway that exposes public endpoints and includes a phantom token plugin (see [the phantom token approach](https://curity.io/resources/learn/phantom-token-pattern/))
+* Some example MCP clients
+* A stocks API that simulates an existing API
+* An MCP server that proxies requests to the API
+* An authorization server (the Curity Identity Server) that issues access tokens
+* An API gateway that exposes public endpoints and includes a phantom token plugin (see [the phantom token approach](https://curity.io/resources/learn/phantom-token-pattern/))
 
-The MCP client is typically part of an AI agent that users interact with using natural language. The AI agent selects and invokes the MCP client that, in turn, integrates with the MCP server. For simplicity, this example does not include an AI agent. However, it includes an example of an MCP client that you can run locally on your computer.
-
+The MCP client is part of an AI agent that users interact with using natural language.\
+The AI agent selects and invokes the MCP client that, in turn, integrates with the MCP server.\
 The end-to-end flow starts when an example MCP client calls a stateless MCP server.
 
 ![AI agent Flow](images/ai-agent-flow.png)
@@ -27,7 +27,7 @@ The overall flow uses the following steps:
 5. The MCP server validates the JWT access token and checks that it has an audience of `https://mcp.demo.example/`.
 6. Before calling the API the MCP server uses token exchange to change the token audience to`https://api.demo.example`.
 7. The MCP server sends the exchanged access token to the stocks API.
-8. The API validates the access token and uses its claims for authorization that protects business resources.
+8. The API validates the access token and uses its claims (which include AI context) to authorize access to business resources.
 
 ## Backend Endpoints
 
@@ -113,7 +113,8 @@ Clients use the following steps to get an access token and call the API:
 
 Only MCP clients operated by the following administrator approved users can gain access to secured API data.\
 These users must prove ownership of their corporate email to authenticate themselves.\
-You can simulate that by entering one of the emails and typing a one-time password from the test email inbox.
+Each user can then get stocks for their authorized region.\
+You can simulate user authentication by entering one of the emails and typing a one-time password from the test email inbox.
 
 - `john.doe@demo.example`
 - `jane.test@demo.example`
@@ -121,9 +122,9 @@ You can simulate that by entering one of the emails and typing a one-time passwo
 <img src="images/user-authentication.png" alt="User Consent" style="width:50%" />
 
 Users must then consent to granting the MCP client access to API data.\
-The user is informed about the level of data access that the AI agent requests.
+The consent screen customizes the presentation of scopes and claims to enable the user to make a decision.
 
-<img src="images/user-consent.png" alt="User Consent" style="width:50%" />
+<img src="images/user-consent.jpg" alt="User Consent" style="width:50%" />
 
 ### Access Token Behaviors
 
@@ -146,27 +147,33 @@ These measures help to mitigate risks of releasing access tokens to AI agents:
 - The MCP client does not receive a refresh token.
 
 The [Kong API gateway routes](apigateway/kong.yml) expose both the MCP server and API endpoints.\
-The MCP server receives a scoped JWT access token with a payload similar to the following.\
+The MCP server receives a scoped JWT access token with an audience claim of `https://mcp.demo.example/`.\
 The access token is only accepted at MCP entry points and not at other API endpoints.
+
+The MCP server uses token exchange to update the access token's audience and calls the stocks API.\
+The stocks API uses [scopes](https://curity.io/resources/learn/scope-best-practices/) and [claims](https://curity.io/resources/learn/claims-best-practices/) to authorize and restrict the AI agent's level of access:
 
 ```json
 {
-  "jti": "2dc6cc38-d77f-4378-ba80-ba9d945141ff",
-  "delegationId": "cd0c96fd-5fc3-4a92-a9fc-caf40e4e9b0c",
-  "exp": 1749650409,
-  "nbf": 1749650109,
+  "jti": "31b921b8-b166-4173-b633-7480bab89456",
+  "delegationId": "d94e9d67-b426-4cff-8613-f7cf2b1ca154",
+  "exp": 1762337303,
+  "nbf": 1762336403,
   "scope": "stocks/read",
   "iss": "https://login.demo.example/oauth/v2/oauth-anonymous",
   "sub": "john.doe@demo.example",
-  "aud": "https://mcp.demo.example/",
-  "iat": 1749650109,
-  "purpose": "access_token"
+  "aud": "https://api.demo.example",
+  "iat": 1762336403,
+  "purpose": "access_token",
+  "client_assurance_level": 1,
+  "client_type": "mcp",
+  "region": "USA"
 }
 ```
 
-The MCP server uses token exchange to update the access token's audience and calls the stocks API.\
-The Curity Identity Server could also issue any required custom claims to the access token.\
-Finally, APIs must authorize to protect data using [scopes](https://curity.io/resources/learn/scope-best-practices/) and [claims](https://curity.io/resources/learn/claims-best-practices/).
+Notice that the stocks API receives AI context in the `client_type` and `client_assurance_level` claims.\
+The API is therefore easily able to adjust existing authorization logic for an AI context.\
+For example, the API could deny AI agents access to particular operations.
 
 ## Website Documentation
 

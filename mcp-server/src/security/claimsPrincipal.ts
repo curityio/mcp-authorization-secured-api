@@ -15,6 +15,7 @@
  */
 
 import {JWTPayload} from 'jose';
+import {Configuration} from '../configuration.js';
 import {McpServerError} from '../errors/mcpServerError.js';
 
 /*
@@ -22,21 +23,23 @@ import {McpServerError} from '../errors/mcpServerError.js';
  */
 export class ClaimsPrincipal {
 
+    private readonly configuration: Configuration;
     private readonly scope: string;
     public readonly sub: string;
 
-    public constructor(claims: JWTPayload) {
+    public constructor(configuration: Configuration, claims: JWTPayload) {
 
+        this.configuration = configuration;
         this.scope = this.getClaim(claims, 'scope');
         this.sub = this.getClaim(claims, 'sub');
     }
 
-    public enforceRequiredScope(requiredScope: string) {
+    public enforceRequiredScope() {
 
         const scopes = this.scope.split(' ');
-        if (scopes.indexOf(requiredScope) === -1) {
+        if (scopes.indexOf(this.configuration.requiredScope) === -1) {
 
-            const info = `Required scope is '${requiredScope}' and received access token has scope '${this.scope}'`
+            const info = `Required scope is '${this.configuration.requiredScope}' and received access token has scope '${this.scope}'`
             throw new McpServerError(403, 'insufficient_scope', 'The access token cannot be used at this API', info);
         }
     }
