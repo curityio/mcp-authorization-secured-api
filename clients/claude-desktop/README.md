@@ -19,7 +19,7 @@ Make sure you use the correct certificate file path for your computer:
   "mcpServers": {
     "curity-demo": {
       "command": "npx",
-      "args": ["mcp-remote", "https://mcp.demo.example", "--static-oauth-client-metadata", "{ \"client_name\": \"Claude (curity-demo)\", \"scope\": \"stocks/read\" }"],
+      "args": ["mcp-remote", "https://mcp.demo.example", "--static-oauth-client-metadata", "{ \"client_name\": \"Claude Desktop\", \"scope\": \"stocks/read\" }"],
       "env": {
 		"NODE_EXTRA_CA_CERTS": "/Users/MYUSER/dev/mcp-authorization-secured-api/apigateway/certs/example.ca.crt"
       }

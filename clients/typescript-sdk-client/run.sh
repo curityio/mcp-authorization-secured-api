@@ -26,7 +26,7 @@ if [ ! -d typescript-sdk ]; then
   npm install
   
   #
-  # Work around the example client not setting a scope for DCR
+  # Work around the example client not setting a scope during the DCR request
   #
   FROM="client_name: 'Simple OAuth MCP Client'"
   TO="client_name: 'Simple OAuth MCP Client', scope: 'stocks\/read'"
