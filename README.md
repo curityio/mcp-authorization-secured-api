@@ -1,6 +1,6 @@
 # MCP Authorization Secured API
 
-This repository contains a code example to illustrate how organizations can expose APIs using the draft [Model Content Protocol Authorization](https://modelcontextprotocol.io/specification/2025-06-18/basic/authorization) specification. The code example shows how to use an MCP server to provide a new entry point that exposes OAuth-secured APIs to AI agents.
+This repository contains a code example to illustrate how organizations can expose APIs using the draft [Model Content Protocol Authorization](https://modelcontextprotocol.io/specification/draft/basic/authorization) specification. The code example shows how to use an MCP server to provide a new entry point that exposes OAuth-secured APIs to AI agents.
 
 ## Overview
 
@@ -89,12 +89,16 @@ apigateway/certs/example.ca.crt
 
 ### Run Clients
 
-See the following READMEs for further information on how to run supported clients:
+See the following READMEs for further information on how to run the example clients:
 
 - [TypeScript SDK Console Client](clients/typescript-sdk-client/README.md)
 - [MCP Inspector](clients/mcp-inspector/README.md)
-- [Claude Code](clients/claude-code/README.md)
 - [Claude Desktop](clients/claude-desktop/README.md)
+
+Follow an equivalent approach for other MCP clients, such as a paid version of ChatGPT:
+
+- Configure the MCP server's URL.
+- If required, configure other client metadata explicitly.
 
 ## Understand the Flow
 

@@ -12,11 +12,11 @@ function result(context) {
 
   if (resource) {
     // Allow if the requested resource value is part of the client's configured audiences
-    if (context.client.audiencesAsString.split(" ").indexOf(resource) != -1) {
+    if (context.client.audiencesAsString && context.client.audiencesAsString.split(" ").indexOf(resource) != -1) {
       accessTokenData.aud = [resource];
     }
     // Allow if the requested resource value is configured in client properties (DCR clients)
-    else if (context.client.properties.audiences.indexOf(resource) != -1) {
+    else if (context.client.properties.audiences && context.client.properties.audiences.indexOf(resource) != -1) {
       accessTokenData.aud = [resource];
     }
     // Reject the request if the client is unauthorized to the resource.

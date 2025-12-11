@@ -24,19 +24,16 @@ if [ ! -d typescript-sdk ]; then
   #
   cd typescript-sdk
   npm install
-
-  #
-  # Work around the client using a hard coded / incorrect scope named 'mcp:tools'.
-  # There is an open issue to support the new MCP scope selection strategy
-  # - https://github.com/modelcontextprotocol/typescript-sdk/issues/978
-  #
-  SCOPE_FROM="scope: 'mcp:tools'"
-  SCOPE_TO="scope: 'stocks\/read'"
   
-  if [ "$(uname -s)" == 'Darwin' ]; then
-    sed -i '' "s/$SCOPE_FROM/$SCOPE_TO/" src/examples/client/simpleOAuthClient.ts
+  #
+  # Work around the example client not setting a scope during the DCR request
+  #
+  FROM="client_name: 'Simple OAuth MCP Client'"
+  TO="client_name: 'Simple OAuth MCP Client', scope: 'stocks\/read'"
+    if [ "$(uname -s)" == 'Darwin' ]; then
+    sed -i '' "s/$FROM/$TO/" src/examples/client/simpleOAuthClient.ts
   else
-    sed -i "s/$SCOPE_FROM/$SCOPE_TO/"    src/examples/client/simpleOAuthClient.ts
+    sed -i "s/$FROM/$TO/"    src/examples/client/simpleOAuthClient.ts
   fi
   cd ..
 fi
@@ -49,6 +46,5 @@ export NODE_EXTRA_CA_CERTS=$(readlink -f '../../apigateway/certs/example.ca.crt'
 #
 # Run the MCP inspector client
 #
-export MCP_SERVER_URL='https://mcp.demo.example'
 cd typescript-sdk
-npx tsx src/examples/client/simpleOAuthClient.ts --oauth
+npx tsx src/examples/client/simpleOAuthClient.ts 'https://mcp.demo.example'
