@@ -58,10 +58,10 @@ export class McpServerApplication {
         this.mcpServer = new McpServer(serverInfo);
 
         // Create an MCP tool to call an existing upstream OAuth-secured API
-        this.mcpServer.tool(
-            'fetch-stock-prices',
-            'A tool to fetch secured information about financial stock prices',
-            this.fetchStockPricesFromApi,
+        this.mcpServer.registerTool('fetch-stock-prices', {
+                description: 'A tool to fetch secured information about financial stock prices',
+            },
+            this.fetchStockPricesFromApi
         );
 
         // Create the Express app
