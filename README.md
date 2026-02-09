@@ -77,7 +77,7 @@ export LICENSE_FILE_PATH=~/Desktop/license.json
 To enable the use of these domains on your local computer, add the following entries to the `/etc/hosts` file.
 
 ```text
-127.0.0.1 api.demo.example mcp.demo.example admin.demo.example login.demo.example mail.demo.example
+127.0.0.1 api.demo.example mcp.demo.example admin.demo.example login.demo.example mail.demo.example www.client.example
 ```
 
 Also trust the OpenSSL issued root certificate authority that the deployment creates at the following location.\

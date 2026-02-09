@@ -46,6 +46,23 @@ fi
 cd ..
 
 #
+# Build the client metadata to a docker container
+#
+echo 'Building client metadata host ...'
+cd clients/metadata
+
+npm install
+if [ $? -ne 0 ]; then
+  exit 1
+fi
+
+docker build --no-cache -t client-metadata-host:1.0 .
+if [ $? -ne 0 ]; then
+  exit 1
+fi
+cd ../..
+
+#
 # Build the API gateway custom image to a Docker container
 #
 echo 'Building API gateway with phantom token plugin ...'

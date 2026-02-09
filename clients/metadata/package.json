@@ -1,0 +1,19 @@
+{
+    "name": "client-metadata",
+    "version": "1.0.0",
+    "description": "A simple host that provides client metadata",
+    "author": "Curity",
+    "license": "Apache-2.0",
+    "main": "index.ts",
+    "type": "module",
+    "engines": {
+        "node": ">=22"
+    },
+    "scripts": {
+        "start": "node index.mjs"
+    },
+    "dependencies": {
+        "express": "^5.2.1",
+        "jose": "^6.1.3"
+    }
+}

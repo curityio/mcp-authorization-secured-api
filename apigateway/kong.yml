@@ -150,3 +150,16 @@ services:
     - mail.demo.example
     paths:
     - /
+
+#
+# For demo purposes the Docker backend also publishes client metadata
+# In a real deployment that would be an external internet endpoint
+#
+- name: client-metadata
+  url: http://clientmetadata:8000
+  routes:
+  - name: client-metadata-route
+    hosts:
+    - www.client.example
+    paths:
+    - /

@@ -56,7 +56,15 @@ services:
       REQUIRED_JWT_ISSUER: 'https://login.demo.example/oauth/v2/oauth-anonymous'
       REQUIRED_JWT_AUDIENCE: 'https://api.demo.example'
       REQUIRED_SCOPE: 'stocks/read'
-  
+
+  #
+  # Clients would publish metadata at external internet endpoints
+  # To simplify the example deployment, the client metadata endpoints are deployed to the same Docker backend
+  #
+  client-metadata:
+    image: client-metadata-host:1.0
+    hostname: clientmetadata
+
   #
   # The Curity Identity Server implements security standards and issues access tokens to MCP clients used by AI agents
   #
@@ -65,20 +73,22 @@ services:
     #image: curity.azurecr.io/curity/idsvr:latest
     #image: curity/idsvr-unstable:latest-clean
     hostname: idsvr
+    extra_hosts:
+      - "www.client.example:host-gateway"
     volumes:
       # Current configuration
       - ./idsvr/curity-config.xml:/opt/idsvr/etc/init/curity-config.xml
-      
+
       # JavaScript custom security logic
       - ./idsvr/pre-processing-procedures/mcp-client-registration-policy.js:/opt/idsvr/etc/init/pre-processing-procedures/mcp-client-registration-policy.js
       - ./idsvr/token-procedures/set-access-token-audience.js:/opt/idsvr/etc/init/token-procedures/oauth-token-authorization-code/set-access-token-audience.js
       - ./idsvr/token-procedures/set-token-exchange-audience.js:/opt/idsvr/etc/init/token-procedures/oauth-token-oauth-token-exchange/set-token-exchange-audience.js
       - ./idsvr/claims-provider-procedures/script-claims-provider-proc.js:/opt/idsvr/etc/init/claims-provider-procedures/script-claims-provider-proc.js
-      
+
       # Customizations to email user authentication
       - ./idsvr/form-customizations/enter-username.vm:/opt/idsvr/usr/share/templates/overrides/authenticator/email/enter-username/index.vm
       - ./idsvr/form-customizations/enter-username.properties:/opt/idsvr/usr/share/messages/overrides/en/authenticator/email/enter-username.properties
-      
+
       # Customizations to the user consent screen
       - ./idsvr/form-customizations/consent.vm:/opt/idsvr/usr/share/templates/template-areas/mcp-client/views/oauth/consent.vm
       - ./idsvr/form-customizations/oauth-messages:/opt/idsvr/usr/share/messages/template-areas/mcp-client/en/views/oauth/messages
@@ -86,6 +96,7 @@ services:
       ADMIN: 'true'
       LICENSE_KEY: "${LICENSE_KEY}"
       LOGGING_LEVEL: 'INFO'
+      EXTERNAL_ROOT_CA: "${EXTERNAL_ROOT_CA}"
 
   #
   # The SQL database used by the Curity Identity Server
