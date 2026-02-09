@@ -17,7 +17,8 @@ Wait for a few seconds and the MCP inspector opens in the browser.\
 Configure the following properties in the browser frontend:
 
 - Transport Type = Streamable HTTP
-- URL: `https://mcp.demo.example`
+- URL = `https://mcp.demo.example`
+- Authentication/Scope = `stocks/read`
 
 Then click the `Connect` button and run the authentication flow.\
 The client triggers the OAuth flow from this repository's main [README](../../README.md).\

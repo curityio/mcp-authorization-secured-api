@@ -14,7 +14,7 @@
         "build": "rm -rf dist && tsc"
     },
     "dependencies": {
-        "@modelcontextprotocol/sdk": "^1.25.1",
+        "@modelcontextprotocol/sdk": "^1.26.0",
         "express": "^5.2.1",
         "jose": "^6.1.3"
     },

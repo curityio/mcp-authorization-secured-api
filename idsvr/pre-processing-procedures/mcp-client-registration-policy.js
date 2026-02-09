@@ -26,7 +26,7 @@ function result(context) {
         // Give the client a template area that uses a bespoke consent screen
         attributes.template_area = 'mcp-client';
         
-        // Add custom properties delivered as AI content to APIs
+        // Add custom properties delivered as AI context to APIs
         attributes.client_type = 'mcp';
         attributes.client_assurance_level = 1;
       }

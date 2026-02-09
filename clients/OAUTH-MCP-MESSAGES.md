@@ -36,7 +36,7 @@ export NODE_TLS_REJECT_UNAUTHORIZED=0
 
 For others you may need to take further additional steps.\
 For example, in the TypeScript SDK client you can add the following to the TypeScript SDK's `package.json` dependencies.\
-Then run `npm install`:
+Then run `pnpm install`:
 
 ```text
 "undici": "^7.10.0"
@@ -156,7 +156,6 @@ https://login.demo.example/oauth/v2/oauth-authorize
 The client then sends the following form of back channel request:
 
 ```text
-
 grant_type:    authorization_code
 code:          ekgBhvoQAByoT5520ZRQhLtGa2KU9tTd
 code_verifier: 4F.adBoQzg1s3pFCaOA00Dv4bb6B0D4sll9glHPHo4M

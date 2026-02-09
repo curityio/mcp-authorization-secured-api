@@ -2,6 +2,10 @@
 
 The TypeScript SDK example OAuth client runs as an interactive console application.
 
+## Prerequisites
+
+First, install the [pnpm](https://pnpm.io/installation) tool that the TypeScript SDK examples require.
+
 ## Usage
 
 Execute the following script to clone the code for the TypeScript SDK and run its example OAuth client.\

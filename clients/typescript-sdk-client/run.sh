@@ -23,17 +23,17 @@ if [ ! -d typescript-sdk ]; then
   # Install dependencies
   #
   cd typescript-sdk
-  npm install
+  pnpm install
   
   #
   # Work around the example client not setting a scope during the DCR request
   #
   FROM="client_name: 'Simple OAuth MCP Client'"
   TO="client_name: 'Simple OAuth MCP Client', scope: 'stocks\/read'"
-    if [ "$(uname -s)" == 'Darwin' ]; then
-    sed -i '' "s/$FROM/$TO/" src/examples/client/simpleOAuthClient.ts
+  if [ "$(uname -s)" == 'Darwin' ]; then
+    sed -i '' "s/$FROM/$TO/" examples/client/src/simpleOAuthClient.ts
   else
-    sed -i "s/$FROM/$TO/"    src/examples/client/simpleOAuthClient.ts
+    sed -i "s/$FROM/$TO/"    examples/client/src/simpleOAuthClient.ts
   fi
   cd ..
 fi
@@ -44,7 +44,7 @@ fi
 export NODE_EXTRA_CA_CERTS=$(readlink -f '../../apigateway/certs/example.ca.crt')
 
 #
-# Run the MCP inspector client
+# Run the MCP example client
 #
 cd typescript-sdk
-npx tsx src/examples/client/simpleOAuthClient.ts 'https://mcp.demo.example'
+pnpm --filter @modelcontextprotocol/examples-client exec tsx src/simpleOAuthClient.ts 'https://mcp.demo.example'

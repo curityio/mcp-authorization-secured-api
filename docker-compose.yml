@@ -61,7 +61,9 @@ services:
   # The Curity Identity Server implements security standards and issues access tokens to MCP clients used by AI agents
   #
   authorization-server:
-    image: curity.azurecr.io/curity/idsvr:latest
+    image: curity/idsvr-unstable:arm-11.0.0-e6b9684187
+    #image: curity.azurecr.io/curity/idsvr:latest
+    #image: curity/idsvr-unstable:latest-clean
     hostname: idsvr
     volumes:
       # Current configuration
