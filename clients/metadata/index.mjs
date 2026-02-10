@@ -16,7 +16,10 @@ app.get('/typescript-sdk-client.json', (request, response) => {
     const metadata = {
         client_id: 'https://www.client.example/typescript-sdk-client.json',
         client_name: 'TypeScript SDK Client',
+        grant_types: ['authorization_code'],
         redirect_uris: ['https://www.client.example/callback'],
+        scope: 'stocks/read',
+        token_endpoint_auth_method: 'private_key_jwt',
         jwks_uri: 'https://www.client.example/jwks.json',
     };
 
@@ -32,7 +35,10 @@ app.get('/mcp-inspector.json', (request, response) => {
     const metadata = {
         client_id: 'https://www.client.example/mcp-inspector.json',
         client_name: 'MCP Inspector',
+        grant_types: ['authorization_code'],
         redirect_uris: ['https://www.client.example/callback'],
+        scope: 'stocks/read',
+        token_endpoint_auth_method: 'private_key_jwt',
         jwks_uri: 'https://www.client.example/jwks.json',
     };
 
@@ -48,7 +54,10 @@ app.get('/claude-desktop.json', (request, response) => {
     const metadata = {
         client_id: 'https://www.client.example/claude-desktop.json',
         client_name: 'Claude Desktop',
+        grant_types: ['authorization_code'],
         redirect_uris: ['https://www.client.example/callback'],
+        scope: 'stocks/read',
+        token_endpoint_auth_method: 'private_key_jwt',
         jwks_uri: 'https://www.client.example/jwks.json',
     };
 
