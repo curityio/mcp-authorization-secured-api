@@ -71,7 +71,7 @@ app.get('/claude-desktop.json', (request, response) => {
 app.get('/jwks.json', async (request, response) => {
 
     const jwk = await exportJWK(keypair.publicKey);
-    jwk.kid = 1;
+    jwk.kid = '1';
     jwk.alg = 'ES256';
     const jwks = {
         keys: [

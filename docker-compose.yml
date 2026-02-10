@@ -95,7 +95,7 @@ services:
     environment:
       ADMIN: 'true'
       LICENSE_KEY: "${LICENSE_KEY}"
-      LOGGING_LEVEL: 'TRACE'
+      LOGGING_LEVEL: 'INFO'
       EXTERNAL_ROOT_CA: "${EXTERNAL_ROOT_CA}"
 
   #
