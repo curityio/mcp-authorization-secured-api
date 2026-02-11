@@ -123,6 +123,11 @@
               <signature-algorithm>ES256</signature-algorithm>
             </asymmetrically-signed-jwt>
           </client-authentication>
+          <request-object>
+            <asymmetrically-signed-jwt>
+              <signature-algorithm>ES256</signature-algorithm>
+            </asymmetrically-signed-jwt>
+          </request-object>
           <client-capabilities>
             <code>
             </code>
