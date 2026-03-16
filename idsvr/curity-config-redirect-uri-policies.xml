@@ -1,0 +1,46 @@
+<config xmlns="http://tail-f.com/ns/config/1.0">
+  <profiles xmlns="https://curity.se/ns/conf/base">
+  <profile>
+    <id>token-service</id>
+    <type xmlns:as="https://curity.se/ns/conf/profile/oauth">as:oauth-service</type>
+    <expose-detailed-error-messages/>
+    <settings>
+      <authorization-server xmlns="https://curity.se/ns/conf/profile/oauth">
+        <redirect-uri-validation-policies>
+          <redirect-uri-validation-policy>
+            <id>accept-loopback-redirect-uri-for-ephemeral-clients</id>
+            <request-validation>
+              <allow-localhost-variations>true</allow-localhost-variations>
+            </request-validation>
+          </redirect-uri-validation-policy>
+          <redirect-uri-validation-policy>
+            <id>default</id>
+          </redirect-uri-validation-policy>
+          <default-redirect-uri-validation-policy>default</default-redirect-uri-validation-policy>
+        </redirect-uri-validation-policies>
+        <ephemeral-client>
+          <capabilities>
+            <code/>
+          </capabilities>
+          <client-authentication-method>
+            <no-authentication/>
+          </client-authentication-method>
+          <access-token-ttl>900</access-token-ttl>
+          <refresh-token-ttl>3600</refresh-token-ttl>
+          <scopes>
+            <scope>stocks/read</scope>
+          </scopes>
+          <authenticators>
+            <authenticator>email</authenticator>
+          </authenticators>
+          <cache>
+          </cache>
+          <user-consent>
+          </user-consent>
+          <http-client>client-metadata</http-client>
+        </ephemeral-client>
+      </authorization-server>
+    </settings>
+  </profile>
+  </profiles>
+</config>

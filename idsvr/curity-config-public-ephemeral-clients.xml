@@ -1,0 +1,26 @@
+<config xmlns="http://tail-f.com/ns/config/1.0">
+    <profiles xmlns="https://curity.se/ns/conf/base">
+    <profile>
+    <id>token-service</id>
+    <type xmlns:as="https://curity.se/ns/conf/profile/oauth">as:oauth-service</type>
+      <settings>
+      <authorization-server xmlns="https://curity.se/ns/conf/profile/oauth">
+      <ephemeral-client>
+        <capabilities>
+          <code/>
+        </capabilities>
+        <client-authentication-method>
+          <no-authentication/>
+        </client-authentication-method>
+        <scopes>
+          <all/>
+        </scopes>
+        <authenticators>
+          <all/>
+        </authenticators>
+      </ephemeral-client>
+      </authorization-server>
+      </settings>
+  </profile>
+  </profiles>
+</config>
