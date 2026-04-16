@@ -6,7 +6,7 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 # Wait a few seconds for the Postgres database to come up
 #
 echo 'Waiting for the PostgreSQL database to be ready ...'
-sleep 5
+sleep 10
 
 #
 # Then create some test user accounts using the Curity Identity Server's liquibase feature
