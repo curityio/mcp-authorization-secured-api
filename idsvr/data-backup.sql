@@ -11,6 +11,7 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 CREATE TABLE delegations (
   id                          VARCHAR(40)   PRIMARY KEY,
+  tenant_id                   VARCHAR(64)   NULL,
   owner                       VARCHAR(128)  NOT NULL,
   created                     BIGINT        NOT NULL,
   expires                     BIGINT        NOT NULL,
@@ -31,6 +32,7 @@ CREATE INDEX IDX_DELEGATIONS_OWNER                   ON delegations (owner ASC);
 CREATE INDEX IDX_DELEGATIONS_AUTHORIZATION_CODE_HASH ON delegations (authorization_code_hash ASC);
 
 COMMENT ON COLUMN delegations.id IS 'Unique identifier';
+COMMENT ON COLUMN delegations.tenant_id IS 'The tenant ID of this delegation';
 COMMENT ON COLUMN delegations.owner IS 'Subject for whom the delegation is issued';
 COMMENT ON COLUMN delegations.expires IS 'Moment when delegation expires, as measured in number of seconds since epoch';
 COMMENT ON COLUMN delegations.scope IS 'Space delimited list of scope values';
@@ -359,6 +361,36 @@ COMMENT ON COLUMN buckets.tenant_id IS 'The tenant ID of this bucket';
 COMMENT ON COLUMN buckets.attributes IS 'All attributes stored for this subject/purpose';
 COMMENT ON COLUMN buckets.created IS 'When this bucket was created';
 COMMENT ON COLUMN buckets.updated IS 'When this bucket was last updated';
+
+CREATE TABLE IF NOT EXISTS database_service_providers
+(
+    id                          VARCHAR(64)       NOT NULL,
+    profile_id                  VARCHAR(64)       NOT NULL,
+    service_provider_name       VARCHAR(128)      NULL,
+    created                     TIMESTAMP         NOT NULL,
+    updated                     TIMESTAMP         NOT NULL,
+    owner                       VARCHAR(128)      NOT NULL,
+    enabled                     VARCHAR(16)       NOT NULL DEFAULT 'enabled',
+    service_provider_metadata   JSONB             NOT NULL DEFAULT '{}',
+    configuration_references    JSONB             NOT NULL DEFAULT '{}',
+    attributes                  JSONB             NOT NULL DEFAULT '{}',
+
+    PRIMARY KEY (id, profile_id)
+    );
+
+COMMENT ON COLUMN database_service_providers.id IS 'The service provider ID of this service provider instance';
+COMMENT ON COLUMN database_service_providers.profile_id IS 'The profile ID owning this service provider instance';
+COMMENT ON COLUMN database_service_providers.service_provider_name IS 'The optional database service provider display name';
+COMMENT ON COLUMN database_service_providers.created IS 'When this service provider was originally created (in UTC time)';
+COMMENT ON COLUMN database_service_providers.updated IS 'When this service provider was last updated (in UTC time)';
+COMMENT ON COLUMN database_service_providers.owner IS 'The owner of the database service provider. This is the user or service provider who has administrative rights on the database service provider';
+COMMENT ON COLUMN database_service_providers.service_provider_metadata IS 'Metadata, as a JSON document, tied to this service provider, especially tags categorizing it';
+COMMENT ON COLUMN database_service_providers.configuration_references IS 'JSON document with all attributes referencing an item in the configuration';
+COMMENT ON COLUMN database_service_providers.attributes IS 'Canonical object representing this service provider';
+
+CREATE INDEX IF NOT EXISTS IDX_DBSP_PROFILE_ID ON database_service_providers (profile_id);
+CREATE INDEX IF NOT EXISTS IDX_DBSP_SERVICE_PROVIDER_NAME ON database_service_providers (service_provider_name);
+CREATE INDEX IF NOT EXISTS IDX_DBSP_OWNER ON database_service_providers (owner);
 
 --
 -- Restore test user accounts that use email authentication

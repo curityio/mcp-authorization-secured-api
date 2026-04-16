@@ -118,12 +118,34 @@
           <authentication-service>
             <authentication-profile>authentication-service</authentication-profile>
           </authentication-service>
+          <client-authentication>
+            <asymmetrically-signed-jwt>
+              <signature-algorithm>ES256</signature-algorithm>
+            </asymmetrically-signed-jwt>
+          </client-authentication>
+          <request-object>
+            <asymmetrically-signed-jwt>
+              <signature-algorithm>ES256</signature-algorithm>
+            </asymmetrically-signed-jwt>
+          </request-object>
           <client-capabilities>
             <code>
             </code>
             <introspection/>
             <oauth-token-exchange/>
           </client-capabilities>
+          <redirect-uri-validation-policies>
+            <redirect-uri-validation-policy>
+              <id>accept-loopback-redirect-uri-for-ephemeral-clients</id>
+              <request-validation>
+                <allow-localhost-variations>true</allow-localhost-variations>
+              </request-validation>
+            </redirect-uri-validation-policy>
+            <redirect-uri-validation-policy>
+              <id>default</id>
+            </redirect-uri-validation-policy>
+            <default-redirect-uri-validation-policy>default</default-redirect-uri-validation-policy>
+          </redirect-uri-validation-policies>
           <scopes>
             <scope>
               <id>address</id>
@@ -409,6 +431,28 @@
               </user-consent>
             </non-templatized>
           </dynamic-client-registration>
+          <ephemeral-client>
+            <capabilities>
+              <code/>
+            </capabilities>
+            <client-authentication-method>
+              <no-authentication/>
+            </client-authentication-method>
+            <access-token-ttl>900</access-token-ttl>
+            <refresh-token-ttl>3600</refresh-token-ttl>
+            <scopes>
+              <scope>stocks/read</scope>
+            </scopes>
+            <authenticators>
+              <authenticator>email</authenticator>
+            </authenticators>
+            <cache>
+            </cache>
+            <user-consent>
+            </user-consent>
+            <http-client>client-metadata</http-client>
+            <redirect-uri-validation-policy>accept-loopback-redirect-uri-for-ephemeral-clients</redirect-uri-validation-policy>
+          </ephemeral-client>
         </authorization-server>
       </settings>
       <endpoints>
@@ -505,8 +549,24 @@
         </smtp>
       </email-provider>
     </email-providers>
+    <http>
+      <client>
+        <id>client-metadata</id>
+        <tls>
+          <use-truststore>true</use-truststore>
+        </tls>
+      </client>
+    </http>
     <crypto>
       <ssl>
+        <server-truststore>
+          <server-certificate>
+            <id>client_metadata_ca</id>
+            <curve-name>P-256</curve-name>
+            <type>elliptic-curve</type>
+            <keystore>#{EXTERNAL_ROOT_CA}</keystore>
+          </server-certificate>
+        </server-truststore>
         <server-keystore>
           <id>default-admin-ssl-key</id>
           <keystore>data:application/p12;aes,v:S.VXVPVGFrOGY1SVNvUzlqZQ==.tJu2Si6m_xdNLD2JBsVFxw==.M1PMDVJWFF7aki60_P-Bhkn_lTMgbZDX80SRMIbuas3kvZNUq3oPVFCo8M3hq0nTY0j5ZVcK1naSj3fWdSb6NWuqaluFQKvNan6qwxHOvsIcvHJ3HGgnv_wvenbutfhzTUNAYHiQs2b8wLLaBNc7-1NlW2KLFWlJaDVniXZrCq2olAWSZP7HeZSHIVckbDzfl3eKBctKmA6FvNG9khs3n0K2LmOkDZi5kjYipJ7pLhP798_ip6UdsOPZs430KKo0oBLexu2DvyjKilqb_2zHj6YUHFmjeH9s4YDrwpehtpIbI51W3bYGq_rPtxxjSeSjYfUiXi5dFnS5WOx3nyCDwe6a5DsmApx5lRZih6uI9jbNPoOgFLftvRr6exyW_hqI0ZK-9iM8tJ4KRiTaHV9DeVlVpWNN2PkryBAlx2m3CUO4k6dM3BurYyfUzTftBF5seV1snPKDqn3pfpekLmF8EIwuPlZfKrWEWmvLiEZGYpk9oCzIHmXZO0tKZktyR_EUXkRbYYDwnGfPRCuq0F9NQBkIBme2cOPLRHcjbmvdOISW9gz8dXkAPbduBk7wQ3WbLR1lzZknqNzMwzrehbpgNe1PSEw3h0ch_I8v-AKTrZaRlRejZU1bxZBtqpO7dDnykSIVivNFGmuXTYia210kSNji0-kLEbJK6qSzDgPvT2QmTn1xaz7WZm7UViLQlmlTyTZByJ4wlJXAry0-zdAeXM4_HjP26O3fZN4a7T2XqJuUeFQMqnhSCbE1BRQh-rAiK6sbOmDxxR3LcKN6g3J4UElOUPopQupFiCzdgx15-jpxvbF54DCyd-ExEFgNohkoRIMMOdlo7pUBbDQ9QmY719SPP27hKwCUxDXOc4q9PLnpO3cNhLojixDZtv7Mi4rPdWHvzDLgMUFv-3CfpiyrHOaR_HZceDa4wRgNp89QRZVuvl14mer6HCt0loziEVJAggnaY2APcVrp5XgH9WotX-o8jsiJMHNZ-bMXgBG0PuF3bGboiF2IUqpdnofm7R1XErHkEnXf6BTOAPzvmw3HMe5WAH8Pv8a_5K8rEDn2yUDFuPHFWU1qUMsi2uUacmIIkp-KzfRBPGn3XHQwi6-NDihr9LYLZC4kX3NLRxsWKXymxnmoAIIMlLeGT6GGrRgCfpablACyZnHEVBXf7RE3x8Ndfp82ztxOilPA-_tt1eAvQNjX_3ZZ2pfiJxt2hCFIUeW9ZtgupyeWuGopR5EWouHUjPHrGQ9mc6Ais2AzJS76GLVBHT2ZjlNO-IEstcjgHEa5KIzCw9RYmtNrREYRE0jIPg4XGuvja9BWBSRwm0JNN0Na1rjCKhsROU-oXENKpDt5xjpFGHbAejy848CHHNA35dLU8jeIERkzQ6VXs0uA5k25aueJI0klxzJyBHyWZdXOWpdd-b2xWxaN3uzg_Ogpknfa76bMCaHUP4y5ajXR8fbVrfM_2rwn4dY7hZI62xsSu8AlaquzGKyDfrNOyxn-dZSNguR28cUPPW2NA1mYOTVI8xyPpiGx8A2IgMRA1it_wCHeK9EIjk5Q0plD2tC6JFCHFmbU6xLIygk-DLf29iYmZqx1koCsdWOFu7GlPK8L7Q_MSqvE2JH2POVeOos6xE4-tcpoeycFme4iwY6rwa6j2KvB-TSrKX0TZLKdHNirF7ntw1RI-36qJiO3GDPIQpxDvYHX8cRJ2LZmHsOWsOKgIRC9GhwNiqSbm1qWS3RjC5o02d4LYwP7qjwLmK-uWJeRce_m6w2EKnQ3sRKA8nQob3C4Rv0-xFYykYVoGAUpoht7E6ZPlNOZhdQmtpV5cz1OvgvdnPJ6olCJXlIWlz8ZNdiRrOkfW8zSRwt60Fqc_P1e6BLeIMxCO6GQtzqV1aaCtON8imC7fRJjmGeqg7_LgMhVx66dFSui5nsfKqY0fwRXNVqUdrlhtioxzuEWXmsTdJBcQlXa2t1qa-mDs14BLRETrxM291HIGJhFUZ450pLHpJTEMzXszpFCezZ5A82Jw7rnFMZgdW0ZNeFGo6BL9-R2hTUv8254hcPcsNXKpI_GpDAROReCbuGcS169tAluWGmKbYuIYDnLfMfHGeUwcK5jYpW3bHPjZwdw1sreAIsC1-foIbwcZ8oOZC5Y4sdLTRL3q1mckEWW1elOHHp5PGK7-wFVpfphCkH2n7lEBjn0s0WnXOmtuYjreMuS8D5f7htRaC6_ehbIKPuPOpt7JjZ5XeGtFsrGcdeWfWtPPa_hTnpyZg8czZNaQSt74vGdUyAtJqQv3PofzlX98qr4V3vkQtokYSleWIizV1afrRQtyUCFia0-DcnoPkRD60dOGPkECfg3W4M0LnIr4UdfSHksiMi3JatkD_WsDfXwGbgPiNJTgknXJ7XqhQrwvIY1tRKfwTY4P5EmU9phGBMzCsaq2HpkmGnPJ4B36Zyi7nFD2RgHMbbnABcFHvE55qDbETYhLdaRay6esNdJsa27Rh7-8EJNZu-AXrYn6Wk_JBRdhpWyTyybk6sJ05qE19zK4doXivsterRFjX4VvkTyBSUwsNiBXDVLOAS82mUeIPQCbowkbf5R4fzM2KBZfQSWGRudUuI-qsJfI6YOG_ixTwDXsETpy0aD11wjz6EY4RaJdbRNO4522rDyHuPUZ5WvCqtyNpTrl1t9-PPghyBASFkYFvinhjg00ggFG6i9VcRgPXHQeyhaNxbUzBnjV2K-x7rAJjd-m8LSjvsAxvQtrBt8_O12BGtE1USZON_vlXW0Ln-ZDJ6mkH4U3YoNX3kEQGn95R7cxa22VBuh-c6Ikjr04HFYHO1XeZlGrr1ru8mDXJrCXGYBGJAm3MAvKgoe8_uFy2Yr67LtSQ94pxLMRSkxMw2amaEAIqBkF7D7Rl5fLsjA7EVVKdTrOjOKZIFC_MugKXJIDLqaKwhY0pwppgCEiCoBSiE8mnR7SGUtK-tZdhQ3DCR2XjfMO0H5vgnuof7It0PQN1k8kIwtOgP_mfMjl4APYsrlVf7xoW29eHDb3Vl6yxv63nHHWD1OT45th-3_CJVOSggxuNJkReVetqS6q70DcxwFN1IJuhiOt2Z_DTUZXmDdtcagnie74etdFwKyxbWmCMfqY9JFZXMmvg8uDZSYweU0FePnrfWSmToVfMwokoP_muHQswqnnADBYZh4MQnu1rAV08lwrGXu4h-vIM0muX4c7rOgu-BgKr9zDGC4gYkSi_r1CzmSJe2gwTbYl4F38WspsjBpE4AIB4M8bfixGSniW1Kg09Mz9CWEcgR4u07-Aka04PuC0LHDUBNsdtCytAC6BxhP0K3Nwtc01RIS7bs-AULElJNwv5gQRGjZBFpIWiDdV1Bk3oxGr_yzetIH-iNLdadq_zNDaHd-kmeWQEVa88K-qcBO8FnQD4KzgdRFB61CdgmOFUmSqzD4tmQ63xRjqde6zXkc7Lwv3bXPG-S7UfAW73C-tMgigRiIGqehPso3OCMFLWS4RT3uKQnlkw-rkhjTVEMPGPwW9hHLmRSdItCrA_P-mvdleUH7vLoBJ6Fc7uRIUtbPtKk7QaNqhQatAVVE6XiLnsbD40rxvnAiXJJSNqxRmV_p9rvmVsYkrOzFlQ==.Lf6jFu7ZPbjRkYwxKfIfLO6IVdVi3Biq_Tx-DDJSZIk=</keystore>

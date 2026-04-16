@@ -18,6 +18,8 @@ function result(context) {
     // Allow if the requested resource value is configured in client properties (DCR clients)
     else if (context.client.properties.audiences && context.client.properties.audiences.indexOf(resource) != -1) {
       accessTokenData.aud = [resource];
+    } else if (context.client.id.startsWith("https://") && resource == "https://mcp.demo.example/") {
+      accessTokenData.aud = [resource];
     }
     // Reject the request if the client is unauthorized to the resource.
     else {

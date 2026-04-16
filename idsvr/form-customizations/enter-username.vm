@@ -47,9 +47,13 @@
             #set($_errorClass = "is-error is-error-danger")
         #end
 
-        <h1 class="center">#message("authenticator.email.enter-username.view.username")</h1>
+        #set($clientName = $_requestingOAuthClient.properties.name)
+        #if (! $clientName)
+            #set($clientName = $_requestingOAuthClient.id)
+        #end
 
-        <p>${_requestingOAuthClient.properties.name} #message("authenticator.email.enter-username.view.requesting")</p>
+        <h1 class="center">#message("authenticator.email.enter-username.view.username")</h1>
+        <p>$!{clientName} #message("authenticator.email.enter-username.view.requesting")</p>
         
         <div class="form-field">
             <label for="userName" class="$!_errorClass">#message("authenticator.email.enter-username.view.username-label")</label>

@@ -17,13 +17,14 @@ if [ "$LICENSE_KEY" == '' ]; then
 fi
 
 #
-# Some MCP clients, like Claude, require HTTPS connections.
+# Some MCP clients may require HTTPS connections.
 # Therefore, create development SSL certificates for external URLs.
 #
 ./apigateway/certs/create.sh
 if [ $? -ne 0 ]; then
   exit 1
 fi
+export EXTERNAL_ROOT_CA=$(cat ./apigateway/certs/example.ca.crt | openssl base64 | tr -d '\n')
 
 #
 # Then run the deployment

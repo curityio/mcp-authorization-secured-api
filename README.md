@@ -40,6 +40,7 @@ MCP clients connect to the MCP server using a Streamable HTTP transport.
 | MCP Server Entry Point | `https://mcp.demo.example` | Endpoint that receives all API requests from MCP clients. |
 | MCP Server Resource Metadata | `https://mcp.demo.example/.well-known/oauth-protected-resource` | Used by the MCP client to discover the MCP server's authorization server. |
 | Stocks API | `https://api.demo.example/stocks` | The API entry point for non MCP clients. |
+| Client ID Metadata Document | `https://www.client.example/typescript-sdk-client.json` | Used to publish the client metadata to allow for an ephemeral MCP client. | 
 | Curity Identity Server OAuth Metadata | `https://login.demo.example/.well-known/oauth-authorization-server` | Used by the MCP client to discover the capabilities of the authorization server, e.g. authorization endpoint. |
 | Curity Identity Server Admin UI | `https://admin.demo.example/admin` | Administration interface of the Curity Identity Server. |
 | Curity Identity Server DCR | `https://login.demo.example/oauth/v2/oauth-registration` | Endpoint of the Curity Identity Server that enables the MCP client to automatically register, e.g. its redirect URI. |
@@ -48,13 +49,13 @@ MCP clients connect to the MCP server using a Streamable HTTP transport.
 | Curity Identity Server Login Interfaces | `https://login.demo.example/authn/authenticate/` | The base URL for authentication related user interaction. |
 | Test Email Inbox | `https://mail.demo.example` | A mail server for testing purposes that lets you receive any emails that the Curity Identity Server sends. |
 
-The Curity Identity Server implements OAuth standards (DCR, code flow) to enable the authorization as defined for MCP.\
+The Curity Identity Server implements OAuth standards (DCR, code flow, Client ID Metadata Document) to enable the authorization as defined for MCP.\
 You can log into the Admin UI with a username and password of `admin / Password1`.
 
 ## Run the End-to-End Flow
 
 Typically you do not control the client or its code, and MCP clients make standards-based connections.\
-The deployed backend in this code example uses standards-based security to enable many MCP clients to connect.
+The deployed backend in this code example uses standards-based security to enable many MCP clients to connect. It supports both DCR and Client ID Metadata Document (URL-based registration) to interact with new MCP clients on the fly.
 
 ### Install Prerequisites
 
@@ -77,7 +78,7 @@ export LICENSE_FILE_PATH=~/Desktop/license.json
 To enable the use of these domains on your local computer, add the following entries to the `/etc/hosts` file.
 
 ```text
-127.0.0.1 api.demo.example mcp.demo.example admin.demo.example login.demo.example mail.demo.example
+127.0.0.1 api.demo.example mcp.demo.example admin.demo.example login.demo.example mail.demo.example www.client.example
 ```
 
 Also trust the OpenSSL issued root certificate authority that the deployment creates at the following location.\
@@ -100,6 +101,8 @@ Follow an equivalent approach for other MCP clients, such as a paid version of C
 - Configure the MCP server's URL.
 - If required, configure other client metadata explicitly.
 
+If you want to test Ephemeral Clients that use Client ID Metadata Document, try the [TypeScript SDK Console Client](clients/typescript-sdk-client/README.md).
+
 ## Understand the Flow
 
 MCP clients that implement the MCP draft authorization specification can integrate with the MCP server.\
@@ -111,9 +114,11 @@ Clients use the following steps to get an access token and call the API:
 
 - Resource server metadata download.
 - Authorization server metadata download.
-- Dynamic client registration.
+- Optionally, dynamic client registration. 
 - User authentication.
 - User consent.
+
+Public clients may skip registration and instead act as public ephemeral clients using Client ID Metadata Document to communicate their metadata to the authorization server.
 
 Only MCP clients operated by the following administrator approved users can gain access to secured API data.\
 These users must prove ownership of their corporate email to authenticate themselves.\
