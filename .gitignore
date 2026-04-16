@@ -6,3 +6,4 @@ inspector
 typescript-sdk
 *.key
 *.crt
+schema.sql

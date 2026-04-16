@@ -106,7 +106,7 @@ services:
     image: postgres:latest
     hostname: dbserver
     volumes:
-      - ./idsvr/data-backup.sql:/docker-entrypoint-initdb.d/data-backup.sql
+      - ./idsvr/data/schema.sql:/docker-entrypoint-initdb.d/schema.sql
     environment:
       POSTGRES_USER: 'postgres'
       POSTGRES_PASSWORD: 'Password1'
