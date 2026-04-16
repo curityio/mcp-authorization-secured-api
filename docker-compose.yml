@@ -89,7 +89,9 @@ services:
 
       # Customizations to the user consent screen
       - ./idsvr/form-customizations/consent.vm:/opt/idsvr/usr/share/templates/template-areas/mcp-client/views/oauth/consent.vm
+      - ./idsvr/form-customizations/consent.vm:/opt/idsvr/usr/share/templates/overrides/views/oauth/consent.vm
       - ./idsvr/form-customizations/oauth-messages:/opt/idsvr/usr/share/messages/template-areas/mcp-client/en/views/oauth/messages
+      - ./idsvr/form-customizations/oauth-messages:/opt/idsvr/usr/share/messages/overrides/en/views/oauth/messages
     environment:
       ADMIN: 'true'
       LICENSE_KEY: "${LICENSE_KEY}"
