@@ -1,0 +1,31 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+        http://www.liquibase.org/xml/ns/pro
+        http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd"
+        objectQuotingStrategy="QUOTE_ALL_OBJECTS">
+    <changeSet id="1" author="curity">
+        <insert tableName="accounts">
+            <column name="account_id" type="varchar">670bfc34-6788-11ed-9323-a269d5800c4d</column>
+            <column name="username" type="varchar">john.doe@demo.example</column>
+            <column name="active" type="smallint">1</column>
+            <column name="attributes" type="text">{"name": {"givenName": "John", "familyName": "Doe"}, "emails": [], "region": "USA"}</column>
+            <column name="created" type="bigint">1668807106</column>
+            <column name="updated" type="bigint">1668807106</column>
+        </insert>
+        <insert tableName="accounts">
+            <column name="account_id" type="varchar">74fcf67c-6788-11ed-93e7-a269d5800c4d</column>
+            <column name="username" type="varchar">jane.test@demo.example</column>
+            <column name="active" type="smallint">1</column>
+            <column name="attributes" type="text">{"name": {"givenName": "Jane", "familyName": "Test"}, "emails": [], "region": "Europe"}</column>
+            <column name="created" type="bigint">1668807129</column>
+            <column name="updated" type="bigint">1668807129</column>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
