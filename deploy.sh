@@ -3,24 +3,6 @@
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
 #
-# Get the platform
-#
-case "$(uname -s)" in
-
-  Darwin)
-    PLATFORM="MACOS"
- 	;;
-
-  MINGW64*)
-    PLATFORM="WINDOWS"
-	;;
-
-  Linux)
-    PLATFORM="LINUX"
-	;;
-esac
-
-#
 # First check there is a valid license file for the Curity Identity Server
 #
 if [ "$LICENSE_FILE_PATH" == '' ]; then
@@ -35,8 +17,7 @@ if [ "$LICENSE_KEY" == '' ]; then
 fi
 
 #
-# Some MCP clients may require HTTPS connections.
-# Therefore, create development SSL certificates for external URLs.
+# Create development SSL certificates for external URLs.
 #
 ./apigateway/certs/create.sh
 if [ $? -ne 0 ]; then
@@ -51,21 +32,10 @@ docker pull postgres:latest
 docker pull curity.azurecr.io/curity/idsvr:latest
 
 #
-# Spin up a child window that will create test user accounts once the PostgreSQL database is ready
+# Share the postgres data folder to the host, to ensure that therno unexpected database is present
 #
-if [ "$PLATFORM" == 'MACOS' ]; then
-
-  open -a Terminal ./idsvr/data/import-test-users.sh
-
-elif [ "$PLATFORM" == 'WINDOWS' ]; then
-  
-  GIT_BASH="C:\Program Files\Git\git-bash.exe"
-  "$GIT_BASH" -c ./idsvr/data/import-test-users.sh &
-
-elif [ "$PLATFORM" == 'LINUX' ]; then
-
-  gnome-terminal -- ./idsvr/data/import-test-users.sh
-fi
+mkdir ./idsvr/data2 2>/dev/null 
+chmod 777 ./idsvr/data2
 
 #
 # Run the deployment to spin up all components

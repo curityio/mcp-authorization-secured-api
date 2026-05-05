@@ -99,18 +99,35 @@ services:
       EXTERNAL_ROOT_CA: "${EXTERNAL_ROOT_CA}"
 
   #
-  # The SQL database used by the Curity Identity Server
-  # This contains administrator approved users and dynamically registered clients
+  # The SQL database used by the Curity Identity Server for this deployment
   #
-  authorization-server-data:
+  authorization-server-database:
     image: postgres:latest
     hostname: dbserver
     volumes:
-      - ./idsvr/data/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+      - ./idsvr/data2:/var/lib/postgresql
     environment:
-      POSTGRES_USER: 'postgres'
-      POSTGRES_PASSWORD: 'Password1'
       POSTGRES_DB: 'idsvr'
+      POSTGRES_USER: 'idsvr_user'
+      POSTGRES_PASSWORD: 'Password1'
+
+  #
+  # A job container to initialize the database
+  #
+  authorization-server-database-init:
+    image: curity.azurecr.io/curity/idsvr:latest
+    hostname: dbserverinit
+    volumes:
+      - ./idsvr/dbinit/init.sh:/tmp/init.sh
+      - ./idsvr/dbinit/test-user-accounts.xml:/opt/idsvr/etc/liquibase/test-user-accounts.xml
+    command: ["/tmp/init.sh"]
+    environment:
+      JDBC_URL: jdbc:postgresql://dbserver:5432/idsvr
+      JDBC_USERNAME: 'idsvr_user'
+      JDBC_PASSWORD: 'Password1'
+    depends_on:
+      authorization-server-database:
+        condition: service_started
 
   #
   # An email server with a test inbox to allow email authentication for test users
