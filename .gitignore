@@ -6,4 +6,4 @@ inspector
 typescript-sdk
 *.key
 *.crt
-idsvr/data2
+idsvr/data

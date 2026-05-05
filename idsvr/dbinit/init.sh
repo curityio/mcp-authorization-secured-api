@@ -14,7 +14,8 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 # Once the script completes, query data in the PostgreSQL container with this command:
 # - export PGPASSWORD=Password1 && psql -p 5432 -d idsvr -U idsvr_user
 #
-# See product documentation for further details:
+# See documentation for further details:
+# - https://curity.io/resources/data-management/
 # - https://curity.io/docs/identity-server/facilities/data-sources/schema-migration/
 ######################################################################################
 

@@ -34,8 +34,8 @@ docker pull curity.azurecr.io/curity/idsvr:latest
 #
 # Share the postgres data folder to the host, to ensure that therno unexpected database is present
 #
-mkdir ./idsvr/data2 2>/dev/null 
-chmod 777 ./idsvr/data2
+mkdir ./idsvr/data 2>/dev/null 
+chmod 777 ./idsvr/data
 
 #
 # Run the deployment to spin up all components

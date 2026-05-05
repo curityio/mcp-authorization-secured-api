@@ -105,7 +105,7 @@ services:
     image: postgres:latest
     hostname: dbserver
     volumes:
-      - ./idsvr/data2:/var/lib/postgresql
+      - ./idsvr/data:/var/lib/postgresql
     environment:
       POSTGRES_DB: 'idsvr'
       POSTGRES_USER: 'idsvr_user'
