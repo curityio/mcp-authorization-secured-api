@@ -19,9 +19,9 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 ######################################################################################
 
 #
-# Wait a few seconds after the database service starts, so that it is ready to accept commands
+# Wait a few seconds, so that the database server is ready to accept commands
 #
-echo 'Waiting for the database server to be ready ...'
+echo 'Waiting for the database server to reach a ready state ...'
 sleep 5
 
 #
