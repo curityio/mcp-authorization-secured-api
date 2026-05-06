@@ -11,13 +11,18 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 # All commands use the JDBC_URL, JDBC_USERNAME and JDBC_PASSWORD environment variables
 # The database user must have permissions to create schema objects, e.g. a DBO user
 #
-# Once the script completes, query data in the PostgreSQL container with this command:
-# - export PGPASSWORD=Password1 && psql -p 5432 -d idsvr -U idsvr_user
-#
+
+# Once the script completes, query data in the database container
 # See documentation for further details:
 # - https://curity.io/resources/data-management/
 # - https://curity.io/docs/identity-server/facilities/data-sources/schema-migration/
 ######################################################################################
+
+#
+# Wait a few seconds after the database service starts, so that it is ready to accept commands
+#
+echo 'Waiting for the database server to be ready ...'
+sleep 5
 
 #
 # Create the schema if it does not exist

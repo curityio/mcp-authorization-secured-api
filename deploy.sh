@@ -32,10 +32,16 @@ docker pull postgres:latest
 docker pull curity.azurecr.io/curity/idsvr:latest
 
 #
-# Share the postgres data folder to the host, to ensure that therno unexpected database is present
+# Share the postgres data folder to the host, to remove any leftover data from the local image
 #
 mkdir ./idsvr/data 2>/dev/null 
-chmod 777 ./idsvr/data
+chmod 755 ./idsvr/data
+
+#
+# Share the Curity configuration database folder to the host, to remove any leftover configuration data from the local image
+#
+mkdir ./idsvr/cdb 2>/dev/null 
+chmod 755 ./idsvr/cdb
 
 #
 # Run the deployment to spin up all components

@@ -74,6 +74,9 @@ services:
     extra_hosts:
       - "www.client.example:host-gateway"
     volumes:
+      # The configuration database
+      - ./idsvr/cdb:/opt/idsvr/var/cdb
+      
       # Current configuration
       - ./idsvr/curity-config.xml:/opt/idsvr/etc/init/curity-config.xml
 
