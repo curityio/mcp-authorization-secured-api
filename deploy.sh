@@ -32,16 +32,10 @@ docker pull postgres:latest
 docker pull curity.azurecr.io/curity/idsvr:latest
 
 #
-# Share the postgres data folder to the host, to remove any leftover data from the local image
+# This example deployment shares the postgres data folder to the host, to persist data on redeployments
 #
 mkdir ./idsvr/data 2>/dev/null 
 chmod 755 ./idsvr/data
-
-#
-# Share the Curity configuration database folder to the host, to remove any leftover configuration data from the local image
-#
-mkdir ./idsvr/cdb 2>/dev/null 
-chmod 755 ./idsvr/cdb
 
 #
 # Run the deployment to spin up all components
