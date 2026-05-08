@@ -17,8 +17,7 @@ if [ "$LICENSE_KEY" == '' ]; then
 fi
 
 #
-# Some MCP clients may require HTTPS connections.
-# Therefore, create development SSL certificates for external URLs.
+# Create development SSL certificates for external URLs.
 #
 ./apigateway/certs/create.sh
 if [ $? -ne 0 ]; then
@@ -27,7 +26,19 @@ fi
 export EXTERNAL_ROOT_CA=$(cat ./apigateway/certs/example.ca.crt | openssl base64 | tr -d '\n')
 
 #
-# Then run the deployment
+# Pull up to date Docker images
+#
+docker pull postgres:latest
+docker pull curity.azurecr.io/curity/idsvr:latest
+
+#
+# This example deployment shares the postgres data folder to the host, to persist data on redeployments
+#
+mkdir ./idsvr/data 2>/dev/null 
+chmod 755 ./idsvr/data
+
+#
+# Run the deployment to spin up all components
 #
 docker compose down
 docker compose up

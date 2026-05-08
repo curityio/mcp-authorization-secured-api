@@ -6,3 +6,5 @@ inspector
 typescript-sdk
 *.key
 *.crt
+idsvr/cdb
+idsvr/data

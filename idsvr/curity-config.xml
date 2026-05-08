@@ -533,7 +533,7 @@
           </standard-credentials-mode>
           <driver>org.postgresql.Driver</driver>
           <password>data:text/plain;aes,v:S.cnhiSkxlYWlkRVQ4WWl4Vw==.1aNHPxfLhSEArHTZLKziqw==.31T45YEtPPjyl07MgNoA0Q==.mVwglRB_PbfFz9624gR3pRhdNc51VtDU3zE_2ojt1Ro=</password>
-          <username>postgres</username>
+          <username>idsvr_user</username>
         </jdbc>
       </data-source>
     </data-sources>
