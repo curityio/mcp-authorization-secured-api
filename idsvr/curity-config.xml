@@ -122,6 +122,7 @@
             <asymmetrically-signed-jwt>
               <signature-algorithm>ES256</signature-algorithm>
             </asymmetrically-signed-jwt>
+            <no-authentication>true</no-authentication>
           </client-authentication>
           <request-object>
             <asymmetrically-signed-jwt>
@@ -134,18 +135,6 @@
             <introspection/>
             <oauth-token-exchange/>
           </client-capabilities>
-          <redirect-uri-validation-policies>
-            <redirect-uri-validation-policy>
-              <id>accept-loopback-redirect-uri-for-ephemeral-clients</id>
-              <request-validation>
-                <allow-localhost-variations>true</allow-localhost-variations>
-              </request-validation>
-            </redirect-uri-validation-policy>
-            <redirect-uri-validation-policy>
-              <id>default</id>
-            </redirect-uri-validation-policy>
-            <default-redirect-uri-validation-policy>default</default-redirect-uri-validation-policy>
-          </redirect-uri-validation-policies>
           <scopes>
             <scope>
               <id>address</id>
@@ -438,6 +427,9 @@
             <client-authentication-method>
               <no-authentication/>
             </client-authentication-method>
+            <redirect-uri-validation>
+              <allow-loopback-redirect-uris>true</allow-loopback-redirect-uris>
+            </redirect-uri-validation>
             <access-token-ttl>900</access-token-ttl>
             <refresh-token-ttl>3600</refresh-token-ttl>
             <scopes>
@@ -451,7 +443,6 @@
             <user-consent>
             </user-consent>
             <http-client>client-metadata</http-client>
-            <redirect-uri-validation-policy>accept-loopback-redirect-uri-for-ephemeral-clients</redirect-uri-validation-policy>
           </ephemeral-client>
         </authorization-server>
       </settings>
