@@ -65,24 +65,6 @@ services:
       - 'http://localhost:6274'
 
 #
-# MCP authorization requires a root level OAuth authorization server metadata endpoint
-# - https://github.com/modelcontextprotocol/typescript-sdk/issues/545
-#
-- name: authorization-server-metadata-reroute
-  url: http://idsvr:8443/.well-known/oauth-authorization-server/oauth/v2/oauth-anonymous
-  routes:
-  - name: authorization-server-metadata-reroute
-    hosts:
-    - login.demo.example
-    paths:
-    - /.well-known/oauth-authorization-server
-  plugins:
-  - name: cors
-    config:
-      origins:
-      - 'http://localhost:6274'
-
-#
 # The settings token_endpoint_auth_method=none and client_uri are incompatible with the Curity Identity Server
 # Therefore, use Kong's request transformer plugin to update incoming requests
 #
