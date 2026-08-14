@@ -414,6 +414,7 @@
                 <secret>
                   <credential-manager>default-credential-manager</credential-manager>
                 </secret>
+                <no-authentication/>
               </client-authentication-method>
               <no-authentication/>
               <user-consent>

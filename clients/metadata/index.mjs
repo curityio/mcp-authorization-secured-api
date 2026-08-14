@@ -25,6 +25,24 @@ app.get('/typescript-sdk-client.json', (request, response) => {
 });
 
 /*
+ * Return client metadata for the MCP inspector client
+ */
+app.get('/mcp-inspector-client.json', (request, response) => {
+
+    const metadata = {
+        client_id: 'https://www.client.example/mcp-inspector-client.json',
+        client_name: 'MCP Inspector Client',
+        grant_types: ['authorization_code'],
+        redirect_uris: ['http://localhost:6274/oauth/callback'],
+        scope: 'stocks/read',
+        token_endpoint_auth_method: 'none',
+    };
+
+    response.setHeader('content-type', 'application/json');
+    response.status(200).send(JSON.stringify(metadata));
+});
+
+/*
  * The API gateway exposes client metadata at a https://www.client.example base URL
  */
 app.listen(port, () => {
