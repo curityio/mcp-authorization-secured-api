@@ -15,7 +15,7 @@ app.get('/typescript-sdk-client.json', (request, response) => {
         client_id: 'https://www.client.example/typescript-sdk-client.json',
         client_name: 'TypeScript SDK Client',
         grant_types: ['authorization_code'],
-        redirect_uris: ['https://localhost:8090'],
+        redirect_uris: ['http://127.0.0.1:8090/callback'],
         scope: 'stocks/read',
         token_endpoint_auth_method: 'none',
     };
