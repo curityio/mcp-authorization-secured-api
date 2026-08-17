@@ -44,7 +44,8 @@ MCP clients connect to the MCP server using a Streamable HTTP transport.
 | MCP Server Resource Metadata | `https://mcp.demo.example/.well-known/oauth-protected-resource` | Used by the MCP client to discover the MCP server's authorization server. |
 | Stocks API | `https://api.demo.example/stocks` | The API entry point for non MCP clients. |
 | Client ID Metadata Document | `https://www.client.example/typescript-sdk-client.json` | Used to publish the client metadata to allow for an ephemeral MCP client. | 
-| Curity Identity Server OAuth Metadata | `https://login.demo.example/.well-known/oauth-authorization-server` | Used by the MCP client to discover the capabilities of the authorization server, e.g. authorization endpoint. |
+| Curity Identity Server Issuer Identifier | `https://login.demo.example/oauth/v2/oauth-anonymous` | Used by the MCP client and MCP server to identify the authorization server. |
+| Curity Identity Server OAuth Metadata | `https://login.demo.example/oauth/v2/oauth-anonymous/.well-known/oauth-authorization-server` | Used by the MCP client to discover the capabilities of the authorization server, e.g. authorization endpoint. |
 | Curity Identity Server Admin UI | `https://admin.demo.example/admin` | Administration interface of the Curity Identity Server. |
 | Curity Identity Server DCR | `https://login.demo.example/oauth/v2/oauth-registration` | Endpoint of the Curity Identity Server that enables the MCP client to automatically register, e.g. its redirect URI. |
 | Curity Identity Server Authorization Endpoint | `https://login.demo.example/oauth/v2/oauth-authorize` | Endpoint discovered by the MCP client for starting the OAuth flow. |
