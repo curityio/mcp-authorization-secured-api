@@ -32,7 +32,7 @@ services:
     environment:
       PORT: '3000'
       EXTERNAL_BASE_URL: 'https://mcp.demo.example'
-      AUTHORIZATION_SERVER_BASE_URL: 'https://login.demo.example'
+      AUTHORIZATION_SERVER_ISSUER_IDENTIFIER: 'https://login.demo.example/oauth/v2/oauth-anonymous'
       STOCKS_API_BASE_URL: 'http://stocks-api:3000/'
       JWKS_URI: 'http://idsvr:8443/oauth/v2/oauth-anonymous/jwks'
       REQUIRED_JWT_ALGORITHM: 'PS256'

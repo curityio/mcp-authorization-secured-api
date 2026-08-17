@@ -144,7 +144,7 @@ export class McpServerApplication {
         const metadata = {
             resource: `${this.configuration.externalBaseUrl}/`,
             resource_name: 'MCP Server',
-            authorization_servers: [this.configuration.authorizationServerBaseUrl],
+            authorization_servers: [this.configuration.authorizationServerIssuerIdentifier],
             scopes_supported: [this.configuration.requiredScope],
         };
 

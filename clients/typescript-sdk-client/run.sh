@@ -37,6 +37,6 @@ export NODE_EXTRA_CA_CERTS=$(readlink -f '../../apigateway/certs/example.ca.crt'
 # Run the MCP example client, providing the MCP server URL and client ID metadata URL
 #
 cd typescript-sdk
-pnpm --filter @modelcontextprotocol/examples-client exec tsx src/simpleOAuthClient.ts \
+pnpm --filter @mcp-examples/oauth client:browser \
     'https://mcp.demo.example' \
     'https://www.client.example/typescript-sdk-client.json'

@@ -21,29 +21,29 @@ export class Configuration {
 
     public port: string;
     public externalBaseUrl: string;
-    public authorizationServerBaseUrl: string;
+    public authorizationServerIssuerIdentifier: string;
     public stocksApiBaseUrl: string;
     public jwksUri: string;
     public requiredJwtAlgorithm: string;
     public requiredIssuer: string;
     public requiredAudience: string;
     public requiredScope: string;
-    public tokenExchageClientId: string;
-    public tokenExchageClientSecret: string;
+    public tokenExchangeClientId: string;
+    public tokenExchangeClientSecret: string;
     public tokenEndpoint: string;
     
     public constructor() {
         this.port = this.getValue('PORT');
         this.externalBaseUrl = this.getValue('EXTERNAL_BASE_URL');
-        this.authorizationServerBaseUrl = this.getValue('AUTHORIZATION_SERVER_BASE_URL');
+        this.authorizationServerIssuerIdentifier = this.getValue('AUTHORIZATION_SERVER_ISSUER_IDENTIFIER');
         this.stocksApiBaseUrl = this.getValue('STOCKS_API_BASE_URL');
         this.jwksUri = this.getValue('JWKS_URI');
         this.requiredJwtAlgorithm = this.getValue('REQUIRED_JWT_ALGORITHM');
         this.requiredIssuer = this.getValue('REQUIRED_JWT_ISSUER');
         this.requiredAudience = this.getValue('REQUIRED_JWT_AUDIENCE');
         this.requiredScope = this.getValue('REQUIRED_SCOPE');
-        this.tokenExchageClientId = this.getValue('TOKEN_EXCHANGE_CLIENT_ID');
-        this.tokenExchageClientSecret = this.getValue('TOKEN_EXCHANGE_CLIENT_SECRET');
+        this.tokenExchangeClientId = this.getValue('TOKEN_EXCHANGE_CLIENT_ID');
+        this.tokenExchangeClientSecret = this.getValue('TOKEN_EXCHANGE_CLIENT_SECRET');
         this.tokenEndpoint = this.getValue('TOKEN_ENDPOINT');
     }
 
