@@ -72,18 +72,19 @@
                     is-active
                 #end
             ">
-                
+
                 ##
                 ## This bespoke consent presentation renders details about the client's scope before the claim details
                 ##
                 <li>
-                    <label class="block full-width relative">
-                      <input type="checkbox" name="$scopeName" id="$scopeName" checked disabled>
-                      <label class="consent-entries-list-checkbox"></label>
-                      <span class="consent-entries-list-name">$_tr.encodeHtml($scopeName)</span>
-                      <span class="consent-entries-list-value required">*</span>
-                      &mdash;
-                      <span class="consent-entries-list-description">$scopeDescription</span>
+                      <label class="flex flex-gap-1 flex-center relative">
+                        <input type="checkbox" name="$scopeName" id="$scopeName" checked disabled>
+                        <label class="consent-entries-list-checkbox"></label>
+                        <input type="hidden" name="$parameterName">
+                        <span class="consent-entries-list-name">$_tr.encodeHtml($scopeName)</span>
+                        <span class="consent-entries-list-value required">*</span>
+                        &mdash;
+                        <span class="consent-entries-list-description">$scopeDescription</span>
                     </label>
                 </li>
 
@@ -116,7 +117,7 @@
                         #else
                             #define($claimLabel)#message("$entry.value.displayName")#end
                         #end
-                    <label class="block full-width relative"
+                    <label class="flex flex-gap-1 flex-center relative"
                         #if ($entry.value.required == "true")
 ><input type="checkbox" name="$parameterName" id="$parameterName" checked disabled><label class="consent-entries-list-checkbox"></label><input type="hidden" name="$parameterName"
                         #else

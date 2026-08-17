@@ -137,4 +137,4 @@ services:
     hostname: smtpserver
     environment:
       MAILDEV_INCOMING_USER: 'noreply@maildev'
-      MAILDEV_INCOMING_PASSWORD: 'Password1'
+      MAILDEV_INCOMING_PASS: 'Password1'
