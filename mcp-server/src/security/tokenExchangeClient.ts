@@ -37,8 +37,8 @@ export class TokenExchangeClient {
         const upstreamApiAudience = 'https://api.demo.example';
 
         let body = 'grant_type=urn:ietf:params:oauth:grant-type:token-exchange';
-        body += `&client_id=${this.configuration.tokenExchageClientId}`;
-        body += `&client_secret=${this.configuration.tokenExchageClientSecret}`;
+        body += `&client_id=${this.configuration.tokenExchangeClientId}`;
+        body += `&client_secret=${this.configuration.tokenExchangeClientSecret}`;
         body += `&subject_token=${accessToken}`;
         body += '&subject_token_type=urn:ietf:params:oauth:token-type:access_token';
         body += `&audience=${upstreamApiAudience}`;

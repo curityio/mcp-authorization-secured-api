@@ -133,7 +133,7 @@ The Curity Identity Server's example configuration grants the client access to t
 }
 ```
 
-The Curity Identity Server commonly enforces a same-origin policy for URIs in client metadata. This means the Curity Identity Server rejects DCR requests of public clients such as an MCP client where the redirect URIs contain only local loopback addresses but other publicly available URIs for the `client_uri` (see example above). By requiring clients to prove control over an origin by having them use the same origin in their redirect URIs as in other URIs, the Curity Identity Server protects against client impersonation. 
+The Curity Identity Server commonly enforces a same-origin policy for URIs in client metadata. This means the Curity Identity Server rejects DCR requests of public clients such as an MCP client where the redirect URIs contain only local loopback addresses and the `client_uri` other, publicly available URIs (see example above). By requiring clients to prove control over an origin by having them use the same origin in their redirect URIs as in other URIs, the Curity Identity Server protects against client impersonation. 
 
 In the example of this repository, the API gateway removes the `client_uri` from the DCR request.
 
