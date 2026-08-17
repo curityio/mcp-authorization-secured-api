@@ -133,7 +133,7 @@ services:
   # An email server with a test inbox to allow email authentication for test users
   #
   mail-server:
-    image: maildev/maildev:latest
+    image: maildev/maildev:2.2.1
     hostname: smtpserver
     environment:
       MAILDEV_INCOMING_USER: 'noreply@maildev'

@@ -20,11 +20,14 @@ Configure the following properties in the browser frontend:
 - URL = `https://mcp.demo.example`
 - Authentication/Scope = `stocks/read`
 
-Then click the `Connect` button and run the authentication flow.\
+Then toggle the `Connect` button and run the authentication flow.\
 The client triggers the OAuth flow from this repository's main [README](../../README.md).\
 The client then provides a web user interface and the user can invoke API operations as MCP tools:
 
 ![MCP inspector](../../images/inspector.png)
+
+After login, the MCP inspector stores tokens in the `~/.mcp-inspector` folder.  
+You can remove tokens from that folder to force a new login.
 
 ## CORS
 
