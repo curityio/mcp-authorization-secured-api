@@ -73,4 +73,4 @@ Note, if you experience errors with the Curity Identity Server fetching the clie
 
 If you want to develop your own MCP clients you can use the TypeScript SDK library.\
 Implement your own client based on this example client.\
-After running the example, find that client at `src/examples/client/simpleOAuthClient.ts` in the `typescript-sdk` folder.
+After running the example, find that client at `examples/oauth/simpleOAuthClient.ts` in the `typescript-sdk` folder.
